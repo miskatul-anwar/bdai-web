@@ -61,30 +61,43 @@ export function DottedMap<T extends Marker = Marker>({
       viewBox={`${bounds.minX} ${bounds.minY} ${bounds.width} ${bounds.height}`}
       className="h-full w-full"
       preserveAspectRatio="xMidYMid meet"
+      style={{ willChange: "transform" }}
     >
-      {points.map((point: any, index: number) => {
-        const isMarker = !!point.data;
-        return (
-          <React.Fragment key={index}>
-            <circle
-              cx={point.x}
-              cy={point.y}
-              r={isMarker ? 1.5 : 0.5}
-              fill="currentColor"
-              fillOpacity={isMarker ? 1 : 0.7}
-            />
-            {isMarker && renderMarkerOverlay && (
-              renderMarkerOverlay({
-                marker: point.data as T,
-                x: point.x,
-                y: point.y,
-                r: 0.5,
-                index,
-              })
-            )}
-          </React.Fragment>
-        );
-      })}
+      {/* Background Dots as a single path for performance */}
+      <path
+        d={points
+          .filter((p: any) => !p.data)
+          .map((p: any) => `M ${p.x},${p.y} m -0.5,0 a 0.5,0.5 0 1,0 1,0 a 0.5,0.5 0 1,0 -1,0`)
+          .join(" ")}
+        fill="currentColor"
+        fillOpacity="0.7"
+      />
+      
+      {/* Markers as individual elements since they have unique data/overlays */}
+      {points
+        .filter((p: any) => !!p.data)
+        .map((point: any, index: number) => {
+          return (
+            <React.Fragment key={`marker-${index}`}>
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r={1.5}
+                fill="currentColor"
+                fillOpacity={1}
+              />
+              {renderMarkerOverlay && (
+                renderMarkerOverlay({
+                  marker: point.data as T,
+                  x: point.x,
+                  y: point.y,
+                  r: 0.5,
+                  index,
+                })
+              )}
+            </React.Fragment>
+          );
+        })}
     </svg>
   );
 }

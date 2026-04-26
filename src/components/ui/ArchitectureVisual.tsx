@@ -18,7 +18,8 @@ import { ContainerScroll } from "./container-scroll-animation";
 const ARCH_LAYERS = [
   {
     id: "master",
-    name: "Master plan Layer",
+    number: "01",
+    name: "Master Plan Layer",
     desc: "Governs the overall strategy and SDG alignment (SDGs 2, 4, 9, 10, 17).",
     icon: Map,
     color: "text-primary-dark",
@@ -27,6 +28,7 @@ const ARCH_LAYERS = [
   },
   {
     id: "analysis",
+    number: "02",
     name: "Analysis Layer",
     desc: "Provides descriptive, diagnostic, predictive, and prescriptive insights.",
     icon: BarChart3,
@@ -36,6 +38,7 @@ const ARCH_LAYERS = [
   },
   {
     id: "application",
+    number: "03",
     name: "Application Layer",
     desc: "Natural Language Interfaces (NLI) and AI-powered interactions for end-users.",
     icon: Layout,
@@ -45,6 +48,7 @@ const ARCH_LAYERS = [
   },
   {
     id: "federation",
+    number: "04",
     name: "Federation Layer (Model, Meta)",
     desc: "Managed metadata and unified models linking diverse sectoral datasets.",
     icon: Network,
@@ -53,8 +57,9 @@ const ARCH_LAYERS = [
     depth: 3
   },
   {
-    id: "semantic",
-    name: "Knowledge Graph (semantic layer)",
+    id: "knowledge-graph",
+    number: "05",
+    name: "Knowledge Graph (Semantic Layer)",
     desc: "The core semantic enriched layer using ontologies and linked data principles.",
     icon: Cpu,
     color: "text-primary",
@@ -62,8 +67,9 @@ const ARCH_LAYERS = [
     depth: 4
   },
   {
-    id: "data",
-    name: "Data Layer",
+    id: "semantic",
+    number: "06",
+    name: "Semantic Layer",
     desc: "Raw data sources (RDF, PDF, Text, XML, Databases) processed for ingestion.",
     icon: Database,
     color: "text-primary-dark",
@@ -76,88 +82,68 @@ export const ArchitectureVisual = () => {
   const [hoveredLayer, setHoveredLayer] = useState<string | null>(null);
 
   return (
-    <div className="flex flex-col overflow-hidden py-8">
+    <div className="flex flex-col overflow-hidden">
       <ContainerScroll
-        className="max-w-[360px] md:max-w-[420px] aspect-[9/19] h-[500px] md:h-[650px]"
         titleComponent={
-          <div className="mb-6 md:mb-8">
-            <h1 className="text-4xl md:text-8xl font-serif italic text-ebony leading-none mb-3">
-              Project <span className="text-primary not-italic font-display font-black uppercase tracking-tighter text-2xl md:text-4xl block mt-2">Architecture</span>
+          <div className="mb-6 md:mb-12">
+            <h1 className="text-4xl md:text-8xl font-serif italic text-ebony leading-none mb-4">
+              System <span className="text-primary not-italic font-display font-black uppercase tracking-tighter text-2xl md:text-5xl block mt-2">Architecture</span>
             </h1>
-            <p className="text-ebony/60 max-w-2xl mx-auto font-medium text-sm md:text-base">
-              A multi-layered ecosystem for seamless data flow and intelligent processing, 
-              visualized in a hierarchical stack.
+            <p className="text-ebony/60 max-w-2xl mx-auto font-medium text-sm md:text-lg">
+              A comprehensive multi-layered ecosystem designed for seamless data flow, 
+              robust security, and intelligent AI-driven insights for Bangladesh.
             </p>
           </div>
         }
       >
-        <div className="bg-white/80 backdrop-blur-xl h-full w-full rounded-2xl flex flex-col p-3 md:p-5 items-center overflow-y-auto overflow-x-hidden border border-white/40 hide-scrollbar shadow-2xl">
-          <div className="w-full flex items-center justify-between mb-4 md:mb-6 pb-3 border-b border-primary/10">
-             <div className="flex gap-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/10" />
-                <div className="w-1.5 h-1.5 rounded-full bg-primary/10" />
-                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+        <div className="bg-white/95 backdrop-blur-3xl h-full w-full rounded-2xl flex flex-col p-6 md:p-10 items-center overflow-auto border border-white/40 shadow-2xl">
+          <div className="w-full flex items-center justify-between mb-8 pb-4 border-b border-primary/10">
+             <div className="flex gap-2">
+                <div className="w-2 h-2 rounded-full bg-[#FF5F56]" />
+                <div className="w-2 h-2 rounded-full bg-[#FFBD2E]" />
+                <div className="w-2 h-2 rounded-full bg-[#27C93F]" />
              </div>
+
           </div>
 
-          <div className="w-full space-y-2 relative pb-12">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 relative">
             {ARCH_LAYERS.map((layer, idx) => (
-              <motion.div
+              <div
                 key={layer.id}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  x: 0,
-                  transition: { delay: idx * 0.1 }
-                }}
-                viewport={{ once: true }}
                 onMouseEnter={() => setHoveredLayer(layer.id)}
                 onMouseLeave={() => setHoveredLayer(null)}
                 className={cn(
-                  "relative group cursor-pointer transition-all duration-300",
-                  "glass-card p-2 md:p-3 flex items-center gap-2 md:gap-3 rounded-2xl md:rounded-3xl",
-                  hoveredLayer === layer.id ? "scale-[1.03] border-primary/30 bg-white shadow-lg" : "border-white/40"
+                  "relative group cursor-pointer transition-all duration-500",
+                  "glass-card p-4 md:p-6 flex items-start gap-4 rounded-3xl",
+                  hoveredLayer === layer.id ? "bg-white shadow-2xl ring-1 ring-primary/20 -translate-y-1" : "border-white/40 opacity-80"
                 )}
               >
                 <div className={cn(
-                  "p-2.5 md:p-3 rounded-xl transition-all duration-300 shrink-0",
+                  "p-3 md:p-4 rounded-2xl transition-all duration-300 shrink-0",
                   layer.bg,
-                  hoveredLayer === layer.id ? "scale-110 shadow-sm" : ""
+                  hoveredLayer === layer.id ? "scale-110 shadow-lg bg-primary text-white" : ""
                 )}>
-                  <layer.icon className={cn("w-5 h-5", layer.color)} />
+                   <layer.icon className={cn("w-6 h-6", hoveredLayer === layer.id ? "text-white" : layer.color)} />
                 </div>
                 
-                <div className="flex-1 min-w-0 text-left">
-                  <h3 className="text-xs md:text-sm font-bold text-ebony truncate uppercase tracking-wide">
-                    {layer.name}
-                  </h3>
-                  <AnimatePresence>
-                    {hoveredLayer === layer.id && (
-                      <motion.p 
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="text-ebony/60 text-[10px] mt-1 font-medium leading-tight"
-                      >
-                        {layer.desc}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                      {layer.number}
+                    </span>
+                    <h3 className="text-sm md:text-base font-black text-ebony uppercase tracking-tight">
+                      {layer.name}
+                    </h3>
+                  </div>
+                  <p className="text-ebony/60 text-xs font-medium leading-relaxed">
+                    {layer.desc}
+                  </p>
                 </div>
-
-                {/* Hierarchical Connecting Line */}
-                {idx < ARCH_LAYERS.length - 1 && (
-                  <div className="absolute left-[34px] md:left-[42px] top-full h-3 w-px bg-primary/10 -z-10" />
-                )}
-              </motion.div>
+              </div>
             ))}
           </div>
 
-          <div className="mt-auto pt-6 text-center w-full">
-             <div className="text-[9px] font-bold uppercase tracking-[0.3em] text-ebony/30">
-                BDAI Hierarchical Model
-             </div>
-          </div>
+
         </div>
       </ContainerScroll>
     </div>

@@ -26,10 +26,36 @@ export const InteractiveNodes = ({
     let w = (canvas.width = parent.clientWidth);
     let h = (canvas.height = parent.clientHeight);
 
-    const particles: Particle[] = [];
-    const particleCount = Math.min(Math.floor((w * h) / 16000), 60);
-    const connectionRadius = 350;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile 
+      ? Math.min(Math.floor((w * h) / 32000), 20)
+      : Math.min(Math.floor((w * h) / 16000), 60);
+    
+    const connectionRadius = isMobile ? 200 : 350;
     const colors = ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"];
+    const particles: Particle[] = [];
+
+    // Pre-render particle textures for performance
+    const particleTexture = document.createElement("canvas");
+    const textureSize = 32;
+    particleTexture.width = textureSize;
+    particleTexture.height = textureSize;
+    const tCtx = particleTexture.getContext("2d");
+    if (tCtx) {
+      const gradient = tCtx.createRadialGradient(
+        textureSize * 0.4,
+        textureSize * 0.4,
+        0,
+        textureSize * 0.5,
+        textureSize * 0.5,
+        textureSize * 0.5
+      );
+      gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+      gradient.addColorStop(0.4, "rgba(255, 255, 255, 0.6)");
+      gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      tCtx.fillStyle = gradient;
+      tCtx.fillRect(0, 0, textureSize, textureSize);
+    }
 
     class Particle {
       x: number;
@@ -97,24 +123,14 @@ export const InteractiveNodes = ({
         if (!ctx) return;
         const opacity = Math.max(0.2, 0.9 - this.z / 500);
         
-        ctx.beginPath();
-        const gradient = ctx.createRadialGradient(
-          this.x - this.size * 0.2,
-          this.y - this.size * 0.2,
-          0,
-          this.x,
-          this.y,
-          this.size
-        );
-        
-        gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-        gradient.addColorStop(0.4, "rgba(255, 255, 255, 0.6)");
-        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.globalAlpha = opacity;
-        ctx.fillStyle = gradient;
-        ctx.fill();
+        ctx.drawImage(
+          particleTexture, 
+          this.x - this.size, 
+          this.y - this.size, 
+          this.size * 2, 
+          this.size * 2
+        );
         ctx.globalAlpha = 1.0;
       }
     }
@@ -135,6 +151,8 @@ export const InteractiveNodes = ({
         p1.update();
         p1.draw();
 
+        const connectionRadiusSq = connectionRadius * connectionRadius;
+
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p1.x - p2.x;
@@ -142,7 +160,7 @@ export const InteractiveNodes = ({
           const dz = p1.z - p2.z;
           const distSq = dx * dx + dy * dy + dz * dz;
 
-          if (distSq < connectionRadius * connectionRadius) {
+          if (distSq < connectionRadiusSq) {
             const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
@@ -176,10 +194,14 @@ export const InteractiveNodes = ({
 
     animate();
 
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      if (!parent) return;
-      w = canvas.width = parent.clientWidth;
-      h = canvas.height = parent.clientHeight;
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (!parent) return;
+        w = canvas.width = parent.clientWidth;
+        h = canvas.height = parent.clientHeight;
+      }, 100);
     };
 
     const handleMouseMove = (e: MouseEvent) => {

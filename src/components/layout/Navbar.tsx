@@ -104,11 +104,24 @@ export const Navbar = ({ navItems }: { navItems: any[] }) => {
             <div className="flex-1 overflow-y-auto space-y-6">
               {navItems.map((item, idx) => (
                 <div key={idx} className="space-y-3">
-                  <a href={item.href} className="text-xl font-bold uppercase tracking-widest text-white">{item.name}</a>
+                  <a 
+                    href={item.href} 
+                    className="text-xl font-bold uppercase tracking-widest text-white"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </a>
                   {item.children && (
                     <div className="pl-4 space-y-3 border-l border-white/10">
                       {item.children.map((child: any, cIdx: number) => (
-                        <a key={cIdx} href={child.href} className="block text-white/60 font-medium uppercase tracking-widest text-xs hover:text-white transition-colors">{child.name}</a>
+                        <a 
+                          key={cIdx} 
+                          href={child.href} 
+                          className="block text-white/60 font-medium uppercase tracking-widest text-xs hover:text-white transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {child.name}
+                        </a>
                       ))}
                     </div>
                   )}
