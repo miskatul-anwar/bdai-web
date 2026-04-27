@@ -57,6 +57,15 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { name: 'Consortium', href: '/consortium', icon: Users },
+  {
+    name: 'Results',
+    href: '/results/reports',
+    icon: BarChart2,
+    children: [
+      { name: 'Reports', href: '/results/reports', icon: FileText },
+      { name: 'Publications', href: '/results/publications', icon: BookOpen },
+    ],
+  },
   { name: 'SPARQL Tool', href: '/sparql-tool', icon: Search },
 ];
 
