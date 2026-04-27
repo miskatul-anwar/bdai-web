@@ -2,19 +2,47 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+# BDAI Web — Next.js
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/9516f30b-1fc6-46cb-b629-8fd2cd4d63ba
+This project has been migrated from Vite + React to **Next.js** (App Router) and uses **Bun** as the package manager and runtime.
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
-
+**Prerequisites:** [Bun](https://bun.sh)
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+   ```
+   bun install
+   ```
+2. Set the `GEMINI_API_KEY` in `.env.local`:
+   ```
+   GEMINI_API_KEY="your-key-here"
+   ```
+3. Run the development server:
+   ```
+   bun run dev
+   ```
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `bun run dev` | Start the development server on port 3000 |
+| `bun run build` | Create an optimised production build |
+| `bun run start` | Start the production server |
+| `bun run clean` | Remove the `.next` build cache |
+| `bun run lint` | Run linting and type checks |
+
+## Project Structure
+
+```
+src/
+  app/            # Next.js App Router (pages & layouts)
+  components/     # Shared React components
+  layouts/        # Navbar component
+  views/          # Page content components (Home, About, etc.)
+  lib/            # Utilities (cn helper)
+  constants.ts    # App-wide constants & data
+components/       # shadcn/ui base components
+```
+

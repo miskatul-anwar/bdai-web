@@ -1,3 +1,5 @@
+'use client';
+
 "use client";
 
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
