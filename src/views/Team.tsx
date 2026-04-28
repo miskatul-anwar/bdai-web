@@ -1,4 +1,7 @@
-import React from 'react';
+'use client';
+
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { Users } from 'lucide-react';
 
 const professors = [
@@ -7,24 +10,28 @@ const professors = [
     name: 'Prof. Dr. Rudra Pratap Deb Nath',
     title: 'Professor',
     email: 'rudra@cu.ac.bd',
+    image: '/team/rpdn.png',
   },
   {
     role: 'ASPM',
     name: 'Dr. Abu Nowshed Chy',
     title: 'Assistant Professor',
     email: 'nowshed@cu.ac.bd',
+    image: '/team/anc.png',
   },
   {
     role: 'Member',
     name: 'Dr. Md. Mahbubul Islam',
     title: 'Associate Professor',
     email: 'mahbubcse@cu.ac.bd',
+    image: '/team/mmi.png',
   },
   {
     role: 'Member',
     name: 'Shima Chakraborty',
     title: 'Assistant Professor',
     email: 'shimacse@cu.ac.bd',
+    image: '/team/sc.png',
   },
 ];
 
@@ -35,6 +42,7 @@ const students = [
     name: 'Md Raihan Kabir Rifat',
     email: 'raihankabir@std.cu.ac.bd',
     affiliation: 'Student, CSE, CU',
+    image: '/team/raihan.jpg',
   },
   {
     id: 'miskatul',
@@ -42,6 +50,7 @@ const students = [
     name: 'Miskatul Anwar',
     email: 'miskat@std.cu.ac.bd',
     affiliation: 'Student, CSE, CU',
+    image: '/team/miskat.jpg',
   },
   {
     id: 'atik',
@@ -49,8 +58,34 @@ const students = [
     name: 'Atik Ishrak',
     email: 'atikishrak66@gmail.com',
     affiliation: 'Student, CSE, CU',
+    image: '/team/atikishrak.jpg',
   },
 ];
+
+function MemberAvatar({ src, name }: { src: string; name: string }) {
+  const [error, setError] = useState(false);
+
+  if (error) {
+    return (
+      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
+        <Users className="w-6 h-6" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-16 h-16 rounded-full overflow-hidden">
+      <Image
+        src={src}
+        alt={name}
+        width={64}
+        height={64}
+        className="w-full h-full object-cover"
+        onError={() => setError(true)}
+      />
+    </div>
+  );
+}
 
 export default function Team() {
   return (
@@ -72,9 +107,7 @@ export default function Team() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {professors.map((p) => (
               <div key={p.email} className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
-                  <Users className="w-6 h-6" />
-                </div>
+                <MemberAvatar src={p.image} name={p.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461] rounded px-2 py-0.5 mb-1">
                     {p.role}
@@ -99,9 +132,7 @@ export default function Team() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {students.map((s) => (
               <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
-                  <Users className="w-6 h-6" />
-                </div>
+                <MemberAvatar src={s.image} name={s.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
                     {s.role}
