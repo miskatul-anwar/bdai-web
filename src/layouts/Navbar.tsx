@@ -60,6 +60,7 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { name: 'Consortium', href: '/consortium', icon: Users },
+  { name: 'Team', href: '/team', icon: Users },
   {
     name: 'Results',
     href: '/results/reports',
