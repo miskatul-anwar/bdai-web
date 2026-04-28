@@ -182,9 +182,9 @@ export const APP_DATA = {
   ],
   partners: [
     { name: "University of Chittagong", logo: "https://upload.wikimedia.org/wikipedia/en/thumb/8/86/University_of_Chittagong_logo.svg/330px-University_of_Chittagong_logo.svg.png" },
-    { name: "UPC Spain", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Logo_UPC.svg/500px-Logo_UPC.svg.png" },
-    { name: "AAU Denmark", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b9/AAU_logo_2012.png" },
-    { name: "TUT Japan", logo: "https://upload.wikimedia.org/wikipedia/en/9/97/Toyohashi_University_of_Technology_logo_%28en%29.png" },
+    { name: "Bangladesh Govt", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Emblem_of_Bangladesh.svg/500px-Emblem_of_Bangladesh.svg.png" },
+    { name: "World Bank", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/The_World_Bank_logo.svg/500px-The_World_Bank_logo.svg.png" },
+    { name: "UGC Bangladesh", logo: "https://heat.ugc.gov.bd/heat-gov-images/logos/logo.svg" },
     { name: "HEAT Bangladesh", logo: "https://heat.ugc.gov.bd/heat-gov-images/logos/logo.svg" }
   ]
 };
