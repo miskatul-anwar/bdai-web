@@ -19,7 +19,7 @@ export default function Consortium() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Consortium</h1>
-            <p className="text-sm text-gray-500">Partner institutions & collaborators</p>
+            <p className="text-sm text-gray-500">Partner institutions &amp; collaborators</p>
           </div>
         </div>
 

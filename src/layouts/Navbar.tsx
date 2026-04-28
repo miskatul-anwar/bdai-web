@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   Home,
   Info,
@@ -72,6 +75,7 @@ const NAV_ITEMS: NavItem[] = [
 function DropdownMenu({ item }: { item: NavItem }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
@@ -101,23 +105,24 @@ function DropdownMenu({ item }: { item: NavItem }) {
       {open && (
         <div className="absolute right-0 top-full mt-2 w-52 z-[6000] animate-in fade-in slide-in-from-top-2 duration-150">
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden py-1">
-            {item.children!.map((child) => (
-              <NavLink
-                key={child.href}
-                to={child.href}
-                onClick={() => setOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
+            {item.children!.map((child) => {
+              const isActive = pathname === child.href;
+              return (
+                <Link
+                  key={child.href}
+                  href={child.href}
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
                     isActive
                       ? 'bg-[#0c2461]/5 text-[#0c2461]'
                       : 'text-gray-600 hover:bg-[#0c2461]/5 hover:text-[#0c2461]'
-                  }`
-                }
-              >
-                <child.icon className="w-3.5 h-3.5 flex-shrink-0" />
-                {child.name}
-              </NavLink>
-            ))}
+                  }`}
+                >
+                  <child.icon className="w-3.5 h-3.5 flex-shrink-0" />
+                  {child.name}
+                </Link>
+              );
+            })}
           </div>
         </div>
       )}
@@ -128,13 +133,14 @@ function DropdownMenu({ item }: { item: NavItem }) {
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMobileDropdown, setOpenMobileDropdown] = useState<string | null>(null);
+  const pathname = usePathname();
 
   return (
     <>
       {/* Desktop / tablet navbar */}
       <nav className="fixed top-0 inset-x-0 z-[5000] h-14 flex items-center px-6 bg-[#0c2461] shadow-lg">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 flex-shrink-0 mr-auto">
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0 mr-auto">
           <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm">
             <Image className="w-4 h-4 text-[#0c2461]" />
           </div>
@@ -149,21 +155,18 @@ export default function Navbar() {
             item.children ? (
               <DropdownMenu key={item.href} item={item} />
             ) : (
-              <NavLink
+              <Link
                 key={item.href}
-                to={item.href}
-                end={item.href === '/'}
-                className={({ isActive }) =>
-                  `inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-colors ${
-                    isActive
-                      ? 'bg-white/20 text-white'
-                      : 'text-white/80 hover:text-white hover:bg-white/10'
-                  }`
-                }
+                href={item.href}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-colors ${
+                  (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
+                    ? 'bg-white/20 text-white'
+                    : 'text-white/80 hover:text-white hover:bg-white/10'
+                }`}
               >
                 <item.icon className="w-3.5 h-3.5" />
                 {item.name}
-              </NavLink>
+              </Link>
             )
           )}
         </div>
@@ -226,43 +229,41 @@ export default function Navbar() {
                     </button>
                     {openMobileDropdown === item.name && (
                       <div className="mt-1 ml-4 pl-3 border-l border-white/10 space-y-0.5">
-                        {item.children.map((child) => (
-                          <NavLink
-                            key={child.href}
-                            to={child.href}
-                            onClick={() => setMobileOpen(false)}
-                            className={({ isActive }) =>
-                              `flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors ${
+                        {item.children.map((child) => {
+                          const isActive = pathname === child.href;
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => setMobileOpen(false)}
+                              className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors ${
                                 isActive
                                   ? 'bg-white/20 text-white'
                                   : 'text-white/60 hover:text-white hover:bg-white/10'
-                              }`
-                            }
-                          >
-                            <child.icon className="w-3.5 h-3.5" />
-                            {child.name}
-                          </NavLink>
-                        ))}
+                              }`}
+                            >
+                              <child.icon className="w-3.5 h-3.5" />
+                              {child.name}
+                            </Link>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
                 ) : (
-                  <NavLink
+                  <Link
                     key={item.href}
-                    to={item.href}
-                    end={item.href === '/'}
+                    href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors ${
-                        isActive
-                          ? 'bg-white/20 text-white'
-                          : 'text-white/80 hover:text-white hover:bg-white/10'
-                      }`
-                    }
+                    className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors ${
+                      (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
+                        ? 'bg-white/20 text-white'
+                        : 'text-white/80 hover:text-white hover:bg-white/10'
+                    }`}
                   >
                     <item.icon className="w-4 h-4" />
                     {item.name}
-                  </NavLink>
+                  </Link>
                 )
               )}
             </nav>

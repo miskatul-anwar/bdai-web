@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { ArrowRight, Brain, Database, Globe, Network } from 'lucide-react';
 
