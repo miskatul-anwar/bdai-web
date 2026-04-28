@@ -47,17 +47,14 @@ export default function Objectives() {
                     </td>
                     <td className="py-4 px-6 font-semibold text-[#0c2461]">{obj.title}</td>
                      <td className="py-4 px-6 text-sm text-gray-500">
-                       <div className="flex flex-wrap items-center gap-2">
-                         <span>{obj.researcher}</span>
-                         {obj.memberAnchor && (
-                           <Link
-                             href={`/team#${obj.memberAnchor}`}
-                             className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#0c2461] hover:bg-[#0c2461]/80 rounded-md px-2.5 py-1 transition-colors whitespace-nowrap"
-                           >
-                             {obj.memberName}
-                           </Link>
-                         )}
-                       </div>
+                       {obj.memberAnchor && (
+                         <Link
+                           href={`/team#${obj.memberAnchor}`}
+                           className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#0c2461] hover:bg-[#0c2461]/80 rounded-md px-2.5 py-1 transition-colors whitespace-nowrap"
+                         >
+                           {obj.memberName}
+                         </Link>
+                       )}
                      </td>
                   </tr>
                 ))}
