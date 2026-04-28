@@ -1,10 +1,11 @@
 import React from 'react';
+import Link from 'next/link';
 import { Target } from 'lucide-react';
 
 const objectives = [
-  { id: 'OB1', title: 'Open Data Quality', researcher: 'Masters-1' },
-  { id: 'OB2', title: 'SMART Data Ecosystem', researcher: 'Research Associate-1' },
-  { id: 'OB3', title: 'KG Construction', researcher: 'PhD-1 + Research Assistant-1' },
+  { id: 'OB1', title: 'Open Data Quality', researcher: 'Masters-1', memberAnchor: 'raihan', memberName: 'Raihan Kabir Rifat' },
+  { id: 'OB2', title: 'SMART Data Ecosystem', researcher: 'Research Associate-1', memberAnchor: 'miskatul', memberName: 'Miskatul Anwar' },
+  { id: 'OB3', title: 'KG Construction', researcher: 'PhD-1 + Research Assistant-1', memberAnchor: 'atik', memberName: 'Atik Ishrak' },
   { id: 'OB4', title: 'Cross-Sector Analytics', researcher: 'PhD-2 + Masters-2' },
   { id: 'OB5', title: 'KG RAG', researcher: 'Masters-3' },
   { id: 'OB6', title: 'Explainability & Fairness', researcher: 'PhD-3 + PostDoc-1' },
@@ -45,7 +46,19 @@ export default function Objectives() {
                       </span>
                     </td>
                     <td className="py-4 px-6 font-semibold text-[#0c2461]">{obj.title}</td>
-                    <td className="py-4 px-6 text-sm text-gray-500">{obj.researcher}</td>
+                     <td className="py-4 px-6 text-sm text-gray-500">
+                       <div className="flex flex-wrap items-center gap-2">
+                         <span>{obj.researcher}</span>
+                         {obj.memberAnchor && (
+                           <Link
+                             href={`/team#${obj.memberAnchor}`}
+                             className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#0c2461] hover:bg-[#0c2461]/80 rounded-md px-2.5 py-1 transition-colors whitespace-nowrap"
+                           >
+                             {obj.memberName}
+                           </Link>
+                         )}
+                       </div>
+                     </td>
                   </tr>
                 ))}
               </tbody>
