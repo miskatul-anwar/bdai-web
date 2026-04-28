@@ -39,25 +39,8 @@ export default function Consortium() {
           ))}
         </div>
 
-        {/* Team placeholder */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 className="font-bold text-[#0c2461] mb-6">Research Team</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
-                  <Users className="w-6 h-6" />
-                </div>
-                <div className="space-y-1.5 w-full">
-                  <div className="h-2.5 bg-gray-100 rounded-full w-full" />
-                  <div className="h-2 bg-gray-100 rounded-full w-3/4 mx-auto" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
         <p className="text-gray-400 italic text-sm mt-6 text-center">
-          — Placeholder content. Consortium details and team profiles will appear here.
+          — Placeholder content. Consortium details will appear here.
         </p>
       </div>
     </main>
