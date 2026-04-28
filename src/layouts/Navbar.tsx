@@ -90,7 +90,12 @@ function DropdownMenu({ item }: { item: NavItem }) {
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <button
         onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-white/80 hover:text-white text-xs font-semibold uppercase tracking-widest rounded-full hover:bg-white/10 transition-colors"
