@@ -93,8 +93,6 @@ function DropdownMenu({ item }: { item: NavItem }) {
     <div
       ref={ref}
       className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
     >
       <button
         onClick={() => setOpen((v) => !v)}
