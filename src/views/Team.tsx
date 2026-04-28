@@ -1,6 +1,57 @@
 import React from 'react';
 import { Users } from 'lucide-react';
 
+const professors = [
+  {
+    role: 'SPM',
+    name: 'Prof. Dr. Rudra Pratap Deb Nath',
+    title: 'Professor',
+    email: 'rudra@cu.ac.bd',
+  },
+  {
+    role: 'ASPM',
+    name: 'Dr. Abu Nowshed Chy',
+    title: 'Assistant Professor',
+    email: 'nowshed@cu.ac.bd',
+  },
+  {
+    role: 'Member',
+    name: 'Dr. Md. Mahbubul Islam',
+    title: 'Associate Professor',
+    email: 'mahbubcse@cu.ac.bd',
+  },
+  {
+    role: 'Member',
+    name: 'Shima Chakraborty',
+    title: 'Assistant Professor',
+    email: 'shimacse@cu.ac.bd',
+  },
+];
+
+const students = [
+  {
+    id: 'raihan',
+    role: 'Masters',
+    name: 'Md Raihan Kabir Rifat',
+    email: 'raihankabir@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+  },
+  {
+    id: 'miskatul',
+    role: 'Research Associate',
+    name: 'Miskatul Anwar',
+    email: 'miskat@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+  },
+  {
+    id: 'atik',
+    role: 'Research Assistant',
+    name: 'Atik Ishrak',
+    email: 'atikishrak66@gmail.com',
+    affiliation: 'Student, CSE, CU',
+  },
+];
+
 export default function Team() {
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
@@ -15,25 +66,59 @@ export default function Team() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-          <h2 className="font-bold text-[#0c2461] mb-6">Research Team</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="flex flex-col items-center gap-3">
+        {/* Faculty / Supervisor section */}
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Faculty Members</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {professors.map((p) => (
+              <div key={p.email} className="flex flex-col items-center text-center gap-3">
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
                   <Users className="w-6 h-6" />
                 </div>
-                <div className="space-y-1.5 w-full">
-                  <div className="h-2.5 bg-gray-100 rounded-full w-full" />
-                  <div className="h-2 bg-gray-100 rounded-full w-3/4 mx-auto" />
+                <div>
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461] rounded px-2 py-0.5 mb-1">
+                    {p.role}
+                  </span>
+                  <p className="font-semibold text-[#0c2461] text-sm leading-snug">{p.name}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{p.title}</p>
+                  <a
+                    href={`mailto:${p.email}`}
+                    className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all"
+                  >
+                    {p.email}
+                  </a>
                 </div>
               </div>
             ))}
           </div>
         </div>
-        <p className="text-gray-400 italic text-sm mt-6 text-center">
-          — Placeholder content. Team profiles will appear here.
-        </p>
+
+        {/* Student / Researcher section */}
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Student Researchers</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {students.map((s) => (
+              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
+                  <Users className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
+                    {s.role}
+                  </span>
+                  <p className="font-semibold text-[#0c2461] text-sm leading-snug">{s.name}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{s.affiliation}</p>
+                  <a
+                    href={`mailto:${s.email}`}
+                    className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all"
+                  >
+                    {s.email}
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </main>
   );
