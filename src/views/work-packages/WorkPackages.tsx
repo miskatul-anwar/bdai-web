@@ -1,14 +1,20 @@
 import React from 'react';
-import { Package } from 'lucide-react';
+import { Package, CheckSquare, Layers, Target } from 'lucide-react';
+
+interface Task {
+  id: string;
+  label: string;
+}
 
 interface WPPageProps {
   number: number;
   title: string;
-  description: string;
-  tasks: string[];
+  objective: string;
+  tasks: Task[];
+  highlights: string[];
 }
 
-function WPPage({ number, title, description, tasks }: WPPageProps) {
+function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-4xl mx-auto">
@@ -24,47 +30,44 @@ function WPPage({ number, title, description, tasks }: WPPageProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="md:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <h2 className="font-bold text-[#0c2461] mb-4">Overview</h2>
-            <p className="text-gray-500 text-sm leading-relaxed mb-4">{description}</p>
-            <div className="space-y-2">
-              <div className="h-3 bg-gray-100 rounded-full w-full" />
-              <div className="h-3 bg-gray-100 rounded-full w-5/6" />
-              <div className="h-3 bg-gray-100 rounded-full w-4/5" />
+            <div className="flex items-center gap-2 mb-3">
+              <Target className="w-4 h-4 text-[#0c2461]" />
+              <h2 className="font-bold text-[#0c2461]">Objective</h2>
             </div>
+            <p className="text-gray-600 text-sm leading-relaxed">{objective}</p>
           </div>
           <div className="bg-[#0c2461] rounded-2xl p-6 text-white">
-            <h3 className="font-bold mb-4 text-sm uppercase tracking-wider opacity-70">Status</h3>
-            <div className="space-y-3">
-              <div>
-                <p className="text-xs opacity-60 mb-1">Progress</p>
-                <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-[#60a5fa] rounded-full w-0" />
-                </div>
-              </div>
-              <div className="pt-2">
-                <p className="text-xs opacity-60 mb-1">Timeline</p>
-                <p className="text-sm font-semibold">— Placeholder</p>
-              </div>
+            <div className="flex items-center gap-2 mb-4">
+              <Layers className="w-4 h-4 opacity-70" />
+              <h3 className="font-bold text-sm uppercase tracking-wider opacity-70">Highlights</h3>
             </div>
+            <ul className="space-y-2">
+              {highlights.map((h, i) => (
+                <li key={i} className="text-xs leading-relaxed opacity-90 flex items-start gap-2">
+                  <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#60a5fa] flex-shrink-0" />
+                  {h}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h2 className="font-bold text-[#0c2461] mb-4">Key Tasks</h2>
+          <div className="flex items-center gap-2 mb-4">
+            <CheckSquare className="w-4 h-4 text-[#0c2461]" />
+            <h2 className="font-bold text-[#0c2461]">Tasks</h2>
+          </div>
           <div className="space-y-3">
-            {tasks.map((task, i) => (
-              <div key={i} className="flex items-start gap-3">
-                <span className="inline-flex items-center justify-center w-6 h-6 rounded-md bg-[#0c2461]/10 text-[#0c2461] font-bold text-xs flex-shrink-0 mt-0.5">
-                  {i + 1}
+            {tasks.map((task) => (
+              <div key={task.id} className="flex items-start gap-3">
+                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0c2461]/10 text-[#0c2461] font-bold text-xs flex-shrink-0 mt-0.5 whitespace-nowrap">
+                  {task.id}
                 </span>
-                <p className="text-sm text-gray-600 leading-relaxed">{task}</p>
+                <p className="text-sm text-gray-600 leading-relaxed">{task.label}</p>
               </div>
             ))}
           </div>
         </div>
-        <p className="text-gray-400 italic text-sm mt-6 text-center">
-          — Placeholder content. Detailed WP{number} information will appear here.
-        </p>
       </div>
     </main>
   );
@@ -74,13 +77,20 @@ export function WP1() {
   return (
     <WPPage
       number={1}
-      title="Data Collection & Quality"
-      description="Placeholder — This work package focuses on open data quality measurement frameworks and SMART data ecosystems tailored to Bangladesh."
+      title="Infrastructure Development"
+      objective="Establish a fully equipped physical and digital research lab environment with the necessary hardware, network, and workspace facilities to support all project activities."
+      highlights={[
+        'Physical lab fit-out including server hardware and researcher workstations',
+        'Secure LAN, internet connectivity, and firewall/security configuration',
+        'UPS power protection, backup systems, and IT maintenance procedures',
+      ]}
       tasks={[
-        'Placeholder task: Define data quality metrics for open datasets.',
-        'Placeholder task: Build SMART data ecosystem infrastructure.',
-        'Placeholder task: Integrate multi-sector data sources.',
-        'Placeholder task: Validate quality framework outputs.',
+        { id: 'T1.1', label: 'Design and fit out lab interior space (partitioning, lighting, electrical points).' },
+        { id: 'T1.2', label: 'Procure and install servers and storage hardware.' },
+        { id: 'T1.3', label: 'Set up local area network (LAN), internet connectivity, and firewall/security.' },
+        { id: 'T1.4', label: 'Procure and configure researcher workstations and peripherals.' },
+        { id: 'T1.5', label: 'Install furnishings and ergonomic workspace equipment.' },
+        { id: 'T1.6', label: 'Set up backup, power protection (UPS), and IT maintenance procedures.' },
       ]}
     />
   );
@@ -90,13 +100,19 @@ export function WP2() {
   return (
     <WPPage
       number={2}
-      title="Knowledge Graph Construction"
-      description="Placeholder — This work package covers construction and optimization of sectoral Knowledge Graphs for Agriculture, Healthcare, Education, Tourism, and Socio-economics."
+      title="Sectoral Data Collection"
+      objective="Collect, harmonise, and prepare domain-specific datasets across all six sectors (SOCIO-ECO, EDU, ENV, TOUR, HEALTH, AGRI) to feed into the knowledge graph construction pipeline."
+      highlights={[
+        'Covers six sectors: SOCIO-ECO, EDU, ENV, TOUR, HEALTH, and AGRI',
+        'RDF serialisation and SPARQL-ready dataset preparation',
+        'Data sharing agreements and access governance per sector',
+      ]}
       tasks={[
-        'Placeholder task: Design ontologies for each sector.',
-        'Placeholder task: Populate KGs from curated datasets.',
-        'Placeholder task: Enable cross-sector intra/inter analytics.',
-        'Placeholder task: Benchmark KG performance metrics.',
+        { id: 'T2.1', label: 'Identify and inventory data sources per sector.' },
+        { id: 'T2.2', label: 'Establish data sharing agreements and access permissions.' },
+        { id: 'T2.3', label: 'Acquire and pre-process sectoral datasets.' },
+        { id: 'T2.4', label: 'Convert and serialise data to RDF and other target formats.' },
+        { id: 'T2.5', label: 'Validate and document datasets for completeness and accuracy.' },
       ]}
     />
   );
@@ -106,13 +122,41 @@ export function WP3() {
   return (
     <WPPage
       number={3}
-      title="AI Tools & Explainability"
-      description="Placeholder — This work package develops KG-RAG pipelines, explainability frameworks, and the askBDAI Q&A system."
+      title="Knowledge Graph Construction"
+      objective="Construct, populate, and federate six domain-specific knowledge graphs and integrate them through a shared federation layer with a common meta-model and Digital Twin linkages."
+      highlights={[
+        'Six domain-specific knowledge graphs with custom ontologies',
+        'Federated SPARQL query engine for cross-domain queries',
+        'Digital Twin linkages via simulation and data models',
+      ]}
       tasks={[
-        'Placeholder task: Implement KG Retrieval Augmented Generation.',
-        'Placeholder task: Ensure LLM explainability and fairness via KGs.',
-        'Placeholder task: Build the askBDAI conversational interface.',
-        'Placeholder task: Evaluate bias and validity of AI outputs.',
+        { id: 'T3.1', label: 'Develop or adopt domain ontologies per sector (SOCIO-ECO KG, EDU KG, ENV KG, TOUR KG, HEALTH KG, AGRI KG).' },
+        { id: 'T3.2', label: 'Populate individual domain KGs with data from WP2.' },
+        { id: 'T3.3', label: 'Design and implement the Federation Layer meta-model for cross-domain alignment.' },
+        { id: 'T3.4', label: 'Build federated SPARQL query engine across all domain KGs.' },
+        { id: 'T3.5', label: 'Develop simulation, system, and data models and Digital Twin linkages.' },
+      ]}
+    />
+  );
+}
+
+export function WP4() {
+  return (
+    <WPPage
+      number={4}
+      title="Experimentation and Analysis"
+      objective="Validate the platform through domain experiments and demonstrate descriptive, diagnostic, predictive, and prescriptive analytical capabilities including what-if scenario analysis via AI, NLI, and LLMs."
+      highlights={[
+        'NLI and LLM integration for natural language query interpretation',
+        'Full analytical spectrum: descriptive → diagnostic → predictive → prescriptive',
+        'What-if scenario engine connected to the Digital Twin',
+      ]}
+      tasks={[
+        { id: 'T4.1', label: 'Develop NLI and AI-powered application layer prototypes for selected domains.' },
+        { id: 'T4.2', label: 'Implement the analytical query framework (descriptive → prescriptive).' },
+        { id: 'T4.3', label: 'Integrate LLMs for natural language query interpretation and answer generation.' },
+        { id: 'T4.4', label: 'Build and test what-if scenario engine connected to the Digital Twin.' },
+        { id: 'T4.5', label: 'Evaluate platform outputs against ground truth and conduct user studies with domain experts.' },
       ]}
     />
   );

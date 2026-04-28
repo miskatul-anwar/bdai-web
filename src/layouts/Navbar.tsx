@@ -57,6 +57,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: 'WP1', href: '/work-packages/wp1', icon: Package },
       { name: 'WP2', href: '/work-packages/wp2', icon: Package },
       { name: 'WP3', href: '/work-packages/wp3', icon: Package },
+      { name: 'WP4', href: '/work-packages/wp4', icon: Package },
     ],
   },
   { name: 'Consortium', href: '/consortium', icon: Users },
