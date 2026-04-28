@@ -3,9 +3,9 @@ import { Users, Globe } from 'lucide-react';
 
 const partners = [
   { name: 'University of Chittagong', country: 'Bangladesh', role: 'Lead Institution' },
-  { name: 'UPC Spain', country: 'Spain', role: 'International Partner' },
-  { name: 'AAU Denmark', country: 'Denmark', role: 'International Partner' },
-  { name: 'TUT Japan', country: 'Japan', role: 'International Partner' },
+  { name: 'Bangladesh Govt', country: 'Bangladesh', role: 'International Partner' },
+  { name: 'World Bank', country: 'Bangladesh', role: 'International Partner' },
+  { name: 'UGC Bangladesh', country: 'Bangladesh', role: 'International Partner' },
   { name: 'HEAT Bangladesh', country: 'Bangladesh', role: 'Funding Partner' },
 ];
 
