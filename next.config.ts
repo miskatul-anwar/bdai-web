@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'cu.ac.bd' },
       { protocol: 'https', hostname: 'upload.wikimedia.org' },
       { protocol: 'https', hostname: 'heat.ugc.gov.bd' },
+      { protocol: 'https', hostname: 'bangladesh.gov.bd' },
       { protocol: 'https', hostname: 'flagcdn.com' },
     ],
   },
