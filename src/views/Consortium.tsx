@@ -9,9 +9,9 @@ const partners = [
     description: "The Higher Education Acceleration and Transformation (HEAT) project is a strategic initiative implemented by the University Grants Commission (UGC) of Bangladesh, primarily supported by the World Bank. Its core mission is to enhance the overall quality and global relevance of higher education in Bangladesh. The project focuses on improving graduate employability, fostering academic networking, empowering women in higher education, and building institutional resilience to navigate future challenges effectively."
   },
   {
-    name: 'Bangladesh Govt.',
+    name: 'Ministry of Education, Bangladesh',
     logo: 'https://bangladesh.gov.bd/site-assets/images/logo.png',
-    description: "The Government of the People's Republic of Bangladesh operates as a parliamentary democracy and is the central executive authority of the nation. Its official national portal acts as the central hub for digital governance, providing citizens and organizations with streamlined access to administrative services, public policies, ministries, and legal frameworks. It plays a pivotal role in driving the nation's socioeconomic development and its ongoing transition toward a digitally empowered 'Smart Bangladesh.'"
+    description: "The Ministry of Education (MoE) of Bangladesh is the central government authority responsible for formulating and implementing educational policies, programs, and initiatives across the country. It oversees all levels of education, from primary to higher education, and works to ensure access, equity, and quality in the education system. The MoE collaborates with various stakeholders, including public and private educational institutions, international organizations, and development partners like the World Bank, to drive educational reforms and improve learning outcomes for students nationwide."
   },
   {
     name: 'UGC Bangladesh',
@@ -34,7 +34,7 @@ export default function Consortium() {
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-5xl mx-auto">
-        
+
         {/* Header Section */}
         <div className="flex items-center gap-3 mb-10">
           <div className="w-10 h-10 rounded-xl bg-[#0c2461] flex items-center justify-center text-white">
