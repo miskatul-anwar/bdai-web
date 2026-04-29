@@ -69,9 +69,6 @@ export default function Objectives() {
             </table>
           </div>
         </div>
-        <p className="text-gray-400 italic text-sm mt-6 text-center">
-          — Placeholder content. Detailed objective descriptions will appear here.
-        </p>
       </div>
     </main>
   );
