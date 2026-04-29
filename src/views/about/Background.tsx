@@ -15,14 +15,34 @@ export default function Background() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-6">
-          <div className="h-4 bg-gray-100 rounded-full w-3/4" />
-          <div className="h-4 bg-gray-100 rounded-full w-full" />
-          <div className="h-4 bg-gray-100 rounded-full w-5/6" />
-          <div className="h-4 bg-gray-100 rounded-full w-2/3" />
-          <div className="h-4 bg-gray-100 rounded-full w-full" />
-          <p className="text-gray-400 italic text-sm pt-4">
-            — Placeholder content. Background information about the BDAI project will appear here.
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-5 text-gray-700 leading-relaxed">
+          <p>
+            Bangladesh Data for AI (BDAI) is an ambitious initiative led by the Department of Computer Science and
+            Engineering at the University of Chittagong. The project harnesses{' '}
+            <strong className="text-[#0c2461]">Knowledge Graphs</strong> and{' '}
+            <strong className="text-[#0c2461]">Large Language Models (LLMs)</strong> to create AI-powered tools that
+            deliver actionable insights across key sectors such as{' '}
+            <strong className="text-[#0c2461]">agriculture, healthcare, education, tourism, and socio-economics</strong>.
+          </p>
+
+          <p>
+            By building the country&apos;s first{' '}
+            <strong className="text-[#0c2461]">open data quality framework</strong> and a{' '}
+            <strong className="text-[#0c2461]">SMART data ecosystem</strong> (Sustainable, Meaningful, Accessible,
+            Reusable, Traceable), BDAI aims to revolutionize data management and support Bangladesh&apos;s vision of a{' '}
+            <strong className="text-[#0c2461]">knowledge-driven digital nation</strong>.
+          </p>
+
+          <p>
+            The project directly contributes to several{' '}
+            <strong className="text-[#0c2461]">Sustainable Development Goals (SDGs 2, 4, 9, 10, and 17)</strong> by
+            promoting transparency, enabling data-driven policymaking, and equipping students, researchers, and
+            institutions with advanced AI capabilities.
+          </p>
+
+          <p>
+            Ultimately, BDAI seeks to position Bangladesh as a strong player in the global AI research community while
+            addressing pressing national challenges with innovative, AI-powered solutions.
           </p>
         </div>
       </div>
