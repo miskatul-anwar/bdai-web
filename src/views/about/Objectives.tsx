@@ -1,16 +1,16 @@
 import React from 'react';
-import Link from 'next/link';
+// Link not used anymore; researchers displayed as images
 import { Target } from 'lucide-react';
 
 const objectives = [
-  { id: 'OB1', title: 'Open Data Quality', researcher: 'Masters-1', memberAnchor: 'raihan', memberName: 'Raihan Kabir Rifat' },
-  { id: 'OB2', title: 'SMART Data Ecosystem', researcher: 'Research Associate-1', memberAnchor: 'miskatul', memberName: 'Miskatul Anwar' },
-  { id: 'OB3', title: 'KG Construction', researcher: 'PhD-1 + Research Assistant-1', memberAnchor: 'atik', memberName: 'Atik Ishrak' },
-  { id: 'OB4', title: 'Cross-Sector Analytics', researcher: 'PhD-2 + Masters-2' },
-  { id: 'OB5', title: 'KG RAG', researcher: 'Masters-3' },
-  { id: 'OB6', title: 'Explainability & Fairness', researcher: 'PhD-3 + PostDoc-1' },
-  { id: 'OB7', title: 'askBDAI', researcher: 'Masters-4 + Research Assistant-2' },
-  { id: 'OB8', title: 'Capacity Building', researcher: 'Research Team' },
+  { id: 'OB1', title: 'Open Data Quality', images: ['/team/raihan.jpg', '/team/atikishrak.jpg'] },
+  { id: 'OB2', title: 'SMART Data Ecosystem', images: ['/team/miskat.jpg'] },
+  { id: 'OB3', title: 'KG Construction', images: ['/team/aryan.jpg', '/team/kais.jpg'] },
+  { id: 'OB4', title: 'Cross-Sector Analytics', images: ['/team/noor.jpg', '/team/nesarul.jpg'] },
+  { id: 'OB5', title: 'KG RAG', images: ['/team/raihan.jpg', '/team/miskat.jpg', '/team/taqi.jpg', '/team/aong.jpg'] },
+  { id: 'OB6', title: 'Explainability & Fairness', images: ['/team/aong.jpg', '/team/minhaj.png', '/team/kais.jpg'] },
+  { id: 'OB7', title: 'askBDAI', images: ['/team/noor.jpg'] },
+  { id: 'OB8', title: 'Capacity Building', images: ['/team/raihan.jpg', '/team/miskat.jpg', '/team/atikishrak.jpg', '/team/aryan.jpg', '/team/kais.jpg', '/team/noor.jpg', '/team/nesarul.jpg', '/team/taqi.jpg', '/team/aong.jpg', '/team/minhaj.png'] },
 ];
 
 export default function Objectives() {
@@ -46,16 +46,23 @@ export default function Objectives() {
                       </span>
                     </td>
                     <td className="py-4 px-6 font-semibold text-[#0c2461]">{obj.title}</td>
-                     <td className="py-4 px-6 text-sm text-gray-500">
-                       {obj.memberAnchor && (
-                         <Link
-                           href={`/team#${obj.memberAnchor}`}
-                           className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-[#0c2461] hover:bg-[#0c2461]/80 rounded-md px-2.5 py-1 transition-colors whitespace-nowrap"
-                         >
-                           {obj.memberName}
-                         </Link>
-                       )}
-                     </td>
+                    <td className="py-4 px-6 text-sm text-gray-500">
+                      {obj.images && obj.images.length > 0 ? (
+                        <div className="flex items-center">
+                          {obj.images.map((src, i) => (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              key={i}
+                              src={src}
+                              alt={`${obj.title} member ${i + 1}`}
+                              className={`inline-block w-7 h-7 rounded-full border-2 border-white ${i !== 0 ? '-ml-2' : ''}`}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <span className="text-gray-300">—</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>

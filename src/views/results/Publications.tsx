@@ -16,30 +16,36 @@ export default function Publications() {
         </div>
 
         <div className="space-y-4">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 space-y-2">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="inline-block px-2.5 py-0.5 bg-[#0c2461]/10 text-[#0c2461] text-[10px] font-bold rounded-full uppercase tracking-wider">
-                      Journal {i + 1}
-                    </span>
-                    <span className="text-xs text-gray-400">202{4 + (i % 2)}</span>
-                  </div>
-                  <div className="h-4 bg-gray-100 rounded-full w-4/5" />
-                  <div className="h-3 bg-gray-100 rounded-full w-3/5" />
-                  <div className="h-3 bg-gray-100 rounded-full w-full" />
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow group">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 space-y-2">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-block px-2.5 py-0.5 bg-[#0c2461]/10 text-[#0c2461] text-[10px] font-bold rounded-full uppercase tracking-wider">
+                    Journal 1
+                  </span>
+                  <span className="text-xs text-gray-400">2024</span>
                 </div>
-                <button className="flex-shrink-0 p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#0c2461]/10 hover:text-[#0c2461] transition-colors">
-                  <ExternalLink className="w-4 h-4" />
-                </button>
+                <h2 className="text-sm font-semibold text-gray-800">
+                  Advancing Cyberbullying Detection in Low-resource Languages: A Transformer-stacking Framework for Bengali
+                </h2>
+                <div className="text-xs text-gray-600">
+                  Md Nesarul Hoque, Rudra Pratap Deb Nath, Abu Nowshed Chy, Debasish Ghose, Md Hanif Seddiqui
+                </div>
+                <div className="text-xs text-gray-400 mt-1">
+                  Frontiers in Artificial Intelligence — Frontiers · 2026/01/13
+                </div>
               </div>
+              <a
+                href="https://scholar.google.com/citations?view_op=view_citation&hl=en&user=TkQGAWoAAAAJ&sortby=pubdate&citation_for_view=TkQGAWoAAAAJ:WbkHhVStYXYC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#0c2461]/10 hover:text-[#0c2461] transition-colors"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </a>
             </div>
-          ))}
+          </div>
         </div>
-        <p className="text-gray-400 italic text-sm mt-8 text-center">
-          — Placeholder content. Research publications will appear here.
-        </p>
       </div>
     </main>
   );

@@ -17,7 +17,7 @@ export default function Background() {
 
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 space-y-5 text-gray-700 leading-relaxed">
           <p>
-            Bangladesh Data for AI (BDAI) is an ambitious initiative led by the Department of Computer Science and
+            BDAI is an ambitious initiative led by the Department of Computer Science and
             Engineering at the University of Chittagong. The project harnesses{' '}
             <strong className="text-[#0c2461]">Knowledge Graphs</strong> and{' '}
             <strong className="text-[#0c2461]">Large Language Models (LLMs)</strong> to create AI-powered tools that

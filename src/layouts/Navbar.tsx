@@ -13,7 +13,6 @@ import {
   ChevronDown,
   Menu,
   X,
-  Image,
   PlayCircle,
   TrendingUp,
   Target,
@@ -21,6 +20,7 @@ import {
   Package,
   BarChart2,
 } from 'lucide-react';
+import Image from 'next/image';
 
 interface NavChild {
   name: string;
@@ -71,6 +71,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: 'Publications', href: '/results/publications', icon: BookOpen },
     ],
   },
+  { name: 'News', href: '/news', icon: FileText },
   { name: 'SPARQL Tool', href: '/sparql-tool', icon: Search },
 ];
 
@@ -117,11 +118,10 @@ function DropdownMenu({ item }: { item: NavItem }) {
                   key={child.href}
                   href={child.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${
-                    isActive
-                      ? 'bg-[#0c2461]/5 text-[#0c2461]'
-                      : 'text-gray-600 hover:bg-[#0c2461]/5 hover:text-[#0c2461]'
-                  }`}
+                  className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-colors ${isActive
+                    ? 'bg-[#0c2461]/5 text-[#0c2461]'
+                    : 'text-gray-600 hover:bg-[#0c2461]/5 hover:text-[#0c2461]'
+                    }`}
                 >
                   <child.icon className="w-3.5 h-3.5 flex-shrink-0" />
                   {child.name}
@@ -146,8 +146,8 @@ export default function Navbar() {
       <nav className="fixed top-0 inset-x-0 z-[5000] h-14 flex items-center px-6 bg-[#0c2461] shadow-lg">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 flex-shrink-0 mr-auto">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm">
-            <Image className="w-4 h-4 text-[#0c2461]" />
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden">
+            <Image src="/bdai-logo.png" alt="BD AI" width={28} height={28} className="object-contain" />
           </div>
           <span className="text-white font-bold text-base tracking-tight hidden sm:inline">
             BD<span className="text-[#60a5fa]">AI</span>
@@ -163,11 +163,10 @@ export default function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-colors ${
-                  (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
-                    ? 'bg-white/20 text-white'
-                    : 'text-white/80 hover:text-white hover:bg-white/10'
-                }`}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-widest rounded-full transition-colors ${(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
+                  ? 'bg-white/20 text-white'
+                  : 'text-white/80 hover:text-white hover:bg-white/10'
+                  }`}
               >
                 <item.icon className="w-3.5 h-3.5" />
                 {item.name}
@@ -227,9 +226,8 @@ export default function Navbar() {
                         {item.name}
                       </span>
                       <ChevronDown
-                        className={`w-4 h-4 transition-transform duration-200 ${
-                          openMobileDropdown === item.name ? 'rotate-180' : ''
-                        }`}
+                        className={`w-4 h-4 transition-transform duration-200 ${openMobileDropdown === item.name ? 'rotate-180' : ''
+                          }`}
                       />
                     </button>
                     {openMobileDropdown === item.name && (
@@ -241,11 +239,10 @@ export default function Navbar() {
                               key={child.href}
                               href={child.href}
                               onClick={() => setMobileOpen(false)}
-                              className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors ${
-                                isActive
-                                  ? 'bg-white/20 text-white'
-                                  : 'text-white/60 hover:text-white hover:bg-white/10'
-                              }`}
+                              className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider rounded-lg transition-colors ${isActive
+                                ? 'bg-white/20 text-white'
+                                : 'text-white/60 hover:text-white hover:bg-white/10'
+                                }`}
                             >
                               <child.icon className="w-3.5 h-3.5" />
                               {child.name}
@@ -260,11 +257,10 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors ${
-                      (item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
-                        ? 'bg-white/20 text-white'
-                        : 'text-white/80 hover:text-white hover:bg-white/10'
-                    }`}
+                    className={`flex items-center gap-2 px-4 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-colors ${(item.href === '/' ? pathname === '/' : pathname.startsWith(item.href))
+                      ? 'bg-white/20 text-white'
+                      : 'text-white/80 hover:text-white hover:bg-white/10'
+                      }`}
                   >
                     <item.icon className="w-4 h-4" />
                     {item.name}

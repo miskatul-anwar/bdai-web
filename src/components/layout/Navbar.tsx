@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { 
-  motion, 
-  AnimatePresence, 
-  useScroll, 
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
   useTransform,
   useMotionValueEvent
 } from "motion/react";
@@ -51,12 +51,12 @@ export const Navbar = ({ navItems }: { navItems: any[] }) => {
                 <a
                   href={item.href}
                   className="px-4 py-1.5 text-[10px] uppercase tracking-widest font-bold text-white/80 hover:text-white transition-colors flex items-center gap-1 rounded-full hover:bg-white/10"
-                  onMouseEnter={() => {}}
+                  onMouseEnter={() => { }}
                 >
                   {item.name}
                   {item.children && <ChevronDown className="w-3 h-3 group-hover:rotate-180 transition-transform opacity-50" />}
                 </a>
-                
+
                 {item.children && (
                   <div className="absolute top-full left-0 mt-2 w-56 opacity-0 translate-y-2 invisible group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible transition-all duration-200 z-[5001]">
                     <div className="glass p-2 rounded-2xl overflow-hidden border border-white/40 shadow-2xl bg-white/95 backdrop-blur-xl">
@@ -76,7 +76,7 @@ export const Navbar = ({ navItems }: { navItems: any[] }) => {
             ))}
           </div>
 
-          <button 
+          <button
             className="md:hidden p-2 text-white"
             onClick={() => setIsMobileMenuOpen(true)}
           >
@@ -100,12 +100,12 @@ export const Navbar = ({ navItems }: { navItems: any[] }) => {
                 <X className="w-8 h-8" />
               </button>
             </div>
-            
+
             <div className="flex-1 overflow-y-auto space-y-6">
               {navItems.map((item, idx) => (
                 <div key={idx} className="space-y-3">
-                  <a 
-                    href={item.href} 
+                  <a
+                    href={item.href}
                     className="text-xl font-bold uppercase tracking-widest text-white"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -114,9 +114,9 @@ export const Navbar = ({ navItems }: { navItems: any[] }) => {
                   {item.children && (
                     <div className="pl-4 space-y-3 border-l border-white/10">
                       {item.children.map((child: any, cIdx: number) => (
-                        <a 
-                          key={cIdx} 
-                          href={child.href} 
+                        <a
+                          key={cIdx}
+                          href={child.href}
                           className="block text-white/60 font-medium uppercase tracking-widest text-xs hover:text-white transition-colors"
                           onClick={() => setIsMobileMenuOpen(false)}
                         >

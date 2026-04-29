@@ -35,22 +35,14 @@ const professors = [
   },
 ];
 
-const students = [
+const studentResearchers = [
   {
     id: 'raihan',
-    role: 'Masters',
+    role: 'Masters Fellow',
     name: 'Md Raihan Kabir Rifat',
     email: 'raihankabir@std.cu.ac.bd',
     affiliation: 'Student, CSE, CU',
     image: '/team/raihan.jpg',
-  },
-  {
-    id: 'miskatul',
-    role: 'Research Associate',
-    name: 'Miskatul Anwar',
-    email: 'miskat@std.cu.ac.bd',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/miskat.jpg',
   },
   {
     id: 'atik',
@@ -60,6 +52,93 @@ const students = [
     affiliation: 'Student, CSE, CU',
     image: '/team/atikishrak.jpg',
   },
+  {
+    id: 'noortaz',
+    role: 'PhD Fellow',
+    name: 'Noortaz Rezwana',
+    email: '',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/noor.jpg',
+  },
+  {
+    id: 'nesarul',
+    role: 'PhD Fellow',
+    name: 'Md. Nesarul Haque',
+    email: '',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/nesarul.jpg',
+  },
+];
+
+const dataAnnotators = [
+  {
+    id: 'miskatul',
+    role: 'Data Annotator',
+    name: 'Miskatul Anwar',
+    email: 'miskat@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/miskat.jpg',
+  },
+  {
+    id: 'aryan',
+    role: 'Data Annotator',
+    name: 'Aryan Bin Ashraf',
+    email: '',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/aryan.jpg',
+  },
+  {
+    id: 'kais',
+    role: 'Data Annotator',
+    name: 'Md. Kais',
+    email: '',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/kais.jpg',
+  },
+  {
+    id: 'aong',
+    role: 'Data Annotator',
+    name: 'Aong Cho Thing Marma',
+    email: '',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/aong.jpg',
+  },
+  {
+    id: 'minhaj',
+    role: 'Data Annotator',
+    name: 'Md. Minhajul Islam',
+    email: 'minhaj@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/minhaj.png',
+  },
+  {
+    id: 'taqi',
+    role: 'Data Annotator',
+    name: 'Taqi Ismail',
+    email: 'taqiismail10@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/taqi.jpg',
+  }
+
+];
+
+const staffMembers = [
+  {
+    id: 'sykot',
+    role: 'Accountant',
+    name: 'Sykot Deb',
+    email: 'soikotjps1998@gmail.com',
+    affiliation: 'University of Chittagong',
+    image: '/team/sykot.png',
+  },
+  {
+    id: 'robiul',
+    role: 'Office Assistant',
+    name: 'Mohammad Robiul Hossen',
+    email: 'm.robiul1212@gmail.com',
+    affiliation: 'University of Chittagong',
+    image: '/team/robiul.png',
+  }
 ];
 
 function MemberAvatar({ src, name }: { src: string; name: string }) {
@@ -97,13 +176,12 @@ export default function Team() {
           </div>
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Team</h1>
-            <p className="text-sm text-gray-500">Research team &amp; members</p>
+            <p className="text-sm text-gray-500">SPM Team, Student Researchers, and Data Annotators</p>
           </div>
         </div>
 
-        {/* Faculty / Supervisor section */}
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
-          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Faculty Members</h2>
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">SPM Team</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {professors.map((p) => (
               <div key={p.email} className="flex flex-col items-center text-center gap-3">
@@ -114,10 +192,7 @@ export default function Team() {
                   </span>
                   <p className="font-semibold text-[#0c2461] text-sm leading-snug">{p.name}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{p.title}</p>
-                  <a
-                    href={`mailto:${p.email}`}
-                    className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all"
-                  >
+                  <a href={`mailto:${p.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
                     {p.email}
                   </a>
                 </div>
@@ -126,11 +201,10 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Student / Researcher section */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
           <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Student Researchers</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {students.map((s) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {studentResearchers.map((s) => (
               <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
                 <MemberAvatar src={s.image} name={s.name} />
                 <div>
@@ -139,12 +213,57 @@ export default function Team() {
                   </span>
                   <p className="font-semibold text-[#0c2461] text-sm leading-snug">{s.name}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{s.affiliation}</p>
-                  <a
-                    href={`mailto:${s.email}`}
-                    className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all"
-                  >
-                    {s.email}
-                  </a>
+                  {s.email ? (
+                    <a href={`mailto:${s.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
+                      {s.email}
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Data Annotators</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {dataAnnotators.map((s) => (
+              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+                <MemberAvatar src={s.image} name={s.name} />
+                <div>
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
+                    {s.role}
+                  </span>
+                  <p className="font-semibold text-[#0c2461] text-sm leading-snug">{s.name}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{s.affiliation}</p>
+                  {s.email ? (
+                    <a href={`mailto:${s.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
+                      {s.email}
+                    </a>
+                  ) : null}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mt-8">
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Staff</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {staffMembers.map((s) => (
+              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+                <MemberAvatar src={s.image} name={s.name} />
+                <div>
+                  <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
+                    {s.role}
+                  </span>
+                  <p className="font-semibold text-[#0c2461] text-sm leading-snug">{s.name}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{s.affiliation}</p>
+                  {s.email ? (
+                    <a href={`mailto:${s.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
+                      {s.email}
+                    </a>
+                  ) : null}
                 </div>
               </div>
             ))}

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   ArrowRight, Database, Globe, Network,
   CheckCircle, Target, Sparkles, TrendingUp,
@@ -82,15 +83,16 @@ const STAND_OUT = [
 ];
 
 const STATS = [
-  { value: '5', label: 'Sectors' },
-  { value: '8', label: 'Objectives' },
-  { value: '5', label: 'AI Tools' },
-  { value: 'SDG', label: '2·4·9·10·17' },
+  { value: '5+', label: 'Sectors' },
+  { value: '1', label: 'Publications' },
+  { value: '5+', label: 'AI Tools' },
+  { value: '10+', label: 'Researchers' },
 ];
 
 export default function Home() {
   const [activeWhat, setActiveWhat] = useState(0);
   const heroGridRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,7 +105,15 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{ background: '#f5f4f0', fontFamily: "'Georgia', 'Times New Roman', serif" }}>
+    <main style={{ background: '#f5f4f0', fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          main { --grid-cols: 1; }
+        }
+        @media (min-width: 769px) {
+          main { --grid-cols: auto; }
+        }
+      `}</style>
 
       {/* ── Hero ── */}
       <section style={{
@@ -144,7 +154,7 @@ export default function Home() {
             <div style={{ width: '36px', height: '1px', background: 'rgba(96,165,250,0.55)' }} />
             <span style={{
               fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.75)', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 600,
+              color: 'rgba(96,165,250,0.75)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 600,
             }}>
               SP No. 13211 · University of Chittagong
             </span>
@@ -178,33 +188,35 @@ export default function Home() {
               fontSize: 'clamp(16px, 1.8vw, 19px)',
               color: 'rgba(255,255,255,0.5)',
               lineHeight: 1.8, maxWidth: '540px', margin: 0,
-              fontFamily: "'Georgia', serif",
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             }}>
               Combining Knowledge Graphs and Large Language Models to build AI-powered,
               data-driven insights across Bangladesh's key sectors — accelerating the
               nation's path to Digital Bangladesh.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flexShrink: 0 }}>
-              <button style={{
-                display: 'inline-flex', alignItems: 'center', gap: '8px',
-                padding: '14px 28px',
-                background: '#60a5fa', color: '#0a1628',
-                border: 'none', cursor: 'pointer',
-                fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                fontFamily: "'Trebuchet MS', sans-serif",
-              }}>
+              <button
+                onClick={() => router.push('/results/publications')}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  padding: '14px 28px', borderRadius: '9999px',
+                  background: '#60a5fa', color: '#0a1628',
+                  border: 'none', cursor: 'pointer',
+                  fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+                }}>
                 Explore Research <ArrowRight size={13} />
               </button>
-              <a href="https://bike-csecu.com" target="_blank" rel="noopener noreferrer" style={{
+              <a href="https://web.bike-csecu.com" target="_blank" rel="noopener noreferrer" style={{
                 display: 'inline-flex', alignItems: 'center', gap: '8px',
-                padding: '14px 28px',
+                padding: '14px 28px', borderRadius: '9999px',
                 background: 'transparent', color: 'rgba(255,255,255,0.55)',
                 border: '1px solid rgba(255,255,255,0.12)',
                 cursor: 'pointer', textDecoration: 'none',
                 fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em',
                 textTransform: 'uppercase',
-                fontFamily: "'Trebuchet MS', sans-serif",
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif',
               }}>
                 BIKE Lab <ChevronRight size={13} />
               </a>
@@ -217,6 +229,7 @@ export default function Home() {
             gap: '1px', marginTop: '80px',
             background: 'rgba(255,255,255,0.06)',
             border: '1px solid rgba(255,255,255,0.06)',
+            borderRadius: '16px', overflow: 'hidden',
           }}>
             {STATS.map((s, i) => (
               <div key={i} style={{
@@ -227,14 +240,14 @@ export default function Home() {
                   fontSize: 'clamp(30px, 4vw, 44px)',
                   fontWeight: 700, color: '#60a5fa',
                   letterSpacing: '-0.02em',
-                  fontFamily: "'Georgia', serif",
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
                 }}>
                   {s.value}
                 </div>
                 <div style={{
                   fontSize: '10px', letterSpacing: '0.15em',
                   textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
-                  fontFamily: "'Trebuchet MS', sans-serif", marginTop: '8px',
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginTop: '8px',
                 }}>
                   {s.label}
                 </div>
@@ -260,7 +273,7 @@ export default function Home() {
               display: 'inline-flex', alignItems: 'center', gap: '10px',
               fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em',
               textTransform: 'uppercase', color: '#0a1628',
-              fontFamily: "'Trebuchet MS', sans-serif",
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             }}>
               <Icon size={13} /> {label}
             </span>
@@ -274,7 +287,7 @@ export default function Home() {
         <div style={{ maxWidth: '880px', margin: '0 auto' }}>
           <span style={{
             fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: '#60a5fa', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 700,
+            color: '#60a5fa', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
             display: 'block', marginBottom: '28px',
           }}>
             Our Mission
@@ -282,7 +295,7 @@ export default function Home() {
           <p style={{
             fontSize: 'clamp(20px, 3vw, 34px)',
             lineHeight: 1.5, color: '#0c2461',
-            fontFamily: "'Georgia', serif", fontWeight: 400, margin: 0,
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 400, margin: 0,
           }}>
             "To leverage Knowledge Graphs and Large Language Models to develop AI-powered
             natural language interfaces enabling data-driven insights across Bangladesh's
@@ -293,11 +306,11 @@ export default function Home() {
           <div style={{ marginTop: '40px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             {['SDG 2', 'SDG 4', 'SDG 9', 'SDG 10', 'SDG 17'].map((sdg) => (
               <span key={sdg} style={{
-                padding: '6px 16px',
+                padding: '6px 16px', borderRadius: '8px',
                 border: '1px solid #0c2461',
                 color: '#0c2461',
                 fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 600,
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 600,
               }}>
                 {sdg}
               </span>
@@ -312,29 +325,29 @@ export default function Home() {
           <div style={{ marginBottom: '64px' }}>
             <span style={{
               fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.65)', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 700,
+              color: 'rgba(96,165,250,0.65)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
             }}>
               What We Do
             </span>
             <h2 style={{
               fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700,
               color: '#ffffff', marginTop: '12px', letterSpacing: '-0.02em',
-              fontFamily: "'Georgia', serif",
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             }}>
               Five Research Pillars
             </h2>
           </div>
 
           {/* Tab nav */}
-          <div style={{ display: 'flex', gap: '2px', marginBottom: '2px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '4px', marginBottom: '8px', flexWrap: 'wrap' }}>
             {WHAT_WE_DO.map((item, i) => (
               <button key={i} onClick={() => setActiveWhat(i)} style={{
-                padding: '10px 22px',
+                padding: '10px 22px', borderRadius: '9999px',
                 background: activeWhat === i ? '#60a5fa' : 'rgba(255,255,255,0.05)',
                 color: activeWhat === i ? '#0a1628' : 'rgba(255,255,255,0.45)',
                 border: 'none', cursor: 'pointer',
                 fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 700,
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
                 transition: 'all 0.2s',
               }}>
                 {item.tag}
@@ -346,6 +359,7 @@ export default function Home() {
           <div style={{
             background: 'rgba(255,255,255,0.04)',
             border: '1px solid rgba(255,255,255,0.07)',
+            borderRadius: '16px',
             padding: '52px',
             display: 'grid',
             gridTemplateColumns: '60px 1fr',
@@ -353,7 +367,7 @@ export default function Home() {
             alignItems: 'start',
           }}>
             <div style={{
-              width: '60px', height: '60px',
+              width: '60px', height: '60px', borderRadius: '12px',
               background: 'rgba(96,165,250,0.12)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               color: '#60a5fa', flexShrink: 0,
@@ -363,13 +377,13 @@ export default function Home() {
             <div>
               <h3 style={{
                 fontSize: '22px', fontWeight: 700, color: '#ffffff',
-                fontFamily: "'Georgia', serif", marginBottom: '16px',
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '16px',
               }}>
                 {WHAT_WE_DO[activeWhat].title}
               </h3>
               <p style={{
                 fontSize: '17px', color: 'rgba(255,255,255,0.5)',
-                lineHeight: 1.8, fontFamily: "'Georgia', serif", margin: 0,
+                lineHeight: 1.8, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
               }}>
                 {WHAT_WE_DO[activeWhat].desc}
               </p>
@@ -380,11 +394,11 @@ export default function Home() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '2px', marginTop: '2px',
+            gap: '4px', marginTop: '8px',
           }}>
             {WHAT_WE_DO.map((item, i) => (
               <div key={i} onClick={() => setActiveWhat(i)} style={{
-                padding: '28px 24px',
+                padding: '28px 24px', borderRadius: '12px',
                 background: activeWhat === i ? 'rgba(96,165,250,0.1)' : 'rgba(255,255,255,0.03)',
                 borderLeft: activeWhat === i ? '3px solid #60a5fa' : '3px solid transparent',
                 cursor: 'pointer', transition: 'all 0.2s',
@@ -394,7 +408,7 @@ export default function Home() {
                 </div>
                 <div style={{
                   fontSize: '13px', fontWeight: 600, color: '#ffffff',
-                  fontFamily: "'Trebuchet MS', sans-serif",
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
                 }}>
                   {item.title}
                 </div>
@@ -416,7 +430,7 @@ export default function Home() {
             <div style={{ position: 'sticky', top: '80px' }}>
               <span style={{
                 fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-                color: '#60a5fa', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 700,
+                color: '#60a5fa', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
                 display: 'block', marginBottom: '16px',
               }}>
                 Highlights
@@ -424,19 +438,19 @@ export default function Home() {
               <h2 style={{
                 fontSize: 'clamp(24px, 2.5vw, 36px)', fontWeight: 700,
                 color: '#0c2461', letterSpacing: '-0.02em',
-                fontFamily: "'Georgia', serif", lineHeight: 1.2, margin: 0,
+                fontFamily: 'ui-sans-serif, system-ui, sans-serif', lineHeight: 1.2, margin: 0,
               }}>
                 What Makes BDAI Distinct
               </h2>
-              <div style={{ width: '44px', height: '3px', background: '#60a5fa', marginTop: '24px' }} />
+              <div style={{ width: '44px', height: '3px', borderRadius: '9999px', background: '#60a5fa', marginTop: '24px' }} />
             </div>
 
             {/* Items */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {HIGHLIGHTS.map((item, i) => (
                 <div key={i} style={{
                   display: 'flex', gap: '24px', alignItems: 'flex-start',
-                  padding: '32px',
+                  padding: '32px', borderRadius: '16px',
                   background: '#ffffff',
                   borderLeft: '3px solid transparent',
                   transition: 'all 0.2s',
@@ -454,13 +468,13 @@ export default function Home() {
                   <div>
                     <h4 style={{
                       fontWeight: 700, color: '#0c2461', fontSize: '15px',
-                      fontFamily: "'Trebuchet MS', sans-serif", margin: '0 0 6px',
+                      fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: '0 0 6px',
                     }}>
                       {item.title}
                     </h4>
                     <p style={{
                       fontSize: '14px', color: '#6b7280',
-                      lineHeight: 1.7, fontFamily: "'Georgia', serif", margin: 0,
+                      lineHeight: 1.7, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
                     }}>
                       {item.text}
                     </p>
@@ -478,14 +492,14 @@ export default function Home() {
           <div style={{ textAlign: 'center', marginBottom: '72px' }}>
             <span style={{
               fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.65)', fontFamily: "'Trebuchet MS', sans-serif", fontWeight: 700,
+              color: 'rgba(96,165,250,0.65)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
             }}>
               Why BDAI
             </span>
             <h2 style={{
               fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700,
               color: '#ffffff', marginTop: '12px', letterSpacing: '-0.02em',
-              fontFamily: "'Georgia', serif",
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             }}>
               Why We Stand Out
             </h2>
@@ -493,11 +507,11 @@ export default function Home() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '2px',
+            gap: '4px',
           }}>
             {STAND_OUT.map((item, i) => (
               <div key={i} style={{
-                padding: '52px 36px',
+                padding: '52px 36px', borderRadius: '16px',
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(255,255,255,0.06)',
                 transition: 'background 0.25s',
@@ -506,7 +520,7 @@ export default function Home() {
                 onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.04)'}
               >
                 <div style={{
-                  width: '48px', height: '48px',
+                  width: '48px', height: '48px', borderRadius: '12px',
                   background: 'rgba(96,165,250,0.12)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   color: '#60a5fa', marginBottom: '28px',
@@ -515,13 +529,13 @@ export default function Home() {
                 </div>
                 <h3 style={{
                   fontSize: '18px', fontWeight: 700, color: '#ffffff',
-                  fontFamily: "'Georgia', serif", marginBottom: '14px',
+                  fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '14px',
                 }}>
                   {item.title}
                 </h3>
                 <p style={{
                   fontSize: '14px', color: 'rgba(255,255,255,0.42)',
-                  lineHeight: 1.8, fontFamily: "'Georgia', serif", margin: 0,
+                  lineHeight: 1.8, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
                 }}>
                   {item.desc}
                 </p>
@@ -538,45 +552,45 @@ export default function Home() {
             fontSize: 'clamp(48px, 9vw, 96px)',
             fontWeight: 700, lineHeight: 0.88,
             letterSpacing: '-0.04em', color: '#0c2461',
-            fontFamily: "'Georgia', serif", marginBottom: '32px',
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '32px',
           }}>
             BD<span style={{ color: '#60a5fa' }}>AI</span>
           </div>
           <p style={{
             fontSize: '18px', color: '#6b7280',
-            lineHeight: 1.75, fontFamily: "'Georgia', serif", marginBottom: '48px',
+            lineHeight: 1.75, fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '48px',
           }}>
             Discover our work packages, the askBDAI tool, SPARQL interface, and publications.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <button style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '16px 36px',
+              padding: '16px 36px', borderRadius: '9999px',
               background: '#0c2461', color: '#ffffff',
               border: 'none', cursor: 'pointer',
               fontSize: '12px', fontWeight: 700, letterSpacing: '0.07em',
               textTransform: 'uppercase',
-              fontFamily: "'Trebuchet MS', sans-serif",
-            }}>
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
+            }} onClick={() => router.push('/sparql-tool')}>
               Get Started <ArrowRight size={13} />
             </button>
             <a href="mailto:rudra@cu.ac.bd" style={{
               display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '16px 36px',
+              padding: '16px 36px', borderRadius: '9999px',
               background: 'transparent', color: '#0c2461',
               border: '1px solid #0c2461', cursor: 'pointer', textDecoration: 'none',
               fontSize: '12px', fontWeight: 700, letterSpacing: '0.07em',
               textTransform: 'uppercase',
-              fontFamily: "'Trebuchet MS', sans-serif",
+              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
             }}>
               Contact Us
             </a>
           </div>
           <p style={{
             marginTop: '48px', fontSize: '12px', color: '#9ca3af',
-            fontFamily: "'Trebuchet MS', sans-serif", letterSpacing: '0.04em',
+            fontFamily: 'ui-sans-serif, system-ui, sans-serif', letterSpacing: '0.04em',
           }}>
-            rudra@cu.ac.bd &nbsp;·&nbsp; bike-csecu.com &nbsp;·&nbsp; SP No. 13211
+            rudra@cu.ac.bd &nbsp;·&nbsp; bike-csecu.com &nbsp;·&nbsp; University of Chittagong
           </p>
         </div>
       </section>
