@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import './globals.css';
+// Ignore missing type declarations for global CSS side-effect import
+// @ts-ignore
+import './global.css';
 import Navbar from '@/layouts/Navbar';
 
 export const metadata: Metadata = {
