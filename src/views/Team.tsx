@@ -67,19 +67,19 @@ function MemberAvatar({ src, name }: { src: string; name: string }) {
 
   if (error) {
     return (
-      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
-        <Users className="w-6 h-6" />
+      <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#0c2461]/20 to-[#0c2461]/5 flex items-center justify-center text-[#0c2461]/40">
+        <Users className="w-12 h-12" />
       </div>
     );
   }
 
   return (
-    <div className="w-16 h-16 rounded-full overflow-hidden">
+    <div className="w-32 h-32 rounded-full overflow-hidden">
       <Image
         src={src}
         alt={name}
-        width={64}
-        height={64}
+        width={128}
+        height={128}
         className="w-full h-full object-cover"
         onError={() => setError(true)}
       />

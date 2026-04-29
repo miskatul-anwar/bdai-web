@@ -16,8 +16,8 @@ const impactAreas = [
   {
     Icon: GraduationCap,
     title: 'Academic & Research Advancement',
-    gradient: 'linear-gradient(135deg, #4a0072 0%, #7c3aed 100%)',
-    checkColor: '#7c3aed',
+    gradient: 'linear-gradient(135deg, #154360 0%, #1a5276 100%)',
+    checkColor: '#1a5276',
     items: [
       'Enhances the quality of educational infrastructure, academic programs, and research capacity across universities.',
       'Reduces disparities among institutions by improving access to digital resources and ICT tools.',
@@ -28,8 +28,8 @@ const impactAreas = [
   {
     Icon: Cpu,
     title: 'Skills & Workforce Development',
-    gradient: 'linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%)',
-    checkColor: '#0284c7',
+    gradient: 'linear-gradient(135deg, #1a5276 0%, #2471a3 100%)',
+    checkColor: '#2471a3',
     items: [
       'Offers students hands-on training in Knowledge Graphs, Large Language Models, and AI.',
       'Equips learners with skills for global AI careers and real-world problem-solving.',
@@ -39,8 +39,8 @@ const impactAreas = [
   {
     Icon: Landmark,
     title: 'Policy & Governance',
-    gradient: 'linear-gradient(135deg, #0f766e 0%, #14b8a6 100%)',
-    checkColor: '#0d9488',
+    gradient: 'linear-gradient(135deg, #21618c 0%, #2980b9 100%)',
+    checkColor: '#2980b9',
     items: [
       'Enables government agencies to adopt data-driven policy insights.',
       'Promotes openness, transparency, and interoperability in national data ecosystems.',
@@ -50,8 +50,8 @@ const impactAreas = [
   {
     Icon: Sprout,
     title: 'Sustainability & Future Growth',
-    gradient: 'linear-gradient(135deg, #166534 0%, #22c55e 100%)',
-    checkColor: '#16a34a',
+    gradient: 'linear-gradient(135deg, #2e86c1 0%, #3498db 100%)',
+    checkColor: '#3498db',
     items: [
       'Ensures long-term sustainability through internal budgets, grants, and industry collaborations.',
       'Expands project scope to new sectors such as bioinformatics, ocean sciences, and energy.',
