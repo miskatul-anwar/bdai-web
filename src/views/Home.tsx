@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   ArrowRight, ChevronRight,
-  TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane,
+  TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane, Apple, Factory, Scale, Flag
 } from 'lucide-react';
 
 
@@ -48,6 +48,14 @@ const ORGANIZATIONS = [
     name: 'University of Chittagong',
     logo: 'https://cu.ac.bd/wp-content/uploads/2024/03/university-of-chittagong-seeklogo.com-removebg-preview-removebg-preview-1-222x300.png',
   },
+];
+
+const SDGS = [
+  { code: 'SDG 2', label: 'Zero Hunger', href: 'https://sdgs.un.org/goals/goal2', icon: Apple },
+  { code: 'SDG 4', label: 'Quality Education', href: 'https://sdgs.un.org/goals/goal4', icon: GraduationCap },
+  { code: 'SDG 9', label: 'Industry, Innovation and Infrastructure', href: 'https://sdgs.un.org/goals/goal9', icon: Factory },
+  { code: 'SDG 10', label: 'Reduced Inequalities', href: 'https://sdgs.un.org/goals/goal10', icon: Scale },
+  { code: 'SDG 17', label: 'Partnerships for the Goals', href: 'https://sdgs.un.org/goals/goal17', icon: Flag },
 ];
 
 /* ─── Component ─────────────────────────────────────── */
@@ -200,6 +208,35 @@ export default function Home() {
             </div>
           </div>
           <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
+        </div>
+      </section>
+      {/* ── SDGs ─────────────────────────────────────── */}
+      <section className="bg-slate-50 py-16 px-6">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-center text-[clamp(22px,3.5vw,36px)] font-bold text-slate-900 tracking-tight m-0">
+            Sustainable Development Goals
+          </h2>
+          <p className="text-center text-slate-500 mt-3 mb-10 max-w-2xl mx-auto">
+            Explore the SDGs aligned with our research and initiatives.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {SDGS.map((sdg) => (
+              <a
+                key={sdg.code}
+                href={sdg.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="min-w-[190px] inline-flex flex-col items-start gap-1 rounded-xl border border-slate-200 bg-white px-5 py-4 text-left no-underline shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md hover:border-blue-300"
+              >
+                <span className="text-[11px] font-bold tracking-[0.14em] uppercase text-blue-500">{sdg.code}</span>
+                <span className="flex items-center gap-2 text-sm font-semibold text-slate-800 leading-snug">
+                  <sdg.icon size={16} className="shrink-0 text-blue-500" />
+                  <span>{sdg.label}</span>
+                </span>
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
