@@ -104,6 +104,14 @@ const dataAnnotators = [
     image: '/team/taqi.jpg',
   },
   {
+    id: 'tihan',
+    role: 'Data Annotator',
+    name: 'Md Sadman Sami Khan',
+    email: 'samisadman6@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/tihan.jpg',
+  },
+  {
     id: 'aryan',
     role: 'Data Annotator',
     name: 'Aryan Bin Ashraf',
