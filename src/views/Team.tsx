@@ -37,20 +37,12 @@ const professors = [
 
 const studentResearchers = [
   {
-    id: 'raihan',
-    role: 'Masters Fellow',
-    name: 'Md Raihan Kabir Rifat',
-    email: 'raihankabir@std.cu.ac.bd',
+    id: 'nesarul',
+    role: 'PhD Fellow',
+    name: 'Md. Nesarul Haque',
+    email: '',
     affiliation: 'Student, CSE, CU',
-    image: '/team/raihan.jpg',
-  },
-  {
-    id: 'atik',
-    role: 'Research Assistant',
-    name: 'Atik Ishrak',
-    email: 'atikishrak66@gmail.com',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/atikishrak.jpg',
+    image: '/team/nesarul.jpg',
   },
   {
     id: 'noortaz',
@@ -61,32 +53,24 @@ const studentResearchers = [
     image: '/team/noor.jpg',
   },
   {
-    id: 'nesarul',
-    role: 'PhD Fellow',
-    name: 'Md. Nesarul Haque',
-    email: '',
+    id: 'atik',
+    role: 'Research Assistant',
+    name: 'Atik Ishrak',
+    email: 'atikishrak66@gmail.com',
     affiliation: 'Student, CSE, CU',
-    image: '/team/nesarul.jpg',
+    image: '/team/atikishrak.jpg',
+  },
+  {
+    id: 'raihan',
+    role: 'Masters Fellow',
+    name: 'Md Raihan Kabir Rifat',
+    email: 'raihankabir@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/raihan.jpg',
   },
 ];
 
 const dataAnnotators = [
-  {
-    id: 'miskatul',
-    role: 'Data Annotator',
-    name: 'Miskatul Anwar',
-    email: 'miskat@std.cu.ac.bd',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/miskat.jpg',
-  },
-  {
-    id: 'aryan',
-    role: 'Data Annotator',
-    name: 'Aryan Bin Ashraf',
-    email: ' aryanashraf.csecu@gmail.com',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/aryan.jpg',
-  },
   {
     id: 'kais',
     role: 'Data Annotator',
@@ -94,14 +78,6 @@ const dataAnnotators = [
     email: 'mdkais3@gmail.com',
     affiliation: 'Student, CSE, CU',
     image: '/team/kais.jpg',
-  },
-  {
-    id: 'aong',
-    role: 'Data Annotator',
-    name: 'Aong Cho Thing Marma',
-    email: 'aongcho880@gmail.com',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/aong.jpg',
   },
   {
     id: 'minhaj',
@@ -112,14 +88,37 @@ const dataAnnotators = [
     image: '/team/minhaj.png',
   },
   {
+    id: 'aong',
+    role: 'Data Annotator',
+    name: 'Aong Cho Thing Marma',
+    email: 'aongcho880@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/aong.jpg',
+  },
+  {
     id: 'taqi',
     role: 'Data Annotator',
     name: 'Taqi Ismail',
     email: 'taqiismail10@gmail.com',
     affiliation: 'Student, CSE, CU',
     image: '/team/taqi.jpg',
-  }
-
+  },
+  {
+    id: 'aryan',
+    role: 'Data Annotator',
+    name: 'Aryan Bin Ashraf',
+    email: ' aryanashraf.csecu@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/aryan.jpg',
+  },
+  {
+    id: 'miskatul',
+    role: 'Data Annotator',
+    name: 'Miskatul Anwar',
+    email: 'miskat@std.cu.ac.bd',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/miskat.jpg',
+  },
 ];
 
 const staffMembers = [
