@@ -172,17 +172,17 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="w-full overflow-hidden border-y border-slate-200 bg-white/70 py-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+          <div className="w-full overflow-hidden border-y border-slate-200 bg-white/70 py-7 px-6 md:px-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
             <div
-              className="flex items-stretch gap-5 w-max px-6 md:px-10"
-              style={{ animation: 'orgTicker 32s linear infinite' }}
+              className="flex items-stretch gap-5 w-max"
+              style={{ animation: 'orgTicker 32s linear infinite reverse', transform: 'translateX(-50%)' }}
             >
-              {[...ORGANIZATIONS, ...ORGANIZATIONS, ...ORGANIZATIONS].map((org, i) => (
+              {[...ORGANIZATIONS, ...ORGANIZATIONS].map((org, i) => (
                 <div
                   key={i}
                   className="w-[190px] shrink-0 bg-white border border-slate-200 rounded-xl p-4 md:p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <div className="w-16 h-16 mb-3 flex items-center justify-center">
+                  <div className="w-[77px] h-[77px] mb-3 flex items-center justify-center">
                     <img
                       src={org.logo}
                       alt={`${org.name} logo`}
@@ -196,7 +196,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
+          <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
         </div>
       </section>
 
