@@ -107,7 +107,7 @@ export default function Home() {
           {/* Tagline + CTAs */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-[clamp(13px,1.4vw,16px)] text-slate-400 leading-[1.6] max-w-lg m-0">
-              Combining knowledge graphs and LLMs to deliver AI-powered, data-driven insights across Bangladesh’s key sectors.
+              Leveraging <span className="text-blue-400 font-bold">B</span>angla<span className="text-blue-400 font-bold">D</span>esh Sectoral Knowledge Graphs and Large Language Modes for <span className="text-blue-400 font-bold">A</span>rtificial <span className="text-blue-400 font-bold">I</span>ntelligence Driven Instights.
             </p>
 
             <div className="flex gap-2 items-center">
