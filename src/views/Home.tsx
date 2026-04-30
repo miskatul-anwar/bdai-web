@@ -211,7 +211,7 @@ export default function Home() {
           </p>
           <div className="flex gap-3 justify-center flex-wrap">
             <button
-              onClick={() => router.push('/sparql-tool')}
+              onClick={() => router.push('/tools')}
               className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-blue-500 text-white border-none cursor-pointer text-[12px] font-semibold tracking-[0.06em] uppercase transition-opacity hover:opacity-85"
             >
               Get Started <ArrowRight size={13} />
