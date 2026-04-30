@@ -105,150 +105,79 @@ export default function Home() {
   }, []);
 
   return (
-    <main style={{ background: '#f5f4f0', fontFamily: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif' }}>
-      <style>{`
-        @media (max-width: 768px) {
-          main { --grid-cols: 1; }
-        }
-        @media (min-width: 769px) {
-          main { --grid-cols: auto; }
-        }
-      `}</style>
-
+    <main className="bg-[#ecf0f1]">
       {/* ── Hero ── */}
-      <section style={{
-        minHeight: '100vh',
-        background: '#0a1628',
-        display: 'flex',
-        alignItems: 'center',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        {/* Grid overlay */}
-        <div ref={heroGridRef} style={{
-          position: 'absolute', inset: 0, pointerEvents: 'none',
-          backgroundImage: `
-            linear-gradient(rgba(96,165,250,0.05) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(96,165,250,0.05) 1px, transparent 1px)
-          `,
-          backgroundSize: '64px 64px',
-        }} />
+      <section className="relative min-h-screen bg-[#0a1628] flex items-center overflow-hidden">
+        {/* Parallax grid overlay */}
+        <div
+          ref={heroGridRef}
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(96,165,250,0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(96,165,250,0.05) 1px, transparent 1px)
+            `,
+            backgroundSize: '64px 64px',
+          }}
+        />
         {/* Glow orbs */}
-        <div style={{
-          position: 'absolute', top: '-160px', right: '-160px',
-          width: '560px', height: '560px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(96,165,250,0.1) 0%, transparent 68%)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: '-100px', left: '-100px',
-          width: '400px', height: '400px', borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(96,165,250,0.07) 0%, transparent 68%)',
-          pointerEvents: 'none',
-        }} />
+        <div className="absolute -top-40 -right-40 w-[560px] h-[560px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.1) 0%, transparent 68%)' }} />
+        <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(96,165,250,0.07) 0%, transparent 68%)' }} />
 
-        <div style={{ position: 'relative', width: '100%', maxWidth: '1200px', margin: '0 auto', padding: '120px 32px' }}>
-
+        <div className="relative w-full max-w-6xl mx-auto px-6 py-28 md:py-36">
           {/* Eyebrow */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '40px' }}>
-            <div style={{ width: '36px', height: '1px', background: 'rgba(96,165,250,0.55)' }} />
-            <span style={{
-              fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.75)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 600,
-            }}>
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-9 h-px bg-blue-400/50" />
+            <span className="text-[11px] font-semibold tracking-[0.2em] uppercase text-blue-400/75">
               SP No. 13211 · University of Chittagong
             </span>
           </div>
 
           {/* Main wordmark */}
-          <h1 style={{
-            fontSize: 'clamp(80px, 15vw, 168px)',
-            fontWeight: 700, lineHeight: 0.88,
-            letterSpacing: '-0.035em',
-            color: '#ffffff', margin: 0,
-          }}>
-            BD<span style={{ color: '#60a5fa' }}>AI</span>
+          <h1 className="text-[clamp(72px,15vw,168px)] font-bold leading-[0.88] tracking-tight text-white m-0">
+            BD<span className="text-blue-400">AI</span>
           </h1>
 
           {/* Divider */}
-          <div style={{
-            width: '100%', height: '1px',
-            background: 'linear-gradient(90deg, rgba(96,165,250,0.35), transparent)',
-            margin: '32px 0',
-          }} />
+          <div className="w-full h-px my-8"
+            style={{ background: 'linear-gradient(90deg, rgba(96,165,250,0.35), transparent)' }} />
 
           {/* Tagline + CTAs */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto',
-            gap: '48px',
-            alignItems: 'end',
-          }}>
-            <p style={{
-              fontSize: 'clamp(16px, 1.8vw, 19px)',
-              color: 'rgba(255,255,255,0.5)',
-              lineHeight: 1.8, maxWidth: '540px', margin: 0,
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }}>
+          <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between md:gap-12">
+            <p className="text-[clamp(15px,1.8vw,19px)] text-white/50 leading-[1.8] max-w-xl m-0">
               Combining Knowledge Graphs and Large Language Models to build AI-powered,
               data-driven insights across Bangladesh's key sectors — accelerating the
               nation's path to Digital Bangladesh.
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flexShrink: 0 }}>
+            <div className="flex flex-row flex-wrap gap-3 md:flex-col md:flex-nowrap md:flex-shrink-0">
               <button
                 onClick={() => router.push('/results/publications')}
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: '8px',
-                  padding: '14px 28px', borderRadius: '9999px',
-                  background: '#60a5fa', color: '#0a1628',
-                  border: 'none', cursor: 'pointer',
-                  fontSize: '12px', fontWeight: 700, letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-                }}>
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-400 text-[#0a1628] border-none cursor-pointer text-[11px] font-bold tracking-[0.06em] uppercase transition-opacity hover:opacity-90"
+              >
                 Explore Research <ArrowRight size={13} />
               </button>
-              <a href="https://web.bike-csecu.com" target="_blank" rel="noopener noreferrer" style={{
-                display: 'inline-flex', alignItems: 'center', gap: '8px',
-                padding: '14px 28px', borderRadius: '9999px',
-                background: 'transparent', color: 'rgba(255,255,255,0.55)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                cursor: 'pointer', textDecoration: 'none',
-                fontSize: '12px', fontWeight: 600, letterSpacing: '0.06em',
-                textTransform: 'uppercase',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-              }}>
+              <a
+                href="https://web.bike-csecu.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-transparent text-white/55 border border-white/12 cursor-pointer no-underline text-[11px] font-semibold tracking-[0.06em] uppercase transition-colors hover:border-white/30 hover:text-white/80"
+              >
                 BIKE Lab <ChevronRight size={13} />
               </a>
             </div>
           </div>
 
           {/* Stats grid */}
-          <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4,1fr)',
-            gap: '1px', marginTop: '80px',
-            background: 'rgba(255,255,255,0.06)',
-            border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: '16px', overflow: 'hidden',
-          }}>
+          <div className="grid grid-cols-2 sm:grid-cols-4 mt-16 rounded-2xl overflow-hidden border border-white/[0.06]"
+            style={{ background: 'rgba(255,255,255,0.06)', gap: '1px' }}>
             {STATS.map((s, i) => (
-              <div key={i} style={{
-                padding: '32px 20px', textAlign: 'center',
-                background: 'rgba(10,22,40,0.55)',
-              }}>
-                <div style={{
-                  fontSize: 'clamp(30px, 4vw, 44px)',
-                  fontWeight: 700, color: '#60a5fa',
-                  letterSpacing: '-0.02em',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-                }}>
+              <div key={i} className="py-7 px-4 text-center" style={{ background: 'rgba(10,22,40,0.55)' }}>
+                <div className="text-[clamp(28px,4vw,44px)] font-bold text-blue-400 tracking-tight">
                   {s.value}
                 </div>
-                <div style={{
-                  fontSize: '10px', letterSpacing: '0.15em',
-                  textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginTop: '8px',
-                }}>
+                <div className="text-[10px] tracking-[0.15em] uppercase text-white/30 mt-2">
                   {s.label}
                 </div>
               </div>
@@ -258,23 +187,16 @@ export default function Home() {
       </section>
 
       {/* ── Sector ticker ── */}
-      <div style={{
-        background: '#60a5fa',
-        overflow: 'hidden',
-        padding: '16px 0',
-      }}>
-        <div style={{
-          display: 'flex', gap: '56px',
-          animation: 'ticker 20s linear infinite',
-          whiteSpace: 'nowrap', width: 'max-content',
-        }}>
+      <div className="bg-blue-400 overflow-hidden py-4">
+        <div
+          className="flex gap-14 whitespace-nowrap w-max"
+          style={{ animation: 'ticker 20s linear infinite' }}
+        >
           {[...SECTORS, ...SECTORS, ...SECTORS].map(({ icon: Icon, label }, i) => (
-            <span key={i} style={{
-              display: 'inline-flex', alignItems: 'center', gap: '10px',
-              fontSize: '11px', fontWeight: 700, letterSpacing: '0.14em',
-              textTransform: 'uppercase', color: '#0a1628',
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }}>
+            <span
+              key={i}
+              className="inline-flex items-center gap-2.5 text-[11px] font-bold tracking-[0.14em] uppercase text-[#0a1628]"
+            >
               <Icon size={13} /> {label}
             </span>
           ))}
@@ -283,35 +205,24 @@ export default function Home() {
       </div>
 
       {/* ── Mission ── */}
-      <section style={{ background: '#f5f4f0', padding: '128px 32px' }}>
-        <div style={{ maxWidth: '880px', margin: '0 auto' }}>
-          <span style={{
-            fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: '#60a5fa', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
-            display: 'block', marginBottom: '28px',
-          }}>
+      <section className="bg-[#ecf0f1] py-24 px-6">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs font-bold tracking-[0.2em] uppercase text-blue-400 block mb-6">
             Our Mission
-          </span>
-          <p style={{
-            fontSize: 'clamp(20px, 3vw, 34px)',
-            lineHeight: 1.5, color: '#0c2461',
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 400, margin: 0,
-          }}>
+          </p>
+          <p className="text-[clamp(18px,2.8vw,32px)] leading-[1.55] text-[#0c2461] font-normal m-0">
             "To leverage Knowledge Graphs and Large Language Models to develop AI-powered
             natural language interfaces enabling data-driven insights across Bangladesh's
             socio-economics, agriculture, healthcare, tourism, and education sectors —
             accelerating progress toward the{' '}
-            <em style={{ color: '#60a5fa' }}>Sustainable Development Goals.</em>"
+            <em className="text-blue-400 not-italic">Sustainable Development Goals.</em>"
           </p>
-          <div style={{ marginTop: '40px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <div className="mt-8 flex flex-wrap gap-2">
             {['SDG 2', 'SDG 4', 'SDG 9', 'SDG 10', 'SDG 17'].map((sdg) => (
-              <span key={sdg} style={{
-                padding: '6px 16px', borderRadius: '8px',
-                border: '1px solid #0c2461',
-                color: '#0c2461',
-                fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 600,
-              }}>
+              <span
+                key={sdg}
+                className="px-4 py-1.5 rounded-lg border border-[#0c2461] text-[#0c2461] text-[11px] tracking-[0.1em] uppercase font-semibold"
+              >
                 {sdg}
               </span>
             ))}
@@ -320,96 +231,65 @@ export default function Home() {
       </section>
 
       {/* ── What We Do ── */}
-      <section style={{ background: '#0c2461', padding: '128px 32px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '64px' }}>
-            <span style={{
-              fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.65)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
-            }}>
+      <section className="bg-[#0c2461] py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="mb-12">
+            <p className="text-xs font-bold tracking-[0.2em] uppercase text-blue-400/65">
               What We Do
-            </span>
-            <h2 style={{
-              fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700,
-              color: '#ffffff', marginTop: '12px', letterSpacing: '-0.02em',
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }}>
+            </p>
+            <h2 className="text-[clamp(26px,4vw,44px)] font-bold text-white mt-3 tracking-tight">
               Five Research Pillars
             </h2>
           </div>
 
           {/* Tab nav */}
-          <div style={{ display: 'flex', gap: '4px', marginBottom: '8px', flexWrap: 'wrap' }}>
+          <div className="flex flex-wrap gap-2 mb-2">
             {WHAT_WE_DO.map((item, i) => (
-              <button key={i} onClick={() => setActiveWhat(i)} style={{
-                padding: '10px 22px', borderRadius: '9999px',
-                background: activeWhat === i ? '#60a5fa' : 'rgba(255,255,255,0.05)',
-                color: activeWhat === i ? '#0a1628' : 'rgba(255,255,255,0.45)',
-                border: 'none', cursor: 'pointer',
-                fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
-                transition: 'all 0.2s',
-              }}>
+              <button
+                key={i}
+                onClick={() => setActiveWhat(i)}
+                className={`px-5 py-2 rounded-full border-none cursor-pointer text-[11px] tracking-[0.1em] uppercase font-bold transition-all ${
+                  activeWhat === i
+                    ? 'bg-blue-400 text-[#0a1628]'
+                    : 'bg-white/5 text-white/45 hover:bg-white/10 hover:text-white/70'
+                }`}
+              >
                 {item.tag}
               </button>
             ))}
           </div>
 
           {/* Active panel */}
-          <div style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: '16px',
-            padding: '52px',
-            display: 'grid',
-            gridTemplateColumns: '60px 1fr',
-            gap: '36px',
-            alignItems: 'start',
-          }}>
-            <div style={{
-              width: '60px', height: '60px', borderRadius: '12px',
-              background: 'rgba(96,165,250,0.12)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#60a5fa', flexShrink: 0,
-            }}>
+          <div className="bg-white/[0.04] border border-white/[0.07] rounded-2xl p-7 sm:p-12 flex flex-col sm:flex-row gap-7 sm:gap-9 items-start">
+            <div className="w-14 h-14 rounded-xl bg-blue-400/10 flex items-center justify-center text-blue-400 flex-shrink-0">
               {React.createElement(WHAT_WE_DO[activeWhat].icon, { size: 26 })}
             </div>
             <div>
-              <h3 style={{
-                fontSize: '22px', fontWeight: 700, color: '#ffffff',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '16px',
-              }}>
+              <h3 className="text-xl font-bold text-white mb-4">
                 {WHAT_WE_DO[activeWhat].title}
               </h3>
-              <p style={{
-                fontSize: '17px', color: 'rgba(255,255,255,0.5)',
-                lineHeight: 1.8, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
-              }}>
+              <p className="text-[17px] text-white/50 leading-[1.8] m-0">
                 {WHAT_WE_DO[activeWhat].desc}
               </p>
             </div>
           </div>
 
           {/* All pillars mini row */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-            gap: '4px', marginTop: '8px',
-          }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-1 mt-2">
             {WHAT_WE_DO.map((item, i) => (
-              <div key={i} onClick={() => setActiveWhat(i)} style={{
-                padding: '28px 24px', borderRadius: '12px',
-                background: activeWhat === i ? 'rgba(96,165,250,0.1)' : 'rgba(255,255,255,0.03)',
-                borderLeft: activeWhat === i ? '3px solid #60a5fa' : '3px solid transparent',
-                cursor: 'pointer', transition: 'all 0.2s',
-              }}>
-                <div style={{ color: '#60a5fa', marginBottom: '12px' }}>
+              <div
+                key={i}
+                onClick={() => setActiveWhat(i)}
+                className={`px-5 py-6 rounded-xl cursor-pointer transition-all border-l-[3px] ${
+                  activeWhat === i
+                    ? 'bg-blue-400/10 border-l-blue-400'
+                    : 'bg-white/[0.03] border-l-transparent hover:bg-white/[0.06]'
+                }`}
+              >
+                <div className="text-blue-400 mb-3">
                   {React.createElement(item.icon, { size: 17 })}
                 </div>
-                <div style={{
-                  fontSize: '13px', fontWeight: 600, color: '#ffffff',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-                }}>
+                <div className="text-[13px] font-semibold text-white">
                   {item.title}
                 </div>
               </div>
@@ -419,124 +299,67 @@ export default function Home() {
       </section>
 
       {/* ── Highlights ── */}
-      <section style={{ background: '#f5f4f0', padding: '128px 32px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '280px 1fr',
-            gap: '96px', alignItems: 'start',
-          }}>
-            {/* Sticky label */}
-            <div style={{ position: 'sticky', top: '80px' }}>
-              <span style={{
-                fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-                color: '#60a5fa', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
-                display: 'block', marginBottom: '16px',
-              }}>
+      <section className="bg-[#ecf0f1] py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Header — stacked on mobile, side-by-side on lg */}
+          <div className="flex flex-col gap-6 mb-10 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <p className="text-xs font-bold tracking-[0.2em] uppercase text-blue-400 mb-2">
                 Highlights
-              </span>
-              <h2 style={{
-                fontSize: 'clamp(24px, 2.5vw, 36px)', fontWeight: 700,
-                color: '#0c2461', letterSpacing: '-0.02em',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif', lineHeight: 1.2, margin: 0,
-              }}>
+              </p>
+              <h2 className="text-[clamp(22px,2.5vw,34px)] font-bold text-[#0c2461] tracking-tight leading-snug m-0">
                 What Makes BDAI Distinct
               </h2>
-              <div style={{ width: '44px', height: '3px', borderRadius: '9999px', background: '#60a5fa', marginTop: '24px' }} />
             </div>
+            <div className="w-11 h-[3px] rounded-full bg-blue-400 flex-shrink-0" />
+          </div>
 
-            {/* Items */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {HIGHLIGHTS.map((item, i) => (
-                <div key={i} style={{
-                  display: 'flex', gap: '24px', alignItems: 'flex-start',
-                  padding: '32px', borderRadius: '16px',
-                  background: '#ffffff',
-                  borderLeft: '3px solid transparent',
-                  transition: 'all 0.2s',
-                }}
-                  onMouseEnter={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderLeftColor = '#60a5fa';
-                    (e.currentTarget as HTMLDivElement).style.background = '#eff4ff';
-                  }}
-                  onMouseLeave={e => {
-                    (e.currentTarget as HTMLDivElement).style.borderLeftColor = 'transparent';
-                    (e.currentTarget as HTMLDivElement).style.background = '#ffffff';
-                  }}
-                >
-                  <CheckCircle size={19} style={{ color: '#60a5fa', flexShrink: 0, marginTop: '2px' }} />
-                  <div>
-                    <h4 style={{
-                      fontWeight: 700, color: '#0c2461', fontSize: '15px',
-                      fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: '0 0 6px',
-                    }}>
-                      {item.title}
-                    </h4>
-                    <p style={{
-                      fontSize: '14px', color: '#6b7280',
-                      lineHeight: 1.7, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
-                    }}>
-                      {item.text}
-                    </p>
-                  </div>
+          {/* Items */}
+          <div className="flex flex-col gap-2">
+            {HIGHLIGHTS.map((item, i) => (
+              <div
+                key={i}
+                className="flex gap-5 items-start px-6 py-7 rounded-2xl bg-white border-l-[3px] border-l-transparent transition-all hover:border-l-blue-400 hover:bg-[#eff4ff] group"
+              >
+                <CheckCircle size={19} className="text-blue-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h4 className="font-bold text-[#0c2461] text-[15px] m-0 mb-1.5">
+                    {item.title}
+                  </h4>
+                  <p className="text-sm text-gray-500 leading-[1.7] m-0">
+                    {item.text}
+                  </p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ── Why We Stand Out ── */}
-      <section style={{ background: '#0a1628', padding: '128px 32px' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '72px' }}>
-            <span style={{
-              fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-              color: 'rgba(96,165,250,0.65)', fontFamily: 'ui-sans-serif, system-ui, sans-serif', fontWeight: 700,
-            }}>
+      <section className="bg-[#0a1628] py-24 px-6">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-[11px] tracking-[0.2em] uppercase text-blue-400/65 font-bold">
               Why BDAI
-            </span>
-            <h2 style={{
-              fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 700,
-              color: '#ffffff', marginTop: '12px', letterSpacing: '-0.02em',
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }}>
+            </p>
+            <h2 className="text-[clamp(26px,4vw,44px)] font-bold text-white mt-3 tracking-tight">
               Why We Stand Out
             </h2>
           </div>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '4px',
-          }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
             {STAND_OUT.map((item, i) => (
-              <div key={i} style={{
-                padding: '52px 36px', borderRadius: '16px',
-                background: 'rgba(255,255,255,0.04)',
-                border: '1px solid rgba(255,255,255,0.06)',
-                transition: 'background 0.25s',
-              }}
-                onMouseEnter={e => (e.currentTarget as HTMLDivElement).style.background = 'rgba(96,165,250,0.09)'}
-                onMouseLeave={e => (e.currentTarget as HTMLDivElement).style.background = 'rgba(255,255,255,0.04)'}
+              <div
+                key={i}
+                className="p-10 rounded-2xl bg-white/[0.04] border border-white/[0.06] transition-colors hover:bg-blue-400/[0.09]"
               >
-                <div style={{
-                  width: '48px', height: '48px', borderRadius: '12px',
-                  background: 'rgba(96,165,250,0.12)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  color: '#60a5fa', marginBottom: '28px',
-                }}>
+                <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center text-blue-400 mb-7">
                   {React.createElement(item.icon, { size: 21 })}
                 </div>
-                <h3 style={{
-                  fontSize: '18px', fontWeight: 700, color: '#ffffff',
-                  fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '14px',
-                }}>
+                <h3 className="text-[17px] font-bold text-white mb-3">
                   {item.title}
                 </h3>
-                <p style={{
-                  fontSize: '14px', color: 'rgba(255,255,255,0.42)',
-                  lineHeight: 1.8, fontFamily: 'ui-sans-serif, system-ui, sans-serif', margin: 0,
-                }}>
+                <p className="text-sm text-white/40 leading-[1.8] m-0">
                   {item.desc}
                 </p>
               </div>
@@ -546,55 +369,33 @@ export default function Home() {
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ background: '#f5f4f0', padding: '128px 32px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '600px', margin: '0 auto' }}>
-          <div style={{
-            fontSize: 'clamp(48px, 9vw, 96px)',
-            fontWeight: 700, lineHeight: 0.88,
-            letterSpacing: '-0.04em', color: '#0c2461',
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '32px',
-          }}>
-            BD<span style={{ color: '#60a5fa' }}>AI</span>
+      <section className="bg-[#ecf0f1] py-24 px-6 text-center">
+        <div className="max-w-lg mx-auto">
+          <div className="text-[clamp(52px,10vw,96px)] font-bold leading-[0.88] tracking-tight text-[#0c2461] mb-8">
+            BD<span className="text-blue-400">AI</span>
           </div>
-          <p style={{
-            fontSize: '18px', color: '#6b7280',
-            lineHeight: 1.75, fontFamily: 'ui-sans-serif, system-ui, sans-serif', marginBottom: '48px',
-          }}>
+          <p className="text-[17px] text-gray-500 leading-[1.75] mb-12">
             Discover our work packages, the askBDAI tool, SPARQL interface, and publications.
           </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '16px 36px', borderRadius: '9999px',
-              background: '#0c2461', color: '#ffffff',
-              border: 'none', cursor: 'pointer',
-              fontSize: '12px', fontWeight: 700, letterSpacing: '0.07em',
-              textTransform: 'uppercase',
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }} onClick={() => router.push('/sparql-tool')}>
+          <div className="flex gap-3 justify-center flex-wrap">
+            <button
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#0c2461] text-white border-none cursor-pointer text-[12px] font-bold tracking-[0.07em] uppercase transition-colors hover:bg-[#1a3a8a]"
+              onClick={() => router.push('/sparql-tool')}
+            >
               Get Started <ArrowRight size={13} />
             </button>
-            <a href="mailto:rudra@cu.ac.bd" style={{
-              display: 'inline-flex', alignItems: 'center', gap: '8px',
-              padding: '16px 36px', borderRadius: '9999px',
-              background: 'transparent', color: '#0c2461',
-              border: '1px solid #0c2461', cursor: 'pointer', textDecoration: 'none',
-              fontSize: '12px', fontWeight: 700, letterSpacing: '0.07em',
-              textTransform: 'uppercase',
-              fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-            }}>
+            <a
+              href="mailto:rudra@cu.ac.bd"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-transparent text-[#0c2461] border border-[#0c2461] cursor-pointer no-underline text-[12px] font-bold tracking-[0.07em] uppercase transition-colors hover:bg-[#0c2461]/5"
+            >
               Contact Us
             </a>
           </div>
-          <p style={{
-            marginTop: '48px', fontSize: '12px', color: '#9ca3af',
-            fontFamily: 'ui-sans-serif, system-ui, sans-serif', letterSpacing: '0.04em',
-          }}>
+          <p className="mt-12 text-[12px] text-gray-400 tracking-[0.04em]">
             rudra@cu.ac.bd &nbsp;·&nbsp; bike-csecu.com &nbsp;·&nbsp; University of Chittagong
           </p>
         </div>
       </section>
-
     </main>
   );
 }
