@@ -4,11 +4,11 @@ import Navbar from '@/layouts/Navbar';
 import Footer from '@/layouts/Footer';
 export const metadata: Metadata = {
   title: 'BDAI',
-  icons: {
-    icon: './bdai-logo.png',
-    shortcut: './bdai-logo.png',
-    apple: './bdai-logo.png',
-  },
+  // icons: {
+  //   icon: './bdai-logo.png',
+  //   shortcut: './bdai-logo.png',
+  //   apple: './bdai-logo.png',
+  // },
   description:
     'BanglaDesh Sectoral Knowledge Graphs and Large Language Models for Artificial Intelligence-Driven Insights',
 };
