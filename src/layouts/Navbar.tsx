@@ -47,7 +47,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: 'BDAI Videos', href: '/about/bdai-videos', icon: PlayCircle },
       { name: 'Impact', href: '/about/impact', icon: TrendingUp },
       { name: 'Objectives', href: '/about/objectives', icon: Target },
-      { name: 'One Pager', href: '/about/onepager', icon: FileText },
+      { name: 'At a Glance', href: '/about/onepager', icon: FileText },
     ],
   },
   {
