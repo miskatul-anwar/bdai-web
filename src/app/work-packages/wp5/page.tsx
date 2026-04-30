@@ -1,0 +1,1 @@
+export { WP5 as default } from '@/views/work-packages/WorkPackages';

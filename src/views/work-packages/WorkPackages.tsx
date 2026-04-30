@@ -144,19 +144,40 @@ export function WP4() {
   return (
     <WPPage
       number={4}
-      title="Experimentation and Analysis"
-      objective="Validate the platform through domain experiments and demonstrate descriptive, diagnostic, predictive, and prescriptive analytical capabilities including what-if scenario analysis via AI, NLI, and LLMs."
+      title="Cross Sectoral Analysis over Knowledge Graphs"
+      objective="Enable descriptive, diagnostic, predictive, and prescriptive analytical capabilities by executing cross-domain queries and what-if scenario analyses over the federated knowledge graphs built in WP3"
       highlights={[
-        'NLI and LLM integration for natural language query interpretation',
-        'Full analytical spectrum: descriptive → diagnostic → predictive → prescriptive',
-        'What-if scenario engine connected to the Digital Twin',
+        'Cross-sectoral analytics across all six domain knowledge graphs',
+        'Federated SPARQL and graph-based pipelines for multi-domain analysis',
+        'Interactive dashboards with cross-domain KPIs, visualizations, and decision support',
       ]}
       tasks={[
-        { id: 'T4.1', label: 'Develop NLI and AI-powered application layer prototypes for selected domains.' },
-        { id: 'T4.2', label: 'Implement the analytical query framework (descriptive → prescriptive).' },
+        { id: 'T4.1', label: 'Design cross-sectoral analytical query framework spanning all six domain KGs.' },
+        { id: 'T4.2', label: 'Implement federated SPARQL and graph-based analytical pipelines.' },
         { id: 'T4.3', label: 'Integrate LLMs for natural language query interpretation and answer generation.' },
-        { id: 'T4.4', label: 'Build and test what-if scenario engine connected to the Digital Twin.' },
-        { id: 'T4.5', label: 'Evaluate platform outputs against ground truth and conduct user studies with domain experts.' },
+        { id: 'T4.4', label: 'Build interactive analytical dashboards with cross-domain key performance indicators and visualizations.' },
+        { id: 'T4.5', label: 'Validate analytical outputs against ground truth data across sectors.' },
+      ]}
+    />
+  );
+}
+
+export function WP5() {
+  return (
+    <WPPage
+      number={5}
+      title="askBDAI: AI-Powered User-Friendly NLI"
+      objective="Develop askBDAI, a natural language interface that allows non-technical users to query the federated knowledge graph platform using everyday language, powered by LLMs, NLI, and AI reasoning over KGs"
+      highlights={[
+        'Conversational natural language interface for querying the federated knowledge graph platform',
+        'LLM-assisted translation from user intent to SPARQL and graph queries',
+        'KG-grounded reasoning with feedback-driven refinement for improved response quality',
+      ]}
+      tasks={[
+        { id: 'T5.1', label: 'Design conversational NLI architecture integrating LLMs with the federated KG backend.' },
+        { id: 'T5.2', label: 'Develop natural language to SPARQL/graph query translation module.' },
+        { id: 'T5.3', label: 'Build context-aware answer generation using KG-grounded LLM reasoning.' },
+        { id: 'T5.4', label: 'Iteratively refine NLI based on user feedback and evaluation results.' },
       ]}
     />
   );
