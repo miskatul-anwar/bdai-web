@@ -175,7 +175,7 @@ export default function Home() {
           <div className="w-full overflow-hidden border-y border-slate-200 bg-white/70 py-7 px-6 md:px-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
             <div
               className="flex items-stretch gap-5 w-max"
-              style={{ animation: 'orgTicker 32s linear infinite reverse', transform: 'translateX(-50%)' }}
+              style={{ animation: 'orgTicker 20.8s linear infinite reverse', transform: 'translateX(-50%)' }}
             >
               {[...ORGANIZATIONS, ...ORGANIZATIONS].map((org, i) => (
                 <div
@@ -196,7 +196,7 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
+          <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
         </div>
       </section>
 
