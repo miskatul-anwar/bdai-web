@@ -1,5 +1,5 @@
 import React from 'react';
-import Copyright from 'lucide-react'
+import { Copyright } from 'lucide-react';
 const Footer: React.FC = () => {
     return (
         <footer className="sticky bottom-0 w-full bg-[#0c2461] border-t border-white/10 shadow-lg">
@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
                             rel="noopener noreferrer"
                             className="font-semibold text-[#60a5fa] hover:text-white transition-colors"
                         >
-                            <Copyright size={13} />
+                            <Copyright size={14} className="inline-block -mt-0.5" />
                             BIKE LAB
                         </a>
                     </div>
