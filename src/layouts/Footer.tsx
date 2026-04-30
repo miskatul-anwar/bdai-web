@@ -7,6 +7,7 @@ const Footer: React.FC = () => {
                 <div className="flex justify-between items-center">
                     {/* Left: BIKE 2024-2026 */}
                     <div className="text-sm font-semibold text-white/80">
+                        <Copyright size={14} className="inline-block -mt-0.5" />
                         BIKE 2024-2026
                     </div>
 
@@ -19,7 +20,6 @@ const Footer: React.FC = () => {
                             rel="noopener noreferrer"
                             className="font-semibold text-[#60a5fa] hover:text-white transition-colors"
                         >
-                            <Copyright size={14} className="inline-block -mt-0.5" />
                             BIKE LAB
                         </a>
                     </div>
