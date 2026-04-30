@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
                             rel="noopener noreferrer"
                             className="font-semibold text-[#60a5fa] hover:text-white transition-colors"
                         >
-                            <Copyright size={14} className="inline-block -mt-0.5" />
+                            <Copyright size={13} />
                             BIKE LAB
                         </a>
                     </div>
