@@ -2,15 +2,31 @@ import React from 'react';
 // Link not used anymore; researchers displayed as images
 import { Target } from 'lucide-react';
 
+const RAIHAN_IMAGE = '/team/raihan.jpg';
+const ATIKISHRAK_IMAGE = '/team/atikishrak.jpg';
+const MISKAT_IMAGE = '/team/miskat.jpg';
+const ARYAN_IMAGE = '/team/aryan.jpg';
+const KAIS_IMAGE = '/team/kais.jpg';
+const NOOR_IMAGE = '/team/noor.jpg';
+const NESARUL_IMAGE = '/team/nesarul.jpg';
+const TAQI_IMAGE = '/team/taqi.jpg';
+const AONG_IMAGE = '/team/aong.jpg';
+const MINHAJ_IMAGE = '/team/minhaj.png';
+const KAUSIK_ISHIK_IMAGE = '/team/kausik.jpeg';
+const RPDN_IMAGE = '/team/rpdn.png';
+const ANC_IMAGE = '/team/anc.png';
+const MMI_IMAGE = '/team/mmi.png';
+const SC_IMAGE = '/team/sc.png';
+
 const objectives = [
-  { id: 'OB1', title: 'Open Data Quality', images: ['/team/raihan.jpg', '/team/atikishrak.jpg'] },
-  { id: 'OB2', title: 'SMART Data Ecosystem', images: ['/team/miskat.jpg'] },
-  { id: 'OB3', title: 'KG Construction', images: ['/team/aryan.jpg', '/team/kais.jpg'] },
-  { id: 'OB4', title: 'Cross-Sector Analytics', images: ['/team/noor.jpg', '/team/nesarul.jpg'] },
-  { id: 'OB5', title: 'KG RAG', images: ['/team/raihan.jpg', '/team/miskat.jpg', '/team/taqi.jpg', '/team/aong.jpg'] },
-  { id: 'OB6', title: 'Explainability & Fairness', images: ['/team/aong.jpg', '/team/minhaj.png', '/team/kais.jpg'] },
-  { id: 'OB7', title: 'askBDAI', images: ['/team/noor.jpg'] },
-  { id: 'OB8', title: 'Capacity Building', images: ['/team/raihan.jpg', '/team/miskat.jpg', '/team/atikishrak.jpg', '/team/aryan.jpg', '/team/kais.jpg', '/team/noor.jpg', '/team/nesarul.jpg', '/team/taqi.jpg', '/team/aong.jpg', '/team/minhaj.png'] },
+  { id: 'OB1', title: 'Open Data Quality', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE] },
+  { id: 'OB2', title: 'SMART Data Ecosystem', images: [RPDN_IMAGE, ARYAN_IMAGE, MISKAT_IMAGE] },
+  { id: 'OB3', title: 'KG Construction', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, KAUSIK_ISHIK_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, MINHAJ_IMAGE] },
+  { id: 'OB4', title: 'Cross-Sector Analytics', images: [RPDN_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE] },
+  { id: 'OB5', title: 'KG RAG', images: [RPDN_IMAGE, ANC_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, TAQI_IMAGE, AONG_IMAGE] },
+  { id: 'OB6', title: 'Explainability & Fairness', images: [RPDN_IMAGE, ANC_IMAGE, AONG_IMAGE, MINHAJ_IMAGE, KAIS_IMAGE, TAQI_IMAGE] },
+  { id: 'OB7', title: 'askBDAI', images: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE] },
+  { id: 'OB8', title: 'Capacity Building', images: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, NOOR_IMAGE, NESARUL_IMAGE, TAQI_IMAGE, AONG_IMAGE, MINHAJ_IMAGE] },
 ];
 
 export default function Objectives() {

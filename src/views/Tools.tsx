@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { ArrowRight, ExternalLink, Layers3, PlayCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, ExternalLink, Layers3, PlayCircle, Sparkles, FileText, FolderGit2 } from 'lucide-react';
 
 export default function SparqlTool() {
   return (
@@ -9,7 +9,7 @@ export default function SparqlTool() {
       <div className="mx-auto w-full max-w-7xl">
         <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/75 shadow-[0_20px_70px_rgba(15,23,42,0.10)] backdrop-blur-xl">
           <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(12,36,97,0.12),rgba(59,130,246,0.06),transparent_55%)]" />
-          <div className="relative grid grid-cols-1 xl:grid-cols-5 gap-0">
+          <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
             <div className="xl:col-span-3 p-6 sm:p-8 md:p-10 lg:p-12">
               <div className="inline-flex items-center gap-2 rounded-full border border-[#0c2461]/10 bg-[#0c2461]/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-[#0c2461]">
                 <Sparkles className="h-3.5 w-3.5" />
@@ -29,43 +29,52 @@ export default function SparqlTool() {
                   process, integrate, and query semantic data.
                 </p>
 
-                <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="https://extbi.cs.aau.dk/SETLBI/index.php"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-[#0c2461] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-[#0c2461]/20 transition-transform hover:-translate-y-0.5 hover:bg-[#13307a]"
-                  >
-                    Visit project site <ExternalLink className="h-4 w-4" />
-                  </a>
-                  <a
-                    href="https://www.youtube.com/watch?v=9-a4MVHqZow"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/90 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
-                  >
-                    Watch video <PlayCircle className="h-4 w-4" />
-                  </a>
-                </div>
-
-                <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {[
-                    'Semantic integration',
-                    'RDF + OLAP workflows',
-                    'End-to-end data pipeline',
-                  ].map((label) => (
-                    <div
-                      key={label}
-                      className="flex items-center gap-3 rounded-2xl border border-white/80 bg-white/70 p-4 shadow-sm"
+                <div className="mt-4 text-sm text-slate-600 max-w-2xl">
+                  <h2 className="text-sm font-semibold text-[#0c2461]">Abstract</h2>
+                  <p className="mt-2">
+                    With the growing popularity of Semantic Web technologies, more and more organizations
+                    natively manage data using Semantic Web standards, in particular RDF. This development
+                    gives rise to new requirements for Business Intelligence tools to enable analyses in the
+                    style of On-Line Analytical Processing (OLAP) over RDF data. SETLBI brings together the
+                    Semantic Web and Business Intelligence technologies across target definition, source to
+                    target mappings, source extraction, data transformation, and target population.
+                  </p>
+                  <div className="mt-8 flex gap-4">
+                    <button
+                      type="button"
+                      onClick={() => window.open('https://extbi.cs.aau.dk/SETLBI/SETLBI.pdf', '_blank', 'noopener,noreferrer')}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/90 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0c2461]/10 text-[#0c2461]">
-                        <Layers3 className="h-5 w-5" />
+                      Research paper
+                      <FileText className="h-4 w-4 text-slate-600" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => window.open('https://github.com/bi-setl/SETL', '_blank', 'noopener,noreferrer')}
+                      className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white/90 px-5 py-3 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-50"
+                    >
+                      Source code
+                      <FolderGit2 className="h-4 w-4 text-slate-600" />
+                    </button>
+                  </div>
+
+                  <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      'Semantic integration',
+                      'RDF + OLAP workflows',
+                      'End-to-end data pipeline',
+                    ].map((label) => (
+                      <div key={label} className="flex items-center gap-2">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#0c2461]/8 text-[#0c2461]">
+                          <Layers3 className="h-4 w-4" />
+                        </div>
+                        <span className="text-sm text-slate-600">{label}</span>
                       </div>
-                      <span className="text-sm font-medium text-slate-700">{label}</span>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
+
             </div>
 
             <div className="xl:col-span-2 border-t xl:border-t-0 xl:border-l border-white/60 bg-slate-950/5 p-6 sm:p-8 md:p-10">
@@ -91,17 +100,7 @@ export default function SparqlTool() {
                 </div>
 
                 <div className="p-5 sm:p-6 space-y-5">
-                  <div>
-                    <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-[#0c2461]">Abstract</h2>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">
-                      With the growing popularity of Semantic Web technologies, more and more organizations
-                      natively manage data using Semantic Web standards, in particular RDF. This development
-                      gives rise to new requirements for Business Intelligence tools to enable analyses in the
-                      style of On-Line Analytical Processing (OLAP) over RDF data. SETLBI brings together the
-                      Semantic Web and Business Intelligence technologies across target definition, source to
-                      target mappings, source extraction, data transformation, and target population.
-                    </p>
-                  </div>
+                  {/* Abstract moved to the left column */}
 
                   <div>
                     <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-[#0c2461]">Authors</h2>
@@ -110,14 +109,13 @@ export default function SparqlTool() {
                     </p>
                   </div>
 
-                  <a
-                    href="https://extbi.cs.aau.dk/SETLBI/index.php"
-                    target="_blank"
-                    rel="noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => window.open('https://extbi.cs.aau.dk/SETLBI/index.php', '_blank', 'noopener,noreferrer')}
                     className="inline-flex items-center gap-2 text-sm font-semibold text-[#0c2461] hover:text-[#13307a]"
                   >
                     Explore the platform <ArrowRight className="h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
