@@ -139,8 +139,8 @@ export default function Navbar() {
       <nav className="fixed top-0 inset-x-0 z-[5000] h-14 flex items-center px-6 bg-[#0c2461] shadow-lg">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 flex-shrink-0 mr-auto">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shadow-sm overflow-hidden">
-            <Image src="/bdai-logo.png" alt="BD AI" width={28} height={28} className="object-contain" />
+          <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden">
+            <Image src="/logo.png" alt="BD AI" width={32} height={32} className="object-contain scale-90" />
           </div>
           <span className="text-white font-bold text-base tracking-tight hidden sm:inline">
             BD<span className="text-[#60a5fa]">AI</span>
