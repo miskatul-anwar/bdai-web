@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Search, Play, Code } from 'lucide-react';
+import { Search, Play, Code, } from 'lucide-react';
 
 export default function SparqlTool() {
   const [query, setQuery] = useState(`SELECT ?subject ?predicate ?object

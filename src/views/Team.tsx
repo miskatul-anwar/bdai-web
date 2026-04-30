@@ -124,6 +124,14 @@ const dataAnnotators = [
 
 const staffMembers = [
   {
+    id: 'Kausik Das',
+    role: 'Office Manager',
+    name: 'Kausik Das',
+    email: 'cukaushikdas@gmail.com',
+    affiliation: 'Student, EEE, CU',
+    image: '/team/kausik.jpeg',
+  },
+  {
     id: 'sykot',
     role: 'Accountant',
     name: 'Sykot Deb',
@@ -248,7 +256,7 @@ export default function Team() {
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mt-8">
-          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Staff</h2>
+          <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Administrative Staff</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {staffMembers.map((s) => (
               <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">

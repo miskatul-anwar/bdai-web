@@ -18,7 +18,8 @@ import {
   Target,
   FileText,
   Package,
-  BarChart2,
+  Handshake,
+  Hammer
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -60,19 +61,11 @@ const NAV_ITEMS: NavItem[] = [
       { name: 'WP4', href: '/work-packages/wp4', icon: Package },
     ],
   },
-  { name: 'Consortium', href: '/consortium', icon: Users },
+  { name: 'Partners', href: '/consortium', icon: Handshake },
   { name: 'Team', href: '/team', icon: Users },
-  {
-    name: 'Results',
-    href: '/results/reports',
-    icon: BarChart2,
-    children: [
-      { name: 'Reports', href: '/results/reports', icon: FileText },
-      { name: 'Publications', href: '/results/publications', icon: BookOpen },
-    ],
-  },
+  { name: 'Publications', href: '/results/publications', icon: BookOpen },
   { name: 'News', href: '/news', icon: FileText },
-  { name: 'SPARQL Tool', href: '/sparql-tool', icon: Search },
+  { name: 'Tools', href: '/tools', icon: Hammer },
 ];
 
 function DropdownMenu({ item }: { item: NavItem }) {

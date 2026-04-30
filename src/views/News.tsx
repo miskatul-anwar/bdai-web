@@ -132,12 +132,12 @@ export default function News() {
         <main className="min-h-screen bg-slate-950 text-slate-100">
             <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_35%),radial-gradient(circle_at_bottom_left,_rgba(99,102,241,0.16),_transparent_30%)]" />
-                <div className="relative mx-auto flex max-w-7xl flex-col gap-6 px-6 py-20 lg:px-10">
+                <div className="relative mx-auto flex max-w-7xl flex-col px-6 py-8 lg:px-10">
                     <div className="max-w-3xl">
-                        <h1 className="font-serif text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-6xl">
+                        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:text-4xl">
                             Latest news regarding our project
                         </h1>
-                        <p className="mt-5 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg">
+                        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
                             Recent announcements, research milestones, tenders, and opportunities related to the BDAI and BIKE initiatives.
                         </p>
                     </div>
