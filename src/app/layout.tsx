@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/app/globals.css';
 import Navbar from '@/layouts/Navbar';
-
+import Footer from '@/layouts/Footer';
 export const metadata: Metadata = {
   title: 'BDAI',
   icons: {
@@ -24,6 +24,7 @@ export default function RootLayout({
         <div className="min-h-screen bg-[#ecf0f1] font-sans">
           <Navbar />
           <div className="pt-14">{children}</div>
+          <Footer />
         </div>
       </body>
     </html>

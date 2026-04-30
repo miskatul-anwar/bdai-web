@@ -7,6 +7,9 @@ import {
   TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane,
 } from 'lucide-react';
 
+
+
+
 /* ─── Data ─────────────────────────────────────────── */
 
 const SECTORS = [
@@ -203,9 +206,6 @@ export default function Home() {
       {/* ── CTA ──────────────────────────────────────── */}
       <section className="bg-[#07101f] py-20 px-6 text-center">
         <div className="max-w-md mx-auto">
-          <div className="text-[clamp(48px,10vw,88px)] font-bold leading-[0.88] tracking-tight text-white mb-6">
-            BD<span className="text-blue-400">AI</span>
-          </div>
           <p className="text-[16px] text-slate-400 leading-[1.75] mb-10">
             Explore our work packages, the askBDAI tool, SPARQL interface, and publications.
           </p>
@@ -223,9 +223,6 @@ export default function Home() {
               Contact Us
             </a>
           </div>
-          <p className="mt-10 text-[11px] text-slate-600 tracking-[0.05em]">
-            rudra@cu.ac.bd &nbsp;·&nbsp; bike-csecu.com &nbsp;·&nbsp; University of Chittagong
-          </p>
         </div>
       </section>
 
