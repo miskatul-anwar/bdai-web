@@ -21,7 +21,7 @@ const STATS = [
   { value: '5+', label: 'Sectors' },
   { value: '1', label: 'Publications' },
   { value: '5+', label: 'AI Tools' },
-  { value: '10+', label: 'Researchers' },
+  { value: '20+', label: 'Researchers' },
 ];
 
 const ORGANIZATIONS = [
