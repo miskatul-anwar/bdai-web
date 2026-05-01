@@ -19,7 +19,7 @@ const MMI_IMAGE = '/team/mmi.png';
 const SC_IMAGE = '/team/sc.png';
 
 const objectives = [
-  { id: 'OB1', title: 'Open Data Quality', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE] },
+  { id: 'OB1', title: 'Open Data Quality', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE] },
   { id: 'OB2', title: 'SMART Data Ecosystem', images: [RPDN_IMAGE, ARYAN_IMAGE, MISKAT_IMAGE] },
   { id: 'OB3', title: 'KG Construction', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, KAUSIK_ISHIK_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, MINHAJ_IMAGE] },
   { id: 'OB4', title: 'Cross-Sector Analytics', images: [RPDN_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE] },
