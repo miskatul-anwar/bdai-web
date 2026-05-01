@@ -166,7 +166,7 @@ export function WP5() {
   return (
     <WPPage
       number={5}
-      title="askBDAI: AI-Powered User-Friendly NLI"
+      title="askBDAI: AI-Powered User-Friendly Natural Language Interface"
       objective="Develop askBDAI, a natural language interface that allows non-technical users to query the federated knowledge graph platform using everyday language, powered by LLMs, NLI, and AI reasoning over KGs"
       highlights={[
         'Conversational natural language interface for querying the federated knowledge graph platform',
