@@ -9,6 +9,11 @@ const partners = [
     description: "BIKE LAB is a research and development lab based at the University of Chittagong, Bangladesh. It focuses on cutting-edge research in computer science and engineering, particularly in areas like machine learning, data science, and software engineering. The lab collaborates with various academic and industry partners to drive innovation and contribute to the global research community."
   },
   {
+    name: 'University of Chittagong',
+    logo: 'https://cu.ac.bd/wp-content/uploads/2024/03/university-of-chittagong-seeklogo.com-removebg-preview-removebg-preview-1-222x300.png',
+    description: "The University of Chittagong (CU), established in 1966, is a prominent public, multi-faculty research university located in Chattogram. Known for having the largest university campus in the country—spanning over 2,000 acres of hilly, scenic landscape—it is a major hub for higher learning. CU offers a wide array of undergraduate and postgraduate programs and has a rich history of contributing significantly to the nation's academic research, culture, and intellectual development."
+  },
+  {
     name: 'HEAT Bangladesh',
     logo: 'https://heat.ugc.gov.bd/heat-gov-images/logos/logo.svg',
     description: "The Higher Education Acceleration and Transformation (HEAT) project is a strategic initiative implemented by the University Grants Commission (UGC) of Bangladesh, primarily supported by the World Bank. Its core mission is to enhance the overall quality and global relevance of higher education in Bangladesh. The project focuses on improving graduate employability, fostering academic networking, empowering women in higher education, and building institutional resilience to navigate future challenges effectively."
@@ -27,11 +32,6 @@ const partners = [
     name: 'World Bank',
     logo: 'https://heat.ugc.gov.bd/heat-gov-images/logos/right-logo3.svg',
     description: "The World Bank is a premier international financial institution that provides loans, grants, and technical assistance to the governments of low- and middle-income countries. Its overarching global mission is to eradicate extreme poverty and promote shared prosperity in a sustainable manner. In countries like Bangladesh, the World Bank is a critical development partner, funding major infrastructure, education, health, and climate resilience projects."
-  },
-  {
-    name: 'University of Chittagong',
-    logo: 'https://cu.ac.bd/wp-content/uploads/2024/03/university-of-chittagong-seeklogo.com-removebg-preview-removebg-preview-1-222x300.png',
-    description: "The University of Chittagong (CU), established in 1966, is a prominent public, multi-faculty research university located in Chattogram. Known for having the largest university campus in the country—spanning over 2,000 acres of hilly, scenic landscape—it is a major hub for higher learning. CU offers a wide array of undergraduate and postgraduate programs and has a rich history of contributing significantly to the nation's academic research, culture, and intellectual development."
   },
 ];
 
