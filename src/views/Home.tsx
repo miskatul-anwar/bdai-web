@@ -48,6 +48,10 @@ const ORGANIZATIONS = [
     name: 'University of Chittagong',
     logo: 'https://cu.ac.bd/wp-content/uploads/2024/03/university-of-chittagong-seeklogo.com-removebg-preview-removebg-preview-1-222x300.png',
   },
+  {
+    name: 'BIKE LAB',
+    logo: '/Bike.png',
+  },
 ];
 
 const SDGS = [
