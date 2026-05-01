@@ -88,6 +88,14 @@ const dataAnnotators = [
     image: '/team/minhaj.png',
   },
   {
+    id: 'arafat',
+    role: 'Data Annotator',
+    name: 'Arafat Sheikh',
+    email: 'arafat.csecu@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/arafat.png',
+  },
+  {
     id: 'aong',
     role: 'Data Annotator',
     name: 'Aong Cho Thing Marma',
