@@ -4,6 +4,11 @@ import { Users } from 'lucide-react';
 
 const partners = [
   {
+    name: 'BIKE LAB',
+    logo: 'https://web.bike-csecu.com/static/media/logo.599a2883fd51ecc94364651be94d41c5.svg',
+    description: "BIKE LAB is a research and development lab based at the University of Chittagong, Bangladesh. It focuses on cutting-edge research in computer science and engineering, particularly in areas like machine learning, data science, and software engineering. The lab collaborates with various academic and industry partners to drive innovation and contribute to the global research community."
+  },
+  {
     name: 'HEAT Bangladesh',
     logo: 'https://heat.ugc.gov.bd/heat-gov-images/logos/logo.svg',
     description: "The Higher Education Acceleration and Transformation (HEAT) project is a strategic initiative implemented by the University Grants Commission (UGC) of Bangladesh, primarily supported by the World Bank. Its core mission is to enhance the overall quality and global relevance of higher education in Bangladesh. The project focuses on improving graduate employability, fostering academic networking, empowering women in higher education, and building institutional resilience to navigate future challenges effectively."
