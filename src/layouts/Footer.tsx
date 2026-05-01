@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
                     {/* Left: BIKE 2024-2026 */}
                     <div className="text-sm font-semibold text-white/80">
                         <Copyright size={14} className="inline-block -mt-0.5" />
-                        BIKE 2024-2026
+                        BIKE 2025-2028
                     </div>
 
                     {/* Right: Developed By */}

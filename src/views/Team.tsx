@@ -82,7 +82,7 @@ const dataAnnotators = [
   {
     id: 'minhaj',
     role: 'Data Annotator',
-    name: 'Md. Minhajul Islam',
+    name: 'Minhajul Islam',
     email: 'minhaj@std.cu.ac.bd',
     affiliation: 'Student, CSE, CU',
     image: '/team/minhaj.png',
