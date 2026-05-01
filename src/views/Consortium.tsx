@@ -5,7 +5,7 @@ import { Users } from 'lucide-react';
 const partners = [
   {
     name: 'BIKE LAB',
-    logo: 'https://web.bike-csecu.com/static/media/logo.599a2883fd51ecc94364651be94d41c5.svg',
+    logo: '/Bike.png',
     description: "BIKE LAB is a research and development lab based at the University of Chittagong, Bangladesh. It focuses on cutting-edge research in computer science and engineering, particularly in areas like machine learning, data science, and software engineering. The lab collaborates with various academic and industry partners to drive innovation and contribute to the global research community."
   },
   {
