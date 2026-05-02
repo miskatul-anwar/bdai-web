@@ -34,7 +34,7 @@ const ORGANIZATIONS = [
   },
   {
     name: 'Ministry of Education, Bangladesh',
-    logo: 'https://bangladesh.gov.bd/site-assets/images/logo.png',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Government_Seal_of_Bangladesh.svg/120px-Government_Seal_of_Bangladesh.svg.png',
   },
   {
     name: 'UGC Bangladesh',
