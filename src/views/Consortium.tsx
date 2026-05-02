@@ -20,7 +20,7 @@ const partners = [
   },
   {
     name: 'Ministry of Education, Bangladesh',
-    logo: 'https://bangladesh.gov.bd/site-assets/images/logo.png',
+    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Government_Seal_of_Bangladesh.svg/120px-Government_Seal_of_Bangladesh.svg.png',
     description: "The Ministry of Education (MoE) of Bangladesh is the central government authority responsible for formulating and implementing educational policies, programs, and initiatives across the country. It oversees all levels of education, from primary to higher education, and works to ensure access, equity, and quality in the education system. The MoE collaborates with various stakeholders, including public and private educational institutions, international organizations, and development partners like the World Bank, to drive educational reforms and improve learning outcomes for students nationwide."
   },
   {
