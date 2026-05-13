@@ -19,7 +19,8 @@ import {
   FileText,
   Package,
   Handshake,
-  Hammer
+  Hammer,
+  CalendarDays
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -66,6 +67,15 @@ const NAV_ITEMS: NavItem[] = [
   { name: 'Team', href: '/team', icon: Users },
   { name: 'Publications', href: '/results/publications', icon: BookOpen },
   { name: 'News', href: '/news', icon: FileText },
+  {
+    name: 'Events',
+    href: '/events/upcoming',
+    icon: CalendarDays,
+    children: [
+      { name: 'Held', href: '/events/held', icon: CalendarDays },
+      { name: 'Upcoming', href: '/events/upcoming', icon: CalendarDays },
+    ],
+  },
   { name: 'Tools', href: '/tools', icon: Hammer },
 ];
 
