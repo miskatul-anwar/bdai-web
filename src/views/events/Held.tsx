@@ -2,7 +2,14 @@
 
 import Image from 'next/image';
 
-const galleryPlaceholders = Array.from({ length: 6 }, (_, index) => `Gallery Image ${index + 1}`);
+const galleryImages = [
+  { src: '/events/phd1.png', alt: 'Event gallery image 1' },
+  { src: '/events/phd2.png', alt: 'Event gallery image 2' },
+  { src: '/events/phd3.png', alt: 'Event gallery image 3' },
+  { src: '/events/phd4.png', alt: 'Event gallery image 4' },
+  { src: '/events/phd5.png', alt: 'Event gallery image 5' },
+  { src: '/events/phd6.png', alt: 'Event gallery image 6' },
+];
 
 export default function HeldEvents() {
   return (
@@ -25,23 +32,20 @@ export default function HeldEvents() {
         <div className="mt-8">
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-lg sm:text-xl font-semibold text-[#0c2461]">Event Gallery</h2>
-            <p className="text-xs sm:text-sm font-medium text-slate-500">{galleryPlaceholders.length} snapshots</p>
+            <p className="text-xs sm:text-sm font-medium text-slate-500">{galleryImages.length} snapshots</p>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {galleryPlaceholders.map((label) => (
+            {galleryImages.map((image) => (
               <div
-                key={label}
-                role="img"
-                aria-label={`${label} placeholder for the 14th May 2026 event gallery`}
-                className="group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-[#edf3ff] p-4 shadow-[0_8px_24px_rgba(15,23,42,0.07)] transition-transform duration-300 hover:-translate-y-0.5"
+                key={image.src}
+                className="group relative flex aspect-[4/3] overflow-hidden rounded-2xl border border-slate-200 shadow-[0_8px_24px_rgba(15,23,42,0.07)] transition-transform duration-300 hover:-translate-y-0.5"
               >
-                <span className="w-fit rounded-full border border-[#0c2461]/15 bg-white/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#0c2461]">
-                  Placeholder
-                </span>
-                <div className="space-y-1">
-                  <p className="text-sm font-semibold text-[#0c2461]">{label}</p>
-                  <p className="text-xs font-medium text-slate-500">Event memories coming soon</p>
-                </div>
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  className="object-cover"
+                />
               </div>
             ))}
           </div>
