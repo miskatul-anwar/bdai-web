@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-const galleryPlaceholders = Array.from({ length: 4 }, (_, index) => `Gallery Image ${index + 1}`);
+const galleryPlaceholders = Array.from({ length: 6 }, (_, index) => `Gallery Image ${index + 1}`);
 
 export default function HeldEvents() {
   return (
@@ -23,16 +23,25 @@ export default function HeldEvents() {
         </div>
 
         <div className="mt-8">
-          <h2 className="text-lg sm:text-xl font-semibold text-[#0c2461]">Event Gallery</h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div className="flex items-center justify-between gap-3">
+            <h2 className="text-lg sm:text-xl font-semibold text-[#0c2461]">Event Gallery</h2>
+            <p className="text-xs sm:text-sm font-medium text-slate-500">{galleryPlaceholders.length} snapshots</p>
+          </div>
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {galleryPlaceholders.map((label) => (
               <div
                 key={label}
                 role="img"
                 aria-label={`${label} placeholder for the 14th May 2026 event gallery`}
-                className="flex aspect-[4/3] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 text-center text-sm font-medium text-slate-500"
+                className="group relative flex aspect-[4/3] flex-col justify-between overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-slate-50 to-[#edf3ff] p-4 shadow-[0_8px_24px_rgba(15,23,42,0.07)] transition-transform duration-300 hover:-translate-y-0.5"
               >
-                {label} Placeholder
+                <span className="w-fit rounded-full border border-[#0c2461]/15 bg-white/85 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-[#0c2461]">
+                  Placeholder
+                </span>
+                <div className="space-y-1">
+                  <p className="text-sm font-semibold text-[#0c2461]">{label}</p>
+                  <p className="text-xs font-medium text-slate-500">Event memories coming soon</p>
+                </div>
               </div>
             ))}
           </div>
