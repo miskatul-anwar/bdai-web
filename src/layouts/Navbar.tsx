@@ -69,7 +69,7 @@ const NAV_ITEMS: NavItem[] = [
   { name: 'News', href: '/news', icon: FileText },
   {
     name: 'Events',
-    href: '/events/upcoming',
+    href: '/events/held',
     icon: CalendarDays,
     children: [
       { name: 'Held', href: '/events/held', icon: CalendarDays },
