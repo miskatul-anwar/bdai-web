@@ -28,6 +28,8 @@ export default function HeldEvents() {
             {galleryPlaceholders.map((label) => (
               <div
                 key={label}
+                role="img"
+                aria-label={`${label} placeholder for the 14th May 2026 event gallery`}
                 className="flex aspect-[4/3] items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-4 text-center text-sm font-medium text-slate-500"
               >
                 {label} Placeholder
