@@ -1,7 +1,3 @@
-'use client';
-
-import Image from 'next/image';
-
 export default function UpcomingEvents() {
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-10 sm:py-14 px-4 sm:px-6">
@@ -9,17 +5,7 @@ export default function UpcomingEvents() {
         <div className="mb-5 sm:mb-6">
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0c2461]">Upcoming Events</h1>
         </div>
-
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
-          <Image
-            src="/events/1.png"
-            alt="Upcoming event announcement"
-            width={702}
-            height={587}
-            className="h-auto w-full object-contain"
-            priority
-          />
-        </div>
+        <p className="text-sm sm:text-base text-slate-600">There are no upcoming events so far.</p>
       </section>
     </main>
   );
