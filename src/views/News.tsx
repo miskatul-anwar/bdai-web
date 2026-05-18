@@ -168,9 +168,6 @@ export default function News() {
                             <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                                 <div className="max-w-4xl">
                                     <div className="mb-3 flex items-center gap-3">
-                                        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-sky-500/10 text-sm font-semibold text-sky-700 dark:text-sky-300">
-                                            {String(index + 1).padStart(2, "0")}
-                                        </span>
                                         <time className="text-sm font-medium text-slate-500 dark:text-slate-400">{formatDate(item.date)}</time>
                                     </div>
                                     <h3 className="text-xl font-semibold leading-snug text-slate-900 dark:text-white sm:text-2xl">
