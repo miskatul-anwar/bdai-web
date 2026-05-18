@@ -61,6 +61,14 @@ const studentResearchers = [
     image: '/team/atikishrak.jpg',
   },
   {
+    id: 'kais',
+    role: 'Research Assistant',
+    name: 'Md. Kais',
+    email: 'mdkais3@gmail.com',
+    affiliation: 'Student, CSE, CU',
+    image: '/team/kais.jpg',
+  },
+  {
     id: 'raihan',
     role: 'Masters Fellow',
     name: 'Md Raihan Kabir Rifat',
@@ -71,14 +79,6 @@ const studentResearchers = [
 ];
 
 const dataAnnotators = [
-  {
-    id: 'kais',
-    role: 'Data Annotator',
-    name: 'Md. Kais',
-    email: 'mdkais3@gmail.com',
-    affiliation: 'Student, CSE, CU',
-    image: '/team/kais.jpg',
-  },
   {
     id: 'minhaj',
     role: 'Data Annotator',
