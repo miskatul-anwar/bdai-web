@@ -11,7 +11,7 @@ type NewsItem = {
 const newsData: NewsItem[] = [
     {
         id: 1,
-        title: "Md. Mosaddek Khan, Assistant Professor of CSE, DU, presented: RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics",
+        title: "Md. Mosaddek Khan, Associate Professor of CSE, DU, presented: RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics",
         date: "2026-05-19",
         summary: "",
         tags: ["Seminar", "BDAI", "Business Intelligence"],
