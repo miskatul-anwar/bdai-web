@@ -17,6 +17,7 @@ export default function HeldEvents() {
       <section className="mx-auto max-w-4xl rounded-3xl border border-white/70 bg-white p-5 sm:p-8 shadow-[0_12px_40px_rgba(15,23,42,0.08)]">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0c2461]">Held Events</h1>
         <p className="mt-3 text-sm sm:text-base font-medium text-slate-700">2.00PM · 14th May 2026</p>
+        <h2 className="mt-3 text-lg sm:text-xl font-semibold text-[#0c2461]">Identificatin of the Digital Footprints of Cyberbullying and the personality traits of the perpretators to protect the malicious activity</h2>
 
         <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50">
           <Image
