@@ -11,17 +11,24 @@ type NewsItem = {
 const newsData: NewsItem[] = [
     {
         id: 1,
-        title: "RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics",
+        title: "Md. Mosaddek Khan, Assistant Professor of CSE, DU, presented: RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics",
         date: "2026-05-19",
         summary: "",
         tags: ["Seminar", "BDAI", "Business Intelligence"],
     },
     {
         id: 2,
-        title: "Identificatin of the Digital Footprints of Cyberbullying and the personality traits of the perpretators to protect the malicious activity",
+        title: "Md Nesarul Hoque successfully presented his PhD Open Seminar-II",
         date: "2026-05-14",
         summary: "",
         tags: ["Seminar", "Cyberbullying", "Security"],
+    },
+    {
+        id: 18,
+        title: "Professor Dr. Rudra Pratap Deb Nath Presented the Progress of the BDAI Sub-Project to the World Bank, UGC, and HEAT Delegates",
+        date: "2026-05-02",
+        summary: "",
+        tags: ["Presentation", "BDAI", "World Bank", "UGC", "HEAT"],
     },
     {
         id: 3,
@@ -194,4 +201,3 @@ export default function News() {
         </main>
     );
 };
-
