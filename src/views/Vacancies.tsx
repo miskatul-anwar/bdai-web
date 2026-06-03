@@ -60,7 +60,7 @@ export default function Vacancies() {
         <article className="rounded-3xl border border-white/10 bg-white p-4">
           <img
             src="/position1.jpeg"
-            alt="Position notice image"
+            alt="e-Tender Notice for AI workstations under the HEAT-13211-CU ATF Sub-Project"
             className="w-full rounded-2xl border border-slate-200 object-contain"
           />
         </article>

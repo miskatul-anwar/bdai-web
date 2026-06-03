@@ -13,7 +13,7 @@ const newsData: NewsItem[] = [
         id: 19,
         title: "e-Tenders are invited on the National e-GP System Portal (https://www.eprocure.gov.bd) for the procurement of the following goods under the HEAT-13211-CU ATF Sub-Project by the Department of Computer Science and Engineering, University of Chittagong, Chattogram",
         date: "2026-06-02",
-        summary: "",
+        summary: "The project has published an e-Tender notice for supply and installation of AI workstations under the HEAT-13211-CU ATF sub-project.",
         tags: ["e-Tender", "HEAT", "Procurement", "CSE CU"],
     },
     {
