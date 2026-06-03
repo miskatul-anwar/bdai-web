@@ -20,7 +20,8 @@ import {
   Package,
   Handshake,
   Hammer,
-  CalendarDays
+  CalendarDays,
+  Briefcase
 } from 'lucide-react';
 import Image from 'next/image';
 
@@ -76,6 +77,7 @@ const NAV_ITEMS: NavItem[] = [
       { name: 'Upcoming', href: '/events/upcoming', icon: CalendarDays },
     ],
   },
+  { name: 'Vacancies', href: '/vacancies', icon: Briefcase },
   { name: 'Tools', href: '/tools', icon: Hammer },
 ];
 

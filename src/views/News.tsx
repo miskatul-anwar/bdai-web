@@ -10,6 +10,13 @@ type NewsItem = {
 
 const newsData: NewsItem[] = [
     {
+        id: 19,
+        title: "e-Tenders are invited on the National e-GP System Portal (https://www.eprocure.gov.bd) for the procurement of the following goods under the HEAT-13211-CU ATF Sub-Project by the Department of Computer Science and Engineering, University of Chittagong, Chattogram",
+        date: "2026-06-02",
+        summary: "",
+        tags: ["e-Tender", "HEAT", "Procurement", "CSE CU"],
+    },
+    {
         id: 1,
         title: "Md. Mosaddek Khan, Associate Professor of CSE, DU, presented: RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics",
         date: "2026-05-19",

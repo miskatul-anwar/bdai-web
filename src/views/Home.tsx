@@ -80,6 +80,19 @@ export default function Home() {
 
   return (
     <main style={{ fontFamily: "'DM Sans', 'Inter', sans-serif" }}>
+      <button
+        type="button"
+        onClick={() => router.push('/vacancies')}
+        className="w-full bg-amber-400 text-slate-900 py-1.5 overflow-hidden border-y border-amber-300 cursor-pointer"
+        aria-label="Open vacancies page"
+      >
+        <div className="w-max whitespace-nowrap text-[10px] sm:text-[11px] font-bold tracking-[0.08em] uppercase" style={{ animation: 'vacancyTicker 13s linear infinite' }}>
+          {Array.from({ length: 6 }).map((_, i) => (
+            <span key={i} className="mx-5">New Position Open • Click Here for Vacancies</span>
+          ))}
+        </div>
+      </button>
+      <style>{`@keyframes vacancyTicker{from{transform:translateX(0)}to{transform:translateX(-50%)}}`}</style>
 
       {/* ── Compact Hero ───────────────────────────────── */}
       <section className="relative min-h-[36vh] bg-[#07101f] flex items-center overflow-hidden">
