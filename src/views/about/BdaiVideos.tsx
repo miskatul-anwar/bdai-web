@@ -20,6 +20,12 @@ const videosData: VideoItem[] = [
     url: 'https://www.youtube.com/watch?v=J2VZUgkArZY',
     videoId: 'J2VZUgkArZY',
   },
+  {
+    url: 'https://drive.google.com/drive/folders/1O7XGQ0k81bPCVmXFc-UZp8Bq7r7EajyL',
+    videoId: 'bdai-lab-preview',
+    title: 'BDAI Lab Video Preview',
+    thumbnail: '/bdai-lab-preview.png',
+  },
 ];
 
 const getThumbnail = (video: VideoItem) =>
@@ -34,6 +40,9 @@ export default function BdaiVideos() {
     const loadTitles = async () => {
       const result = await Promise.all(
         videosData.map(async (video) => {
+          if (!video.url.includes('youtube.com') && !video.url.includes('youtu.be')) {
+            return video;
+          }
           try {
             const response = await fetch(
               `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`
@@ -93,7 +102,7 @@ export default function BdaiVideos() {
                 <div className="relative aspect-video bg-black overflow-hidden">
                   <img
                     src={getThumbnail(video)}
-                    alt={video.title ?? 'YouTube video thumbnail'}
+                    alt={video.title ?? 'Video thumbnail'}
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                     loading="lazy"
                   />

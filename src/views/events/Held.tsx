@@ -4,6 +4,21 @@ import Image from 'next/image';
 
 const heldEvents = [
   {
+    date: '29th July 2026',
+    title: 'Professor Dr. Debasish Ghose from Kristiania University College, Norway visited our lab for collaboration purpose. He delivers an intensive quality paper writing workshop.',
+    banner: '/events/workshop_banner.jpeg',
+    gallery: [
+      { src: '/events/workshop_1.jpeg', alt: 'Workshop participants gathered with Prof. Dr. Debasish Ghose' },
+      { src: '/events/workshop_2.jpeg', alt: 'Collaborators and researchers in the department hallway' },
+      { src: '/events/workshop_3.jpeg', alt: 'Prof. Dr. Debasish Ghose, Prof. Dr. Rudra Pratap Deb Nath, and Dr. Abu Nowshed Chy at SPMT office' },
+      { src: '/events/workshop_4.jpeg', alt: 'Faculty and visiting professor outside SPMT office' },
+      { src: '/events/workshop_5.jpeg', alt: 'Collaboration meeting at SPMT office' },
+      { src: '/events/workshop_6.jpeg', alt: 'Research discussion at SPMT office' },
+      { src: '/events/workshop_7.jpeg', alt: 'Faculty collaboration outside BIKE Lab SPMT office' },
+      { src: '/events/workshop_8.jpeg', alt: 'Group photo in the BDAI lab' },
+    ],
+  },
+  {
     date: '2.00PM · 19th May 2026',
     title: 'RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics',
     banner: '/events/seminar2.jpg',
