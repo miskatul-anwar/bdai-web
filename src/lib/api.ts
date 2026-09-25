@@ -176,3 +176,8 @@ export async function fetchSiteSettings(): Promise<SiteSettings | null> {
   return fetchFromBackend<SiteSettings>('/settings');
 }
 
+export async function fetchPartners(): Promise<any[]> {
+  const data = await fetchFromBackend<any[]>('/partners');
+  return data && Array.isArray(data) ? data : [];
+}
+

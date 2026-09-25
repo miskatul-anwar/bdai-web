@@ -33,12 +33,10 @@ const staticObjectives = [
 
 export default function Objectives() {
   const [objectivesList, setObjectivesList] = useState(staticObjectives);
-  const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
 
   useEffect(() => {
     fetchObjectives().then((data) => {
       if (data && data.length > 0) {
-        setIsLiveFromBackend(true);
         const enriched = data.map((d) => {
           const match = staticObjectives.find((so) => so.id === d.id);
           return {
@@ -66,12 +64,6 @@ export default function Objectives() {
               <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Objectives</h1>
             </div>
           </div>
-          {isLiveFromBackend && (
-            <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live Backend API
-            </div>
-          )}
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

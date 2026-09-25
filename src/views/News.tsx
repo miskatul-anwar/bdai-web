@@ -165,12 +165,10 @@ const formatDate = (date: string) =>
 
 export default function News() {
     const [articles, setArticles] = useState<NewsItem[]>(newsData);
-    const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
 
     useEffect(() => {
         fetchNews().then((data) => {
             if (data && data.length > 0) {
-                setIsLiveFromBackend(true);
                 const mapped: NewsItem[] = data.map((d) => ({
                     id: d.id,
                     title: d.title,
@@ -205,12 +203,6 @@ export default function News() {
                                 Recent announcements, research milestones, tenders, and opportunities related to the BDAI and BIKE initiatives.
                             </p>
                         </div>
-                        {isLiveFromBackend && (
-                            <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                                Live Backend API
-                            </div>
-                        )}
                     </div>
                 </div>
             </section>

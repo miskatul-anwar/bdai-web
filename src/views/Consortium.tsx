@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Users, ExternalLink } from 'lucide-react';
-import { fetchSiteSettings } from '@/lib/api';
+import { fetchSiteSettings, fetchPartners } from '@/lib/api';
 
 const DEFAULT_PARTNERS = [
   {
@@ -42,17 +42,40 @@ export default function Consortium() {
   const [partners, setPartners] = useState(DEFAULT_PARTNERS);
 
   useEffect(() => {
-    fetchSiteSettings().then((data) => {
-      if (data?.partners && data.partners.length > 0) {
-        setPartners(data.partners.map((p) => ({
-          name: p.name,
-          logo: p.logo,
-          description: p.desc || (p as any).description || '',
-          url: p.url,
-          role: p.role,
-        })));
+    async function loadPartners() {
+      try {
+        const directPartners = await fetchPartners();
+        if (directPartners && directPartners.length > 0) {
+          setPartners(
+            directPartners.map((p) => ({
+              name: p.name,
+              logo: p.logo,
+              description: p.description || p.desc || '',
+              url: p.website || p.url,
+              role: p.role || p.type,
+            }))
+          );
+          return;
+        }
+
+        const data = await fetchSiteSettings();
+        if (data?.partners && data.partners.length > 0) {
+          setPartners(
+            data.partners.map((p) => ({
+              name: p.name,
+              logo: p.logo,
+              description: p.desc || (p as any).description || '',
+              url: p.url || (p as any).website,
+              role: p.role || p.type,
+            }))
+          );
+        }
+      } catch {
+        // preserve defaults if backend is unavailable
       }
-    });
+    }
+
+    loadPartners();
   }, []);
 
   return (

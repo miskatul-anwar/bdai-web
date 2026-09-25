@@ -6,12 +6,10 @@ import { fetchVacancies, BackendVacancy } from '@/lib/api';
 
 export default function Vacancies() {
   const [vacancies, setVacancies] = useState<BackendVacancy[]>([]);
-  const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
 
   useEffect(() => {
     fetchVacancies().then((data) => {
       if (data && data.length > 0) {
-        setIsLiveFromBackend(true);
         setVacancies(data);
       }
     });
@@ -31,12 +29,6 @@ export default function Vacancies() {
                 e-Tender notices and academic fellowship positions under the HEAT-13211-CU ATF Sub-Project, Department of Computer Science and Engineering, University of Chittagong.
               </p>
             </div>
-            {isLiveFromBackend && (
-              <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                Live Backend API
-              </div>
-            )}
           </div>
         </div>
       </section>

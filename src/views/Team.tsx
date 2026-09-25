@@ -194,13 +194,10 @@ export default function Team() {
   const [liveResearchers, setLiveResearchers] = useState(studentResearchers);
   const [liveAnnotators, setLiveAnnotators] = useState(dataAnnotators);
   const [liveStaff, setLiveStaff] = useState(staffMembers);
-  const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
 
   useEffect(() => {
     fetchTeam().then((data) => {
       if (data && data.length > 0) {
-        setIsLiveFromBackend(true);
-
         const mappedProf = data
           .filter((m) => {
             const des = (m.designation || '').toLowerCase();
@@ -289,12 +286,6 @@ export default function Team() {
               <p className="text-sm text-gray-500">SPM Team, Student Researchers, and Data Annotators</p>
             </div>
           </div>
-          {isLiveFromBackend && (
-            <div className="inline-flex items-center gap-2 self-start sm:self-auto px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              Live Backend API
-            </div>
-          )}
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">

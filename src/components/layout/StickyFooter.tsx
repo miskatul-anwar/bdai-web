@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { APP_DATA } from '../../constants';
+import { fetchSiteSettings } from '@/lib/api';
 
 export function StickyFooter() {
   const { scrollY } = useScroll();
+  const [partnerLogos, setPartnerLogos] = useState(APP_DATA.partners);
+
+  useEffect(() => {
+    fetchSiteSettings().then((s) => {
+      if (s?.partners && s.partners.length > 0) {
+        setPartnerLogos(
+          s.partners.map((p) => ({
+            name: p.name,
+            logo: p.logo,
+          }))
+        );
+      }
+    });
+  }, []);
   
   // Show the footer after scrolling past 300px
   const y = useTransform(scrollY, [200, 400], [100, 0]);
@@ -25,7 +40,7 @@ export function StickyFooter() {
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-6 md:gap-10 flex-grow">
-          {APP_DATA.partners.map((partner, i) => (
+          {partnerLogos.map((partner, i) => (
             <motion.img 
               key={i} 
               initial={{ opacity: 0 }}
