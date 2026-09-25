@@ -4,13 +4,16 @@ import Navbar from '@/layouts/Navbar';
 import Footer from '@/layouts/Footer';
 export const metadata: Metadata = {
   title: 'BDAI',
-  // icons: {
-  //   icon: './bdai-logo.png',
-  //   shortcut: './bdai-logo.png',
-  //   apple: './bdai-logo.png',
-  // },
   description:
     'BanglaDesh Sectoral Knowledge Graphs and Large Language Models for Artificial Intelligence-Driven Insights',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.png', type: 'image/png', sizes: '32x32' },
+    ],
+    apple: '/apple-icon.png',
+    shortcut: '/favicon.ico',
+  },
 };
 
 export default function RootLayout({
