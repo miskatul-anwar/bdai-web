@@ -287,3 +287,42 @@ export async function fetchVideos(): Promise<BackendVideo[] | null> {
   return null;
 }
 
+export interface BackendGalleryItem {
+  src: string;
+  alt: string;
+}
+
+export interface BackendEvent {
+  id: string;
+  title: string;
+  date: string;
+  status: 'held' | 'upcoming' | string;
+  category?: string;
+  location?: string | null;
+  description?: string | null;
+  banner: string;
+  gallery?: BackendGalleryItem[];
+  order?: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export function getCachedEvents(status?: string): BackendEvent[] | null {
+  const all = getCachedData<BackendEvent[]>('/events');
+  if (!all) return null;
+  if (status) {
+    const s = status.toLowerCase();
+    return all.filter((e) => (e.status || '').toLowerCase() === s);
+  }
+  return all;
+}
+
+export async function fetchEvents(params?: { status?: string }): Promise<BackendEvent[] | null> {
+  const qs = params?.status ? `?status=${encodeURIComponent(params.status)}` : '';
+  const data = await fetchFromBackend<BackendEvent[]>(`/events${qs}`);
+  if (data && !params?.status) {
+    setCachedData('/events', data);
+  }
+  return data;
+}
+
