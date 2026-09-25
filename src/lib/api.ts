@@ -202,3 +202,17 @@ export async function fetchTools(): Promise<BackendTool[] | null> {
   return fetchFromBackend<BackendTool[]>('/tools');
 }
 
+export interface BackendVideo {
+  id: string;
+  title: string;
+  url: string;
+  thumbnail?: string | null;
+  description?: string | null;
+  posted_at?: string | null;
+  order?: number;
+}
+
+export async function fetchVideos(): Promise<BackendVideo[] | null> {
+  return fetchFromBackend<BackendVideo[]>('/videos');
+}
+
