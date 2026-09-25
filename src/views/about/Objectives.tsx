@@ -39,11 +39,14 @@ export default function Objectives() {
     fetchObjectives().then((data) => {
       if (data && data.length > 0) {
         setIsLiveFromBackend(true);
-        const enriched = staticObjectives.map((so) => {
-          const match = data.find((d) => d.id === so.id);
-          return match
-            ? { ...so, title: match.title, progress: match.progress }
-            : so;
+        const enriched = data.map((d) => {
+          const match = staticObjectives.find((so) => so.id === d.id);
+          return {
+            id: d.id,
+            title: d.title,
+            progress: d.progress,
+            images: match ? match.images : [RPDN_IMAGE, MISKAT_IMAGE],
+          };
         });
         setObjectivesList(enriched);
       }

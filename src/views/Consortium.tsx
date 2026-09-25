@@ -1,8 +1,11 @@
-import React from 'react';
-import Image from 'next/image';
-import { Users } from 'lucide-react';
+'use client';
 
-const partners = [
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { Users, ExternalLink } from 'lucide-react';
+import { fetchSiteSettings } from '@/lib/api';
+
+const DEFAULT_PARTNERS = [
   {
     name: 'BIKE LAB',
     logo: '/Bike.png',
@@ -36,6 +39,22 @@ const partners = [
 ];
 
 export default function Consortium() {
+  const [partners, setPartners] = useState(DEFAULT_PARTNERS);
+
+  useEffect(() => {
+    fetchSiteSettings().then((data) => {
+      if (data?.partners && data.partners.length > 0) {
+        setPartners(data.partners.map((p) => ({
+          name: p.name,
+          logo: p.logo,
+          description: p.desc || (p as any).description || '',
+          url: p.url,
+          role: p.role,
+        })));
+      }
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-5xl mx-auto">
@@ -46,8 +65,8 @@ export default function Consortium() {
             <Users className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Partners</h1>
-            <p className="text-sm text-gray-500">Partner institutions & collaborators</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Partners &amp; Consortium</h1>
+            <p className="text-sm text-gray-500">Partner institutions &amp; collaborators</p>
           </div>
         </div>
 
@@ -58,19 +77,37 @@ export default function Consortium() {
               key={i}
               className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col gap-4"
             >
-              <div className="flex items-center gap-4 border-b border-gray-50 pb-4">
-                <div className="relative w-16 h-16 flex-shrink-0">
-                  <Image
-                    src={partner.logo}
-                    alt={`${partner.name} logo`}
-                    fill
-                    className="object-contain"
-                    unoptimized
-                  />
+              <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                <div className="flex items-center gap-4">
+                  <div className="relative w-16 h-16 flex-shrink-0">
+                    <Image
+                      src={partner.logo}
+                      alt={`${partner.name} logo`}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-bold text-[#0c2461]">
+                      {partner.name}
+                    </h2>
+                    {(partner as any).role && (
+                      <p className="text-xs text-gray-400">{(partner as any).role}</p>
+                    )}
+                  </div>
                 </div>
-                <h2 className="text-lg font-bold text-[#0c2461]">
-                  {partner.name}
-                </h2>
+
+                {(partner as any).url && (partner as any).url !== '#' && (
+                  <a
+                    href={(partner as any).url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 rounded-xl text-gray-400 hover:text-[#0c2461] hover:bg-slate-50 transition-colors"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
               </div>
               <p className="text-sm text-gray-600 leading-relaxed">
                 {partner.description}

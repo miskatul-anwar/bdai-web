@@ -103,3 +103,76 @@ export async function fetchVacancies(): Promise<BackendVacancy[] | null> {
 export async function fetchObjectives(): Promise<BackendObjective[] | null> {
   return fetchFromBackend<BackendObjective[]>('/objectives');
 }
+
+export interface SiteSettings {
+  hero_stats?: Array<{ label: string; value: string; sub?: string; color?: string }>;
+  hero_content?: {
+    badge?: string;
+    title?: string;
+    title_highlight?: string;
+    subtitle?: string;
+    primary_btn_text?: string;
+    primary_btn_url?: string;
+    secondary_btn_text?: string;
+    secondary_btn_url?: string;
+  };
+  about?: {
+    vision?: string;
+    mission?: string;
+    research_areas?: Array<{ title: string; desc: string }>;
+  };
+  sectors?: Array<{
+    id: string;
+    name: string;
+    bengali: string;
+    desc: string;
+    color: string;
+    icon?: string;
+  }>;
+  partners?: Array<{
+    name: string;
+    type?: string;
+    role?: string;
+    logo: string;
+    desc?: string;
+    url?: string;
+  }>;
+  work_packages?: Array<{
+    id: string;
+    title: string;
+    lead?: string;
+    status?: string;
+    objective: string;
+    highlights?: string[];
+    tasks?: string[];
+  }>;
+  publications?: Array<{
+    id: string;
+    title: string;
+    authors: string;
+    venue: string;
+    year: string;
+    doi_url?: string;
+    pdf_url?: string;
+  }>;
+  reports?: Array<{
+    id: string;
+    title: string;
+    wp?: string;
+    type?: string;
+    date?: string;
+    size?: string;
+    download_url?: string;
+  }>;
+  contact?: {
+    office?: string;
+    email?: string;
+    sub_project?: string;
+    copyright?: string;
+  };
+}
+
+export async function fetchSiteSettings(): Promise<SiteSettings | null> {
+  return fetchFromBackend<SiteSettings>('/settings');
+}
+

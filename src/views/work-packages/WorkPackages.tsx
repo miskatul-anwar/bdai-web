@@ -1,5 +1,8 @@
-import React from 'react';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import { Package, CheckSquare, Layers, Target } from 'lucide-react';
+import { fetchSiteSettings } from '@/lib/api';
 
 interface Task {
   id: string;
@@ -15,6 +18,30 @@ interface WPPageProps {
 }
 
 function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
+  const [data, setData] = useState({ title, objective, tasks, highlights });
+
+  useEffect(() => {
+    fetchSiteSettings().then((settings) => {
+      if (settings?.work_packages && settings.work_packages.length > 0) {
+        const match = settings.work_packages.find(
+          (wp: any) =>
+            wp.id?.toLowerCase() === `wp${number}`.toLowerCase() ||
+            wp.title?.toLowerCase().includes(`wp${number}`.toLowerCase())
+        );
+        if (match) {
+          setData({
+            title: match.title || title,
+            objective: match.objective || objective,
+            highlights: Array.isArray(match.highlights) && match.highlights.length > 0 ? match.highlights : highlights,
+            tasks: Array.isArray(match.tasks) && match.tasks.length > 0
+              ? match.tasks.map((t: any, idx: number) => typeof t === 'string' ? { id: `T${number}.${idx + 1}`, label: t } : t)
+              : tasks,
+          });
+        }
+      }
+    });
+  }, [number, title, objective, tasks, highlights]);
+
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-4xl mx-auto">
@@ -24,7 +51,7 @@ function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
           </div>
           <div>
             <p className="text-xs font-semibold uppercase tracking-widest text-[#0c2461]/60">Work Packages</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">WP{number}: {title}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">WP{number}: {data.title}</h1>
           </div>
         </div>
 
@@ -34,7 +61,7 @@ function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
               <Target className="w-4 h-4 text-[#0c2461]" />
               <h2 className="font-bold text-[#0c2461]">Objective</h2>
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">{objective}</p>
+            <p className="text-gray-600 text-sm leading-relaxed">{data.objective}</p>
           </div>
           <div className="bg-[#0c2461] rounded-2xl p-6 text-white">
             <div className="flex items-center gap-2 mb-4">
@@ -42,7 +69,7 @@ function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
               <h3 className="font-bold text-sm uppercase tracking-wider opacity-70">Highlights</h3>
             </div>
             <ul className="space-y-2">
-              {highlights.map((h, i) => (
+              {data.highlights.map((h, i) => (
                 <li key={i} className="text-xs leading-relaxed opacity-90 flex items-start gap-2">
                   <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#60a5fa] flex-shrink-0" />
                   {h}
@@ -58,7 +85,7 @@ function WPPage({ number, title, objective, tasks, highlights }: WPPageProps) {
             <h2 className="font-bold text-[#0c2461]">Tasks</h2>
           </div>
           <div className="space-y-3">
-            {tasks.map((task) => (
+            {data.tasks.map((task) => (
               <div key={task.id} className="flex items-start gap-3">
                 <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0c2461]/10 text-[#0c2461] font-bold text-xs flex-shrink-0 mt-0.5 whitespace-nowrap">
                   {task.id}

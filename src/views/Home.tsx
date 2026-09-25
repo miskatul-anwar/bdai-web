@@ -1,18 +1,28 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   ArrowRight, ChevronRight,
-  TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane, Apple, Factory, Scale, Flag
+  TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane, Apple, Factory, Scale, Flag,
+  Sprout, Compass, Sparkles
 } from 'lucide-react';
+import { fetchSiteSettings, SiteSettings } from '@/lib/api';
 
+/* ─── Icon Map for Dynamic Sectors ──────────────────── */
+const ICON_MAP: Record<string, any> = {
+  TrendingUp: TrendingUpIcon,
+  Leaf: Leaf,
+  Sprout: Sprout,
+  HeartPulse: HeartPulse,
+  GraduationCap: GraduationCap,
+  Plane: Plane,
+  Compass: Compass,
+};
 
+/* ─── Defaults (Initial fallback before API responds) ──────────────── */
 
-
-/* ─── Data ─────────────────────────────────────────── */
-
-const SECTORS = [
+const DEFAULT_SECTORS = [
   { icon: TrendingUpIcon, label: 'Socio-Economics' },
   { icon: Leaf, label: 'Agriculture' },
   { icon: HeartPulse, label: 'Healthcare' },
@@ -20,14 +30,14 @@ const SECTORS = [
   { icon: Plane, label: 'Tourism' },
 ];
 
-const STATS = [
+const DEFAULT_STATS = [
   { value: '5+', label: 'Sectors' },
   { value: '1', label: 'Publications' },
   { value: '5+', label: 'AI Tools' },
   { value: '20+', label: 'Researchers' },
 ];
 
-const ORGANIZATIONS = [
+const DEFAULT_ORGANIZATIONS = [
   {
     name: 'HEAT Bangladesh',
     logo: 'https://heat.ugc.gov.bd/heat-gov-images/logos/logo.svg',
@@ -68,6 +78,14 @@ export default function Home() {
   const heroGridRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    fetchSiteSettings().then((data) => {
+      if (data) setSettings(data);
+    });
+  }, []);
+
   useEffect(() => {
     const onScroll = () => {
       if (heroGridRef.current) {
@@ -77,6 +95,22 @@ export default function Home() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  // Dynamic Content Resolution
+  const hero = settings?.hero_content;
+  const stats = settings?.hero_stats && settings.hero_stats.length > 0 ? settings.hero_stats : DEFAULT_STATS;
+  const sectors = settings?.sectors && settings.sectors.length > 0
+    ? settings.sectors.map((s) => ({
+        icon: ICON_MAP[s.icon || ''] || TrendingUpIcon,
+        label: s.name,
+      }))
+    : DEFAULT_SECTORS;
+  const organizations = settings?.partners && settings.partners.length > 0
+    ? settings.partners.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+      }))
+    : DEFAULT_ORGANIZATIONS;
 
   return (
     <main style={{ fontFamily: "'DM Sans', 'Inter', sans-serif" }}>
@@ -118,30 +152,34 @@ export default function Home() {
           {/* Tagline + CTAs */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-[clamp(13px,1.4vw,16px)] text-slate-400 leading-[1.6] max-w-lg m-0">
-              Leveraging <span className="text-blue-400 font-bold">B</span>angla<span className="text-blue-400 font-bold">D</span>esh Sectoral Knowledge Graphs and Large Language Modes for <span className="text-blue-400 font-bold">A</span>rtificial <span className="text-blue-400 font-bold">I</span>ntelligence Driven Instights.
+              {hero?.subtitle || (
+                <>
+                  Leveraging <span className="text-blue-400 font-bold">B</span>angla<span className="text-blue-400 font-bold">D</span>esh Sectoral Knowledge Graphs and Large Language Modes for <span className="text-blue-400 font-bold">A</span>rtificial <span className="text-blue-400 font-bold">I</span>ntelligence Driven Instights.
+                </>
+              )}
             </p>
 
             <div className="flex gap-2 items-center">
               <button
-                onClick={() => router.push('/tools')}
+                onClick={() => router.push(hero?.primary_btn_url || '/tools')}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500 text-white border-none cursor-pointer text-[11px] font-semibold tracking-[0.04em] uppercase transition-opacity hover:opacity-85"
               >
-                Explore Tools <ArrowRight size={13} />
+                {hero?.primary_btn_text || 'Explore Tools'} <ArrowRight size={13} />
               </button>
               <a
-                href="https://web.bike-csecu.com"
-                target="_blank"
+                href={hero?.secondary_btn_url || 'https://web.bike-csecu.com'}
+                target={hero?.secondary_btn_url?.startsWith('http') ? '_blank' : '_self'}
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-3 py-2 rounded-full text-slate-400 border border-slate-700 cursor-pointer no-underline text-[11px] font-medium tracking-[0.04em] uppercase transition-colors hover:border-slate-500 hover:text-slate-200"
               >
-                BIKE <ChevronRight size={13} />
+                {hero?.secondary_btn_text || 'BIKE'} <ChevronRight size={13} />
               </a>
             </div>
           </div>
 
           {/* Stats (compact) */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 mt-8 border border-slate-800 rounded-lg overflow-hidden text-sm">
-            {STATS.map((s, i) => (
+            {stats.map((s, i) => (
               <div
                 key={i}
                 className="py-3 px-3 text-center bg-slate-900/50 border-r border-slate-800 last:border-r-0"
@@ -164,7 +202,7 @@ export default function Home() {
           className="flex gap-8 whitespace-nowrap w-max"
           style={{ animation: 'ticker 18s linear infinite' }}
         >
-          {[...SECTORS, ...SECTORS, ...SECTORS].map(({ icon: Icon, label }, i) => (
+          {[...sectors, ...sectors, ...sectors].map(({ icon: Icon, label }, i) => (
             <span
               key={i}
               className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] uppercase text-white/90"
@@ -191,7 +229,7 @@ export default function Home() {
               className="flex items-stretch gap-5 w-max"
               style={{ animation: 'orgTicker 20.8s linear infinite reverse', transform: 'translateX(-50%)' }}
             >
-              {[...ORGANIZATIONS, ...ORGANIZATIONS].map((org, i) => (
+              {[...organizations, ...organizations].map((org, i) => (
                 <div
                   key={i}
                   className="w-[190px] shrink-0 bg-white border border-slate-200 rounded-xl p-4 md:p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow"
