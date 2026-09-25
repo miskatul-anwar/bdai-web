@@ -319,10 +319,61 @@ export function getCachedEvents(status?: string): BackendEvent[] | null {
 
 export async function fetchEvents(params?: { status?: string }): Promise<BackendEvent[] | null> {
   const qs = params?.status ? `?status=${encodeURIComponent(params.status)}` : '';
-  const data = await fetchFromBackend<BackendEvent[]>(`/events${qs}`);
-  if (data && !params?.status) {
-    setCachedData('/events', data);
+
+  // 1. Try dedicated REST endpoint: /events
+  try {
+    const direct = await fetchFromBackend<BackendEvent[]>(`/events${qs}`);
+    if (direct && Array.isArray(direct) && direct.length > 0) {
+      if (!params?.status) setCachedData('/events', direct);
+      return direct;
+    }
+  } catch {}
+
+  // 2. Fallback to site settings: /settings/events
+  try {
+    const fromSettings = await fetchFromBackend<any>('/settings/events');
+    if (fromSettings) {
+      let list: BackendEvent[] = [];
+      if (Array.isArray(fromSettings)) list = fromSettings;
+      else if (Array.isArray(fromSettings.data)) list = fromSettings.data;
+
+      if (list.length > 0) {
+        if (params?.status) {
+          const s = params.status.toLowerCase();
+          return list.filter((e) => (e.status || '').toLowerCase() === s);
+        }
+        return list;
+      }
+    }
+  } catch {}
+
+  // 3. Fallback direct to Supabase REST API (high-availability failover)
+  try {
+    const supabaseUrl = 'https://qcqwzeaoukkhfvhrbygf.supabase.co/rest/v1/site_settings?id=eq.events&select=data';
+    const anonKey =
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjcXd6ZWFvdWtraGZ2aHJieWdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNzIyMDIsImV4cCI6MjEwNTg0ODIwMn0.QTUyXl189Cy_1xFgz35980EUYC9al-5DjEyThxdOdp4';
+    const res = await fetch(supabaseUrl, {
+      headers: {
+        apikey: anonKey,
+        Authorization: `Bearer ${anonKey}`,
+      },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data[0]?.data && Array.isArray(data[0].data)) {
+        let list: BackendEvent[] = data[0].data;
+        if (params?.status) {
+          const s = params.status.toLowerCase();
+          list = list.filter((e) => (e.status || '').toLowerCase() === s);
+        }
+        return list;
+      }
+    }
+  } catch (e) {
+    console.warn('Direct Supabase events failover error:', e);
   }
-  return data;
+
+  return null;
 }
+
 
