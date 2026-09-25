@@ -213,6 +213,15 @@ export interface BackendVideo {
 }
 
 export async function fetchVideos(): Promise<BackendVideo[] | null> {
-  return fetchFromBackend<BackendVideo[]>('/videos');
+  const direct = await fetchFromBackend<BackendVideo[]>('/videos');
+  if (direct && Array.isArray(direct) && direct.length > 0) {
+    return direct;
+  }
+  const fromSettings = await fetchFromBackend<any>('/settings/videos');
+  if (fromSettings) {
+    if (Array.isArray(fromSettings)) return fromSettings;
+    if (Array.isArray(fromSettings.data)) return fromSettings.data;
+  }
+  return null;
 }
 
