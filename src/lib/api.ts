@@ -181,3 +181,24 @@ export async function fetchPartners(): Promise<any[]> {
   return data && Array.isArray(data) ? data : [];
 }
 
+export interface BackendTool {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  description: string;
+  abstract?: string | null;
+  paper_url?: string | null;
+  source_url?: string | null;
+  platform_url?: string | null;
+  video_url?: string | null;
+  image_url?: string | null;
+  authors?: string | null;
+  features?: string[] | null;
+  display_order?: number;
+  badge?: string | null;
+}
+
+export async function fetchTools(): Promise<BackendTool[] | null> {
+  return fetchFromBackend<BackendTool[]>('/tools');
+}
+
