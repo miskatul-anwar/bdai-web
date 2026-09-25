@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Calendar, MapPin, X, ZoomIn, Image as ImageIcon } from 'lucide-react';
 import { fetchEvents, getCachedEvents, BackendEvent } from '@/lib/api';
+import { getEventTimestamp } from '@/lib/date-utils';
 
 const initialHeldEvents: BackendEvent[] = [
   {
     id: 'event_workshop_debasish',
     date: '29th July 2026',
+    date_iso: '2026-07-29',
     title: 'Professor Dr. Debasish Ghose from Kristiania University College, Norway visited our lab for collaboration purpose. He delivers an intensive quality paper writing workshop.',
     status: 'held',
     category: 'Workshop',
@@ -30,6 +32,7 @@ const initialHeldEvents: BackendEvent[] = [
   {
     id: 'event_seminar_rag_bi',
     date: '2.00PM · 19th May 2026',
+    date_iso: '2026-05-19T14:00',
     title: 'RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics',
     status: 'held',
     category: 'Seminar',
@@ -49,6 +52,7 @@ const initialHeldEvents: BackendEvent[] = [
   {
     id: 'event_phd_cyberbullying',
     date: '2.00PM · 14th May 2026',
+    date_iso: '2026-05-14T14:00',
     title: 'Identificatin of the Digital Footprints of Cyberbullying and the personality traits of the perpretators to protect the malicious activity',
     status: 'held',
     category: 'PhD Seminar',
@@ -82,7 +86,8 @@ export default function HeldEvents() {
       .then((data) => {
         if (isMounted) {
           if (data && Array.isArray(data) && data.length > 0) {
-            setEvents(data);
+            const sorted = [...data].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+            setEvents(sorted);
           } else if (events.length === 0) {
             setEvents(initialHeldEvents);
           }

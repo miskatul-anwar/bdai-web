@@ -3,6 +3,8 @@
  * Connects the public frontend directly to the Axum Rust Backend API.
  */
 
+import { getEventTimestamp } from './date-utils';
+
 export const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'https://bdai-backend.onrender.com/api';
 
@@ -296,6 +298,7 @@ export interface BackendEvent {
   id: string;
   title: string;
   date: string;
+  date_iso?: string;
   status: 'held' | 'upcoming' | string;
   category?: string;
   location?: string | null;
@@ -310,11 +313,12 @@ export interface BackendEvent {
 export function getCachedEvents(status?: string): BackendEvent[] | null {
   const all = getCachedData<BackendEvent[]>('/events');
   if (!all) return null;
+  let sorted = [...all].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
   if (status) {
     const s = status.toLowerCase();
-    return all.filter((e) => (e.status || '').toLowerCase() === s);
+    return sorted.filter((e) => (e.status || '').toLowerCase() === s);
   }
-  return all;
+  return sorted;
 }
 
 export async function fetchEvents(params?: { status?: string }): Promise<BackendEvent[] | null> {
@@ -324,6 +328,7 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
   try {
     const direct = await fetchFromBackend<BackendEvent[]>(`/events${qs}`);
     if (direct && Array.isArray(direct) && direct.length > 0) {
+      direct.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
       if (!params?.status) setCachedData('/events', direct);
       return direct;
     }
@@ -338,6 +343,7 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
       else if (Array.isArray(fromSettings.data)) list = fromSettings.data;
 
       if (list.length > 0) {
+        list.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
         if (params?.status) {
           const s = params.status.toLowerCase();
           return list.filter((e) => (e.status || '').toLowerCase() === s);
@@ -362,6 +368,7 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
       const data = await res.json();
       if (data && data[0]?.data && Array.isArray(data[0].data)) {
         let list: BackendEvent[] = data[0].data;
+        list.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
         if (params?.status) {
           const s = params.status.toLowerCase();
           list = list.filter((e) => (e.status || '').toLowerCase() === s);

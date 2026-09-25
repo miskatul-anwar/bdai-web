@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Calendar, MapPin, Sparkles, Clock } from 'lucide-react';
 import { fetchEvents, getCachedEvents, BackendEvent } from '@/lib/api';
+import { getEventTimestamp } from '@/lib/date-utils';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<BackendEvent[]>(() => {
@@ -19,7 +20,8 @@ export default function UpcomingEvents() {
       .then((data) => {
         if (isMounted) {
           if (data && Array.isArray(data)) {
-            setEvents(data);
+            const sorted = [...data].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+            setEvents(sorted);
           }
           setIsLoading(false);
         }
