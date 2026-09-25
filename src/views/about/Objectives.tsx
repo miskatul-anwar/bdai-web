@@ -1,6 +1,8 @@
-import React from 'react';
-// Link not used anymore; researchers displayed as images
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { Target } from 'lucide-react';
+import { fetchObjectives, BackendObjective } from '@/lib/api';
 
 const RAIHAN_IMAGE = '/team/raihan.jpg';
 const ATIKISHRAK_IMAGE = '/team/atikishrak.jpg';
@@ -18,7 +20,7 @@ const ANC_IMAGE = '/team/anc.png';
 const MMI_IMAGE = '/team/mmi.png';
 const SC_IMAGE = '/team/sc.png';
 
-const objectives = [
+const staticObjectives = [
   { id: 'OB1', title: 'Open Data Quality', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE] },
   { id: 'OB2', title: 'SMART Data Ecosystem', images: [RPDN_IMAGE, ARYAN_IMAGE, MISKAT_IMAGE] },
   { id: 'OB3', title: 'KG Construction', images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, KAUSIK_ISHIK_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, MINHAJ_IMAGE] },
@@ -30,17 +32,43 @@ const objectives = [
 ];
 
 export default function Objectives() {
+  const [objectivesList, setObjectivesList] = useState(staticObjectives);
+  const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
+
+  useEffect(() => {
+    fetchObjectives().then((data) => {
+      if (data && data.length > 0) {
+        setIsLiveFromBackend(true);
+        const enriched = staticObjectives.map((so) => {
+          const match = data.find((d) => d.id === so.id);
+          return match
+            ? { ...so, title: match.title, progress: match.progress }
+            : so;
+        });
+        setObjectivesList(enriched);
+      }
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-4xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-[#0c2461] flex items-center justify-center text-white">
-            <Target className="w-5 h-5" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#0c2461] flex items-center justify-center text-white">
+              <Target className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-[#0c2461]/60">About</p>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Objectives</h1>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-[#0c2461]/60">About</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Objectives</h1>
-          </div>
+          {isLiveFromBackend && (
+            <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Live Backend API
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -54,7 +82,7 @@ export default function Objectives() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {objectives.map((obj) => (
+                {objectivesList.map((obj) => (
                   <tr key={obj.id} className="hover:bg-[#0c2461]/[0.02] transition-colors">
                     <td className="py-4 px-6">
                       <span className="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#0c2461]/10 text-[#0c2461] font-black text-xs">

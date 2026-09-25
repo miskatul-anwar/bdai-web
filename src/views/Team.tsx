@@ -1,8 +1,8 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Users } from 'lucide-react';
+import { Users, Radio } from 'lucide-react';
+import { fetchTeam } from '@/lib/api';
 
 const professors = [
   {
@@ -190,24 +190,118 @@ function MemberAvatar({ src, name }: { src: string; name: string }) {
 }
 
 export default function Team() {
+  const [liveProfessors, setLiveProfessors] = useState(professors);
+  const [liveResearchers, setLiveResearchers] = useState(studentResearchers);
+  const [liveAnnotators, setLiveAnnotators] = useState(dataAnnotators);
+  const [liveStaff, setLiveStaff] = useState(staffMembers);
+  const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
+
+  useEffect(() => {
+    fetchTeam().then((data) => {
+      if (data && data.length > 0) {
+        setIsLiveFromBackend(true);
+
+        const mappedProf = data
+          .filter((m) => {
+            const des = (m.designation || '').toLowerCase();
+            const r = (m.role || '').toLowerCase();
+            const cat = (m.category || '').toLowerCase();
+            return cat === 'lead' || cat === 'co-lead' || des.includes('professor') || r.includes('spm');
+          })
+          .map((m) => ({
+            role: m.role || 'Professor',
+            name: m.name,
+            title: m.designation,
+            email: m.email || '',
+            image: m.image || '/team/miskat.jpg',
+          }));
+
+        if (mappedProf.length > 0) setLiveProfessors(mappedProf);
+
+        const mappedResearchers = data
+          .filter((m) => {
+            const des = (m.designation || '').toLowerCase();
+            const r = (m.role || '').toLowerCase();
+            const cat = (m.category || '').toLowerCase();
+            return (
+              (cat.includes('research') || r.includes('fellow') || r.includes('assistant') || des.includes('fellow') || des.includes('assistant')) &&
+              !r.includes('annotator') && !des.includes('annotator')
+            );
+          })
+          .map((m) => ({
+            id: m.id,
+            role: m.role || m.designation,
+            name: m.name,
+            email: m.email || '',
+            affiliation: m.institution || 'Student, CSE, CU',
+            image: m.image || '/team/miskat.jpg',
+          }));
+
+        if (mappedResearchers.length > 0) setLiveResearchers(mappedResearchers);
+
+        const mappedAnnotators = data
+          .filter((m) => {
+            const des = (m.designation || '').toLowerCase();
+            const r = (m.role || '').toLowerCase();
+            return r.includes('annotator') || des.includes('annotator');
+          })
+          .map((m) => ({
+            id: m.id,
+            role: m.role || 'Data Annotator',
+            name: m.name,
+            email: m.email || '',
+            affiliation: m.institution || 'Student, CSE, CU',
+            image: m.image || '/team/minhaj.png',
+          }));
+
+        if (mappedAnnotators.length > 0) setLiveAnnotators(mappedAnnotators);
+
+        const mappedStaff = data
+          .filter((m) => {
+            const des = (m.designation || '').toLowerCase();
+            const r = (m.role || '').toLowerCase();
+            return r.includes('manager') || r.includes('accountant') || r.includes('office') || des.includes('manager') || des.includes('accountant') || des.includes('office');
+          })
+          .map((m) => ({
+            id: m.id,
+            role: m.role || m.designation,
+            name: m.name,
+            email: m.email || '',
+            affiliation: m.institution || 'University of Chittagong',
+            image: m.image || '/team/robiul.png',
+          }));
+
+        if (mappedStaff.length > 0) setLiveStaff(mappedStaff);
+      }
+    });
+  }, []);
+
   return (
     <main className="min-h-screen bg-[#ecf0f1] py-16 px-6">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 rounded-xl bg-[#0c2461] flex items-center justify-center text-white">
-            <Users className="w-5 h-5" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#0c2461] flex items-center justify-center text-white">
+              <Users className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Team</h1>
+              <p className="text-sm text-gray-500">SPM Team, Student Researchers, and Data Annotators</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Team</h1>
-            <p className="text-sm text-gray-500">SPM Team, Student Researchers, and Data Annotators</p>
-          </div>
+          {isLiveFromBackend && (
+            <div className="inline-flex items-center gap-2 self-start sm:self-auto px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-medium">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              Live Backend API
+            </div>
+          )}
         </div>
 
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
           <h2 className="font-bold text-[#0c2461] mb-6 text-lg">SPM Team</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {professors.map((p) => (
-              <div key={p.email} className="flex flex-col items-center text-center gap-3">
+            {liveProfessors.map((p) => (
+              <div key={p.email || p.name} className="flex flex-col items-center text-center gap-3">
                 <MemberAvatar src={p.image} name={p.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461] rounded px-2 py-0.5 mb-1">
@@ -215,9 +309,11 @@ export default function Team() {
                   </span>
                   <p className="font-semibold text-[#0c2461] text-sm leading-snug">{p.name}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{p.title}</p>
-                  <a href={`mailto:${p.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
-                    {p.email}
-                  </a>
+                  {p.email ? (
+                    <a href={`mailto:${p.email}`} className="text-xs text-[#0c2461]/70 hover:text-[#0c2461] hover:underline break-all">
+                      {p.email}
+                    </a>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -227,8 +323,8 @@ export default function Team() {
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mb-8">
           <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Student Researchers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {studentResearchers.map((s) => (
-              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+            {liveResearchers.map((s) => (
+              <div key={s.id || s.name} id={s.id} className="flex flex-col items-center text-center gap-3">
                 <MemberAvatar src={s.image} name={s.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
@@ -250,8 +346,8 @@ export default function Team() {
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
           <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Data Annotators</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {dataAnnotators.map((s) => (
-              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+            {liveAnnotators.map((s) => (
+              <div key={s.id || s.name} id={s.id} className="flex flex-col items-center text-center gap-3">
                 <MemberAvatar src={s.image} name={s.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">
@@ -273,8 +369,8 @@ export default function Team() {
         <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 mt-8">
           <h2 className="font-bold text-[#0c2461] mb-6 text-lg">Administrative Staff</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {staffMembers.map((s) => (
-              <div key={s.id} id={s.id} className="flex flex-col items-center text-center gap-3">
+            {liveStaff.map((s) => (
+              <div key={s.id || s.name} id={s.id} className="flex flex-col items-center text-center gap-3">
                 <MemberAvatar src={s.image} name={s.name} />
                 <div>
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest text-white bg-[#0c2461]/80 rounded px-2 py-0.5 mb-1">

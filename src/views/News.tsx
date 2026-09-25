@@ -1,7 +1,10 @@
 'use client';
 
+import React, { useState, useEffect } from 'react';
+import { fetchNews } from '@/lib/api';
+
 type NewsItem = {
-    id: number;
+    id: string | number;
     title: string;
     date: string;
     summary: string;
@@ -161,20 +164,53 @@ const formatDate = (date: string) =>
     }).format(new Date(date));
 
 export default function News() {
-    const latestNews = [...newsData].sort((a, b) => +new Date(b.date) - +new Date(a.date));
+    const [articles, setArticles] = useState<NewsItem[]>(newsData);
+    const [isLiveFromBackend, setIsLiveFromBackend] = useState(false);
+
+    useEffect(() => {
+        fetchNews().then((data) => {
+            if (data && data.length > 0) {
+                setIsLiveFromBackend(true);
+                const mapped: NewsItem[] = data.map((d) => ({
+                    id: d.id,
+                    title: d.title,
+                    date: d.publish_date,
+                    summary: d.excerpt || (d.content ? d.content.slice(0, 160) : ''),
+                    tags: d.tags && d.tags.length > 0 ? d.tags : [d.category.toUpperCase()],
+                }));
+
+                // Combine backend articles with static items not present in backend
+                const existingTitles = new Set(mapped.map((m) => m.title.toLowerCase().trim()));
+                const nonDuplicates = newsData.filter(
+                    (item) => !existingTitles.has(item.title.toLowerCase().trim())
+                );
+                setArticles([...mapped, ...nonDuplicates]);
+            }
+        });
+    }, []);
+
+    const latestNews = [...articles].sort((a, b) => +new Date(b.date) - +new Date(a.date));
 
     return (
         <main className="min-h-screen bg-slate-950 text-slate-100">
             <section className="relative overflow-hidden border-b border-white/10 bg-gradient-to-br from-slate-950 via-slate-900 to-sky-950">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(56,189,248,0.18),_transparent_35%),radial-gradient(circle_at_bottom_left,_rgba(99,102,241,0.16),_transparent_30%)]" />
                 <div className="relative mx-auto flex max-w-7xl flex-col px-6 py-8 lg:px-10">
-                    <div className="max-w-3xl">
-                        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:text-4xl">
-                            Latest news regarding our project
-                        </h1>
-                        <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-                            Recent announcements, research milestones, tenders, and opportunities related to the BDAI and BIKE initiatives.
-                        </p>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div className="max-w-3xl">
+                            <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl lg:text-4xl">
+                                Latest news regarding our project
+                            </h1>
+                            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
+                                Recent announcements, research milestones, tenders, and opportunities related to the BDAI and BIKE initiatives.
+                            </p>
+                        </div>
+                        {isLiveFromBackend && (
+                            <div className="self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                                Live Backend API
+                            </div>
+                        )}
                     </div>
                 </div>
             </section>
