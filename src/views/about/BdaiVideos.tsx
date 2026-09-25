@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
 import { PlayCircle, Calendar } from 'lucide-react';
-import { fetchVideos } from '@/lib/api';
+import { fetchVideos, getCachedVideos } from '@/lib/api';
 
 type VideoItem = {
   url: string;
@@ -56,30 +56,41 @@ const getThumbnail = (video: VideoItem) => {
   return `https://img.youtube.com/vi/${ytId}/hqdefault.jpg`;
 };
 
+function mapBackendVideos(dbVideos: any[]): VideoItem[] {
+  return dbVideos.map((v) => {
+    const ytId = extractYoutubeId(v.url);
+    return {
+      url: v.url,
+      videoId: ytId || v.id,
+      title: v.title,
+      description: v.description || undefined,
+      postedAt: v.posted_at || undefined,
+      thumbnail: v.thumbnail || undefined,
+      order: v.order ?? 0,
+    };
+  });
+}
+
 export default function BdaiVideos() {
-  const [videos, setVideos] = useState<VideoItem[]>(initialVideosData);
+  const [videos, setVideos] = useState<VideoItem[]>(() => {
+    const cached = getCachedVideos();
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return mapBackendVideos(cached);
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => !getCachedVideos());
 
   useEffect(() => {
     let active = true;
 
     const loadVideos = async () => {
-      let currentList = initialVideosData;
+      let currentList = videos.length > 0 ? videos : initialVideosData;
 
       try {
         const dbVideos = await fetchVideos();
         if (dbVideos && Array.isArray(dbVideos) && dbVideos.length > 0) {
-          currentList = dbVideos.map((v) => {
-            const ytId = extractYoutubeId(v.url);
-            return {
-              url: v.url,
-              videoId: ytId || v.id,
-              title: v.title,
-              description: v.description || undefined,
-              postedAt: v.posted_at || undefined,
-              thumbnail: v.thumbnail || undefined,
-              order: v.order ?? 0,
-            };
-          });
+          currentList = mapBackendVideos(dbVideos);
         }
       } catch (err) {
         console.warn('Could not fetch videos from database, using cached fallback', err);
@@ -111,6 +122,7 @@ export default function BdaiVideos() {
 
       if (active) {
         setVideos(enriched.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
+        setIsLoading(false);
       }
     };
 
@@ -137,8 +149,26 @@ export default function BdaiVideos() {
         </div>
 
         <div className="flex items-center gap-4 mb-8">
-          <p className="text-sm text-[#0c2461]/70">{videoCount} video{videoCount === 1 ? '' : 's'}</p>
+          <p className="text-sm text-[#0c2461]/70">
+            {isLoading && videos.length === 0 ? 'Loading videos...' : `${videoCount} video${videoCount === 1 ? '' : 's'}`}
+          </p>
         </div>
+
+        {/* Loading Skeleton */}
+        {isLoading && videos.length === 0 && (
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 animate-pulse">
+                <div className="aspect-video bg-slate-200" />
+                <div className="p-5 space-y-3">
+                  <div className="h-3 w-20 bg-slate-100 rounded" />
+                  <div className="h-5 w-48 bg-slate-200 rounded" />
+                  <div className="h-3 w-64 bg-slate-100 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-6">
           {videos.map((video) => (

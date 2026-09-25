@@ -7,7 +7,7 @@ import {
   TrendingUp as TrendingUpIcon, Leaf, HeartPulse, GraduationCap, Plane, Apple, Factory, Scale, Flag,
   Sprout, Compass, Sparkles
 } from 'lucide-react';
-import { fetchSiteSettings, SiteSettings } from '@/lib/api';
+import { fetchSiteSettings, getCachedSiteSettings, SiteSettings } from '@/lib/api';
 
 /* ─── Icon Map for Dynamic Sectors ──────────────────── */
 const ICON_MAP: Record<string, any> = {
@@ -78,7 +78,7 @@ export default function Home() {
   const heroGridRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [settings, setSettings] = useState<SiteSettings | null>(() => getCachedSiteSettings());
 
   useEffect(() => {
     fetchSiteSettings().then((data) => {
@@ -154,7 +154,7 @@ export default function Home() {
             <p className="text-[clamp(13px,1.4vw,16px)] text-slate-400 leading-[1.6] max-w-lg m-0">
               {hero?.subtitle || (
                 <>
-                  Leveraging <span className="text-blue-400 font-bold">B</span>angla<span className="text-blue-400 font-bold">D</span>esh Sectoral Knowledge Graphs and Large Language Modes for <span className="text-blue-400 font-bold">A</span>rtificial <span className="text-blue-400 font-bold">I</span>ntelligence Driven Instights.
+                  Leveraging <span className="text-blue-400 font-bold">B</span>angla<span className="text-blue-400 font-bold">D</span>esh Sectoral Knowledge Graphs and Large Language Models for <span className="text-blue-400 font-bold">A</span>rtificial <span className="text-blue-400 font-bold">I</span>ntelligence Driven Insights.
                 </>
               )}
             </p>

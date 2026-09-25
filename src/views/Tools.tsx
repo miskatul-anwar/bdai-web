@@ -12,7 +12,7 @@ import {
   Globe,
   ImageIcon,
 } from 'lucide-react';
-import { fetchTools, BackendTool } from '@/lib/api';
+import { fetchTools, getCachedTools, BackendTool } from '@/lib/api';
 
 const DEFAULT_TOOLS: BackendTool[] = [
   {
@@ -52,13 +52,30 @@ function getEmbedUrl(url?: string | null): string | null {
 }
 
 export default function SparqlTool() {
-  const [tools, setTools] = useState<BackendTool[]>(DEFAULT_TOOLS);
+  const [tools, setTools] = useState<BackendTool[]>(() => {
+    const cached = getCachedTools();
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return cached;
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => !getCachedTools());
 
   useEffect(() => {
     let isMounted = true;
     fetchTools().then((data) => {
-      if (isMounted && data && Array.isArray(data) && data.length > 0) {
-        setTools(data);
+      if (isMounted) {
+        if (data && Array.isArray(data) && data.length > 0) {
+          setTools(data);
+        } else if (tools.length === 0) {
+          setTools(DEFAULT_TOOLS);
+        }
+        setIsLoading(false);
+      }
+    }).catch(() => {
+      if (isMounted) {
+        if (tools.length === 0) setTools(DEFAULT_TOOLS);
+        setIsLoading(false);
       }
     });
     return () => {
@@ -76,6 +93,16 @@ export default function SparqlTool() {
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#f8fbff_0%,_#ecf0f1_42%,_#e7ebf2_100%)] py-10 sm:py-14 px-4 sm:px-6">
       <div className="mx-auto w-full max-w-7xl space-y-12">
+        {/* Loading Skeleton */}
+        {isLoading && tools.length === 0 && (
+          <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/75 p-8 sm:p-12 shadow-sm animate-pulse">
+            <div className="h-6 w-32 bg-slate-200 rounded-full mb-6" />
+            <div className="h-10 w-96 bg-slate-200 rounded mb-4" />
+            <div className="h-5 w-72 bg-slate-100 rounded mb-6" />
+            <div className="h-4 w-full bg-slate-100 rounded mb-2" />
+            <div className="h-4 w-2/3 bg-slate-100 rounded" />
+          </section>
+        )}
         {tools.map((tool) => {
           const embedVideo = getEmbedUrl(tool.video_url);
 

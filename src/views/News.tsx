@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { fetchNews } from '@/lib/api';
+import { fetchNews, getCachedNews, BackendNewsArticle } from '@/lib/api';
 
 type NewsItem = {
     id: string | number;
@@ -163,27 +163,42 @@ const formatDate = (date: string) =>
         year: "numeric",
     }).format(new Date(date));
 
+function mapBackendNews(data: BackendNewsArticle[]): NewsItem[] {
+    return data.map((d) => ({
+        id: d.id,
+        title: d.title,
+        date: d.publish_date,
+        summary: d.excerpt || (d.content ? d.content.slice(0, 160) : ''),
+        tags: d.tags && d.tags.length > 0 ? d.tags : [d.category.toUpperCase()],
+    }));
+}
+
 export default function News() {
-    const [articles, setArticles] = useState<NewsItem[]>(newsData);
+    const [articles, setArticles] = useState<NewsItem[]>(() => {
+        const cached = getCachedNews();
+        if (cached && Array.isArray(cached) && cached.length > 0) {
+            return mapBackendNews(cached);
+        }
+        return [];
+    });
+    const [isLoading, setIsLoading] = useState(() => !getCachedNews());
 
     useEffect(() => {
         fetchNews().then((data) => {
             if (data && data.length > 0) {
-                const mapped: NewsItem[] = data.map((d) => ({
-                    id: d.id,
-                    title: d.title,
-                    date: d.publish_date,
-                    summary: d.excerpt || (d.content ? d.content.slice(0, 160) : ''),
-                    tags: d.tags && d.tags.length > 0 ? d.tags : [d.category.toUpperCase()],
-                }));
-
-                // Combine backend articles with static items not present in backend
+                const mapped = mapBackendNews(data);
                 const existingTitles = new Set(mapped.map((m) => m.title.toLowerCase().trim()));
                 const nonDuplicates = newsData.filter(
                     (item) => !existingTitles.has(item.title.toLowerCase().trim())
                 );
                 setArticles([...mapped, ...nonDuplicates]);
+            } else if (articles.length === 0) {
+                setArticles(newsData);
             }
+            setIsLoading(false);
+        }).catch(() => {
+            if (articles.length === 0) setArticles(newsData);
+            setIsLoading(false);
         });
     }, []);
 
@@ -208,6 +223,17 @@ export default function News() {
             </section>
 
             <section className="mx-auto max-w-7xl px-6 py-14 lg:px-10">
+                {isLoading && articles.length === 0 && (
+                    <div className="grid gap-6 animate-pulse mb-6">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4">
+                                <div className="h-4 w-28 bg-slate-700 rounded" />
+                                <div className="h-6 w-3/4 bg-slate-700 rounded" />
+                                <div className="h-4 w-full bg-slate-800 rounded" />
+                            </div>
+                        ))}
+                    </div>
+                )}
                 <div className="grid gap-6">
                     {latestNews.map((item, index) => (
                         <article

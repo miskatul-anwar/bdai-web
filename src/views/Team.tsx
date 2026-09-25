@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Users } from 'lucide-react';
-import { fetchTeam } from '@/lib/api';
+import { fetchTeam, getCachedTeam, BackendTeamMember } from '@/lib/api';
 
 export interface PublicTeamMember {
   id?: string;
@@ -232,6 +232,48 @@ const initialTeam: PublicTeamMember[] = [
   },
 ];
 
+function mapBackendTeam(data: any[]): PublicTeamMember[] {
+  return data.map((m) => {
+    let cat = (m.category || '').trim();
+    if (cat.toLowerCase() === 'lead' || cat.toLowerCase() === 'co-lead') {
+      cat = 'SPM Team';
+    } else if (cat.toLowerCase() === 'research-assistant' || cat.toLowerCase() === 'researcher') {
+      const des = (m.designation || '').toLowerCase();
+      const r = (m.role || '').toLowerCase();
+      if (des.includes('annotat') || r.includes('annotat')) {
+        cat = 'Data Annotators';
+      } else {
+        cat = 'Student Researchers';
+      }
+    } else if (cat.toLowerCase() === 'staff') {
+      cat = 'Administrative Staff';
+    } else if (!cat) {
+      const des = (m.designation || '').toLowerCase();
+      const r = (m.role || '').toLowerCase();
+      if (des.includes('spm') || des.includes('professor') || r.includes('spm')) {
+        cat = 'SPM Team';
+      } else if (des.includes('annotat') || r.includes('annotat')) {
+        cat = 'Data Annotators';
+      } else if (des.includes('manager') || des.includes('accountant') || des.includes('office')) {
+        cat = 'Administrative Staff';
+      } else {
+        cat = 'Student Researchers';
+      }
+    }
+
+    return {
+      id: m.id,
+      name: m.name,
+      designation: m.designation,
+      role: m.role || m.designation,
+      category: cat,
+      institution: m.institution || 'Department of CSE, University of Chittagong',
+      email: m.email || '',
+      image: m.image || '/team/miskat.jpg',
+    };
+  });
+}
+
 function MemberAvatar({ src, name }: { src: string; name: string }) {
   const [error, setError] = useState(false);
 
@@ -258,55 +300,26 @@ function MemberAvatar({ src, name }: { src: string; name: string }) {
 }
 
 export default function Team() {
-  const [teamMembers, setTeamMembers] = useState<PublicTeamMember[]>(initialTeam);
+  const [teamMembers, setTeamMembers] = useState<PublicTeamMember[]>(() => {
+    const cached = getCachedTeam();
+    if (cached && cached.length > 0) {
+      return mapBackendTeam(cached);
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => !getCachedTeam());
 
   useEffect(() => {
     fetchTeam().then((data) => {
       if (data && data.length > 0) {
-        const mapped: PublicTeamMember[] = data.map((m) => {
-          let cat = (m.category || '').trim();
-          if (cat.toLowerCase() === 'lead' || cat.toLowerCase() === 'co-lead') {
-            cat = 'SPM Team';
-          } else if (cat.toLowerCase() === 'research-assistant' || cat.toLowerCase() === 'researcher') {
-            const des = (m.designation || '').toLowerCase();
-            const r = (m.role || '').toLowerCase();
-            if (des.includes('annotat') || r.includes('annotat')) {
-              cat = 'Data Annotators';
-            } else {
-              cat = 'Student Researchers';
-            }
-          } else if (cat.toLowerCase() === 'staff') {
-            cat = 'Administrative Staff';
-          } else if (!cat) {
-            const des = (m.designation || '').toLowerCase();
-            const r = (m.role || '').toLowerCase();
-            if (des.includes('spm') || des.includes('professor') || r.includes('spm')) {
-              cat = 'SPM Team';
-            } else if (des.includes('annotat') || r.includes('annotat')) {
-              cat = 'Data Annotators';
-            } else if (des.includes('manager') || des.includes('accountant') || des.includes('office')) {
-              cat = 'Administrative Staff';
-            } else {
-              cat = 'Student Researchers';
-            }
-          }
-
-          return {
-            id: m.id,
-            name: m.name,
-            designation: m.designation,
-            role: m.role || m.designation,
-            category: cat,
-            institution: m.institution || 'Department of CSE, University of Chittagong',
-            email: m.email || '',
-            image: m.image || '/team/miskat.jpg',
-          };
-        });
-
-        if (mapped.length > 0) {
-          setTeamMembers(mapped);
-        }
+        setTeamMembers(mapBackendTeam(data));
+      } else if (teamMembers.length === 0) {
+        setTeamMembers(initialTeam);
       }
+      setIsLoading(false);
+    }).catch(() => {
+      if (teamMembers.length === 0) setTeamMembers(initialTeam);
+      setIsLoading(false);
     });
   }, []);
 
@@ -348,13 +361,34 @@ export default function Team() {
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Team</h1>
               <p className="text-sm text-gray-500">
-                {orderedCategories.join(' • ')}
+                {orderedCategories.length > 0 ? orderedCategories.join(' • ') : 'Research & Development Team'}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Dynamic Category Placement Sections: Category + Designation = Employee placement */}
+        {/* Loading Skeleton */}
+        {isLoading && teamMembers.length === 0 && (
+          <div className="space-y-8 animate-pulse">
+            {[1, 2].map((s) => (
+              <div key={s} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                <div className="h-6 w-36 bg-slate-200 rounded mb-6" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex flex-col items-center gap-3">
+                      <div className="w-32 h-32 rounded-full bg-slate-200" />
+                      <div className="h-4 w-20 bg-slate-200 rounded" />
+                      <div className="h-4 w-32 bg-slate-200 rounded" />
+                      <div className="h-3 w-24 bg-slate-100 rounded" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Dynamic Category Placement Sections */}
         {orderedCategories.map((category) => {
           const members = teamMembers.filter(
             (m) =>

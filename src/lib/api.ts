@@ -60,6 +60,34 @@ export interface BackendObjective {
   deliverables: number;
 }
 
+const MEMORY_CACHE = new Map<string, any>();
+
+export function getCachedData<T>(key: string): T | null {
+  if (MEMORY_CACHE.has(key)) {
+    return MEMORY_CACHE.get(key) as T;
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem(`bdai_cache_${key}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        MEMORY_CACHE.set(key, parsed);
+        return parsed as T;
+      }
+    } catch {}
+  }
+  return null;
+}
+
+export function setCachedData<T>(key: string, data: T): void {
+  MEMORY_CACHE.set(key, data);
+  if (typeof window !== 'undefined') {
+    try {
+      sessionStorage.setItem(`bdai_cache_${key}`, JSON.stringify(data));
+    } catch {}
+  }
+}
+
 async function fetchFromBackend<T>(endpoint: string): Promise<T | null> {
   try {
     const controller = new AbortController();
@@ -80,11 +108,45 @@ async function fetchFromBackend<T>(endpoint: string): Promise<T | null> {
       return null;
     }
 
-    return await res.json();
+    const data = await res.json();
+    setCachedData(endpoint, data);
+    return data;
   } catch (err: any) {
     console.warn(`Backend API fetch failed for ${endpoint}:`, err?.message || err);
     return null;
   }
+}
+
+export function getCachedTeam(): BackendTeamMember[] | null {
+  return getCachedData<BackendTeamMember[]>('/team');
+}
+
+export function getCachedNews(): BackendNewsArticle[] | null {
+  return getCachedData<BackendNewsArticle[]>('/news');
+}
+
+export function getCachedVacancies(): BackendVacancy[] | null {
+  return getCachedData<BackendVacancy[]>('/vacancies');
+}
+
+export function getCachedObjectives(): BackendObjective[] | null {
+  return getCachedData<BackendObjective[]>('/objectives');
+}
+
+export function getCachedSiteSettings(): SiteSettings | null {
+  return getCachedData<SiteSettings>('/settings');
+}
+
+export function getCachedPartners(): any[] | null {
+  return getCachedData<any[]>('/partners') || getCachedData<SiteSettings>('/settings')?.partners || null;
+}
+
+export function getCachedTools(): BackendTool[] | null {
+  return getCachedData<BackendTool[]>('/tools');
+}
+
+export function getCachedVideos(): BackendVideo[] | null {
+  return getCachedData<BackendVideo[]>('/videos') || getCachedData<any>('/settings/videos') || null;
 }
 
 export async function fetchTeam(): Promise<BackendTeamMember[] | null> {

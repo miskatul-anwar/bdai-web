@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Target, CheckCircle2, Clock } from 'lucide-react';
-import { fetchObjectives, BackendObjective } from '@/lib/api';
+import { fetchObjectives, getCachedObjectives, BackendObjective } from '@/lib/api';
 
 const RAIHAN_IMAGE = '/team/raihan.jpg';
 const ATIKISHRAK_IMAGE = '/team/atikishrak.jpg';
@@ -43,36 +43,52 @@ const staticObjectives: ObjectiveDisplayItem[] = [
   { id: 'OB8', title: 'Capacity Building', researcher: 'Prof. Dr. M. Shahadat Hossain', sector: 'Workforce & Training', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, NOOR_IMAGE, NESARUL_IMAGE, TAQI_IMAGE, AONG_IMAGE, MINHAJ_IMAGE] },
 ];
 
+function enrichObjectives(data: BackendObjective[]): ObjectiveDisplayItem[] {
+  const enriched: ObjectiveDisplayItem[] = data.map((d: BackendObjective) => {
+    const match = staticObjectives.find((so) => so.id.toUpperCase() === d.id.toUpperCase());
+    return {
+      id: d.id,
+      title: d.title,
+      details: d.details,
+      researcher: d.researcher || match?.researcher,
+      sector: d.sector || match?.sector,
+      status: d.status || match?.status || 'in-progress',
+      progress: d.progress ?? match?.progress ?? 50,
+      deliverables: d.deliverables,
+      images: match ? match.images : [RPDN_IMAGE, MISKAT_IMAGE],
+    };
+  });
+
+  enriched.sort((a, b) => {
+    const numA = parseInt(a.id.replace(/\D/g, '')) || 0;
+    const numB = parseInt(b.id.replace(/\D/g, '')) || 0;
+    return numA - numB;
+  });
+
+  return enriched;
+}
+
 export default function Objectives() {
-  const [objectivesList, setObjectivesList] = useState<ObjectiveDisplayItem[]>(staticObjectives);
+  const [objectivesList, setObjectivesList] = useState<ObjectiveDisplayItem[]>(() => {
+    const cached = getCachedObjectives();
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return enrichObjectives(cached);
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => !getCachedObjectives());
 
   useEffect(() => {
     fetchObjectives().then((data) => {
       if (data && Array.isArray(data) && data.length > 0) {
-        const enriched: ObjectiveDisplayItem[] = data.map((d: BackendObjective) => {
-          const match = staticObjectives.find((so) => so.id.toUpperCase() === d.id.toUpperCase());
-          return {
-            id: d.id,
-            title: d.title,
-            details: d.details,
-            researcher: d.researcher || match?.researcher,
-            sector: d.sector || match?.sector,
-            status: d.status || match?.status || 'in-progress',
-            progress: d.progress ?? match?.progress ?? 50,
-            deliverables: d.deliverables,
-            images: match ? match.images : [RPDN_IMAGE, MISKAT_IMAGE],
-          };
-        });
-
-        // Sort numerically if ID is OB1, OB2, etc.
-        enriched.sort((a, b) => {
-          const numA = parseInt(a.id.replace(/\D/g, '')) || 0;
-          const numB = parseInt(b.id.replace(/\D/g, '')) || 0;
-          return numA - numB;
-        });
-
-        setObjectivesList(enriched);
+        setObjectivesList(enrichObjectives(data));
+      } else if (objectivesList.length === 0) {
+        setObjectivesList(staticObjectives);
       }
+      setIsLoading(false);
+    }).catch(() => {
+      if (objectivesList.length === 0) setObjectivesList(staticObjectives);
+      setIsLoading(false);
     });
   }, []);
 
@@ -103,6 +119,29 @@ export default function Objectives() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
+                {isLoading && objectivesList.length === 0 && (
+                  <>
+                    {[1, 2, 3, 4].map((i) => (
+                      <tr key={i} className="animate-pulse">
+                        <td className="py-4 px-6">
+                          <div className="w-10 h-10 rounded-xl bg-slate-200" />
+                        </td>
+                        <td className="py-4 px-6 space-y-2">
+                          <div className="h-4 w-48 bg-slate-200 rounded" />
+                          <div className="h-3 w-72 bg-slate-100 rounded" />
+                        </td>
+                        <td className="py-4 px-6 space-y-2">
+                          <div className="h-4 w-32 bg-slate-200 rounded" />
+                          <div className="h-5 w-24 bg-slate-100 rounded" />
+                        </td>
+                        <td className="py-4 px-6 text-right">
+                          <div className="h-4 w-12 bg-slate-200 rounded ml-auto mb-1" />
+                          <div className="h-2 w-20 bg-slate-100 rounded ml-auto" />
+                        </td>
+                      </tr>
+                    ))}
+                  </>
+                )}
                 {objectivesList.map((obj) => {
                   const isCompleted = obj.status === 'completed';
                   return (

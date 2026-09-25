@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Users, ExternalLink } from 'lucide-react';
-import { fetchSiteSettings, fetchPartners } from '@/lib/api';
+import { fetchSiteSettings, fetchPartners, getCachedPartners } from '@/lib/api';
 
 const DEFAULT_PARTNERS = [
   {
@@ -39,7 +39,20 @@ const DEFAULT_PARTNERS = [
 ];
 
 export default function Consortium() {
-  const [partners, setPartners] = useState(DEFAULT_PARTNERS);
+  const [partners, setPartners] = useState<any[]>(() => {
+    const cached = getCachedPartners();
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return cached.map((p) => ({
+        name: p.name,
+        logo: p.logo,
+        description: p.description || p.desc || '',
+        url: p.website || p.url,
+        role: p.role || p.type,
+      }));
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => !getCachedPartners());
 
   useEffect(() => {
     async function loadPartners() {
@@ -55,6 +68,7 @@ export default function Consortium() {
               role: p.role || p.type,
             }))
           );
+          setIsLoading(false);
           return;
         }
 
@@ -69,9 +83,13 @@ export default function Consortium() {
               role: p.role || p.type,
             }))
           );
+        } else if (partners.length === 0) {
+          setPartners(DEFAULT_PARTNERS);
         }
       } catch {
-        // preserve defaults if backend is unavailable
+        if (partners.length === 0) setPartners(DEFAULT_PARTNERS);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -92,6 +110,27 @@ export default function Consortium() {
             <p className="text-sm text-gray-500">Partner institutions &amp; collaborators</p>
           </div>
         </div>
+
+        {/* Loading Skeleton */}
+        {isLoading && partners.length === 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 animate-pulse">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col gap-4">
+                <div className="flex items-center gap-4 border-b border-gray-50 pb-4">
+                  <div className="w-16 h-16 rounded-xl bg-slate-200" />
+                  <div className="space-y-2">
+                    <div className="h-5 w-40 bg-slate-200 rounded" />
+                    <div className="h-3 w-24 bg-slate-100 rounded" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-3 w-full bg-slate-100 rounded" />
+                  <div className="h-3 w-5/6 bg-slate-100 rounded" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Grid Layout: Adjusted for text-heavy cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
