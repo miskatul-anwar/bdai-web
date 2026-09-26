@@ -164,13 +164,15 @@ const formatDate = (date: string) =>
     }).format(new Date(date));
 
 function mapBackendNews(data: BackendNewsArticle[]): NewsItem[] {
-    return data.map((d) => ({
-        id: d.id,
-        title: d.title,
-        date: d.publish_date,
-        summary: d.excerpt || (d.content ? d.content.slice(0, 160) : ''),
-        tags: d.tags && d.tags.length > 0 ? d.tags : [d.category.toUpperCase()],
-    }));
+    return data
+        .filter((d) => (d.status || 'published').toLowerCase() === 'published')
+        .map((d) => ({
+            id: d.id,
+            title: d.title,
+            date: d.publish_date,
+            summary: d.excerpt || (d.content ? d.content.slice(0, 160) : ''),
+            tags: d.tags && d.tags.length > 0 ? d.tags : [d.category.toUpperCase()],
+        }));
 }
 
 export default function News() {
@@ -184,14 +186,10 @@ export default function News() {
     const [isLoading, setIsLoading] = useState(() => !getCachedNews());
 
     useEffect(() => {
-        fetchNews().then((data) => {
-            if (data && data.length > 0) {
+        fetchNews({ status: 'published' }).then((data) => {
+            if (data && Array.isArray(data)) {
                 const mapped = mapBackendNews(data);
-                const existingTitles = new Set(mapped.map((m) => m.title.toLowerCase().trim()));
-                const nonDuplicates = newsData.filter(
-                    (item) => !existingTitles.has(item.title.toLowerCase().trim())
-                );
-                setArticles([...mapped, ...nonDuplicates]);
+                setArticles(mapped);
             } else if (articles.length === 0) {
                 setArticles(newsData);
             }

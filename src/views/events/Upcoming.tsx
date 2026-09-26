@@ -20,7 +20,8 @@ export default function UpcomingEvents() {
       .then((data) => {
         if (isMounted) {
           if (data && Array.isArray(data)) {
-            const sorted = [...data].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+            const visible = data.filter((e) => e.is_visible !== false);
+            const sorted = [...visible].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
             setEvents(sorted);
           }
           setIsLoading(false);

@@ -85,8 +85,9 @@ export default function HeldEvents() {
     fetchEvents({ status: 'held' })
       .then((data) => {
         if (isMounted) {
-          if (data && Array.isArray(data) && data.length > 0) {
-            const sorted = [...data].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+          if (data && Array.isArray(data)) {
+            const visible = data.filter((e) => e.is_visible !== false);
+            const sorted = [...visible].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
             setEvents(sorted);
           } else if (events.length === 0) {
             setEvents(initialHeldEvents);

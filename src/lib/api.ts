@@ -155,8 +155,12 @@ export async function fetchTeam(): Promise<BackendTeamMember[] | null> {
   return fetchFromBackend<BackendTeamMember[]>('/team');
 }
 
-export async function fetchNews(params?: { category?: string }): Promise<BackendNewsArticle[] | null> {
-  const qs = params?.category ? `?category=${encodeURIComponent(params.category)}` : '';
+export async function fetchNews(params?: { category?: string; status?: string }): Promise<BackendNewsArticle[] | null> {
+  const parts: string[] = [];
+  if (params?.category) parts.push(`category=${encodeURIComponent(params.category)}`);
+  const statusParam = params?.status || 'published';
+  parts.push(`status=${encodeURIComponent(statusParam)}`);
+  const qs = `?${parts.join('&')}`;
   return fetchFromBackend<BackendNewsArticle[]>(`/news${qs}`);
 }
 
@@ -306,6 +310,7 @@ export interface BackendEvent {
   banner: string;
   gallery?: BackendGalleryItem[];
   order?: number;
+  is_visible?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -313,7 +318,8 @@ export interface BackendEvent {
 export function getCachedEvents(status?: string): BackendEvent[] | null {
   const all = getCachedData<BackendEvent[]>('/events');
   if (!all) return null;
-  let sorted = [...all].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+  const visible = all.filter((e) => e.is_visible !== false);
+  let sorted = [...visible].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
   if (status) {
     const s = status.toLowerCase();
     return sorted.filter((e) => (e.status || '').toLowerCase() === s);
@@ -327,10 +333,11 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
   // 1. Try dedicated REST endpoint: /events
   try {
     const direct = await fetchFromBackend<BackendEvent[]>(`/events${qs}`);
-    if (direct && Array.isArray(direct) && direct.length > 0) {
-      direct.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
-      if (!params?.status) setCachedData('/events', direct);
-      return direct;
+    if (direct && Array.isArray(direct)) {
+      const visible = direct.filter((e) => e.is_visible !== false);
+      visible.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+      if (!params?.status) setCachedData('/events', visible);
+      return visible;
     }
   } catch {}
 
@@ -343,12 +350,13 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
       else if (Array.isArray(fromSettings.data)) list = fromSettings.data;
 
       if (list.length > 0) {
-        list.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+        let visible = list.filter((e) => e.is_visible !== false);
+        visible.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
         if (params?.status) {
           const s = params.status.toLowerCase();
-          return list.filter((e) => (e.status || '').toLowerCase() === s);
+          return visible.filter((e) => (e.status || '').toLowerCase() === s);
         }
-        return list;
+        return visible;
       }
     }
   } catch {}
@@ -368,12 +376,13 @@ export async function fetchEvents(params?: { status?: string }): Promise<Backend
       const data = await res.json();
       if (data && data[0]?.data && Array.isArray(data[0].data)) {
         let list: BackendEvent[] = data[0].data;
-        list.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
+        let visible = list.filter((e) => e.is_visible !== false);
+        visible.sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
         if (params?.status) {
           const s = params.status.toLowerCase();
-          list = list.filter((e) => (e.status || '').toLowerCase() === s);
+          visible = visible.filter((e) => (e.status || '').toLowerCase() === s);
         }
-        return list;
+        return visible;
       }
     }
   } catch (e) {
