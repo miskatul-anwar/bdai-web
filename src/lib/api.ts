@@ -51,6 +51,12 @@ export interface BackendVacancy {
   applicant_count: number;
 }
 
+export interface ObjectiveTask {
+  id: string;
+  title: string;
+  completed: boolean;
+}
+
 export interface BackendObjective {
   id: string;
   title: string;
@@ -60,6 +66,7 @@ export interface BackendObjective {
   status: 'in-progress' | 'completed' | 'planned';
   progress: number;
   deliverables: number;
+  tasks?: ObjectiveTask[];
 }
 
 const MEMORY_CACHE = new Map<string, any>();
@@ -169,7 +176,27 @@ export async function fetchVacancies(): Promise<BackendVacancy[] | null> {
 }
 
 export async function fetchObjectives(): Promise<BackendObjective[] | null> {
-  return fetchFromBackend<BackendObjective[]>('/objectives');
+  const objectives = await fetchFromBackend<BackendObjective[]>('/objectives');
+  if (!objectives) return null;
+
+  // Check if objectives already include tasks from the DB column
+  const hasTasks = objectives.some((o) => Array.isArray(o.tasks) && o.tasks.length > 0);
+  if (!hasTasks) {
+    try {
+      // Dual-persisted fallback from /settings/objective_tasks
+      const taskSettings = await fetchFromBackend<Record<string, ObjectiveTask[]>>('/settings/objective_tasks');
+      if (taskSettings && typeof taskSettings === 'object') {
+        const enriched = objectives.map((obj) => ({
+          ...obj,
+          tasks: Array.isArray(obj.tasks) && obj.tasks.length > 0 ? obj.tasks : (taskSettings[obj.id] || []),
+        }));
+        setCachedData('/objectives', enriched);
+        return enriched;
+      }
+    } catch {}
+  }
+
+  return objectives;
 }
 
 export interface SiteSettings {

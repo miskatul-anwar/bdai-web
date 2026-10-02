@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Target, CheckCircle2, Clock } from 'lucide-react';
-import { fetchObjectives, getCachedObjectives, BackendObjective } from '@/lib/api';
+import { Target, CheckCircle2, Clock, Circle, ListTodo } from 'lucide-react';
+import { fetchObjectives, getCachedObjectives, BackendObjective, ObjectiveTask } from '@/lib/api';
 
 const RAIHAN_IMAGE = '/team/raihan.jpg';
 const ATIKISHRAK_IMAGE = '/team/atikishrak.jpg';
@@ -30,6 +30,7 @@ interface ObjectiveDisplayItem {
   progress?: number;
   deliverables?: number;
   images: string[];
+  tasks?: ObjectiveTask[];
 }
 
 const OBJECTIVE_IMAGES_MAP: Record<string, string[]> = {
@@ -57,6 +58,7 @@ function enrichObjectives(data: BackendObjective[]): ObjectiveDisplayItem[] {
       progress: d.progress ?? 50,
       deliverables: d.deliverables,
       images: imgs,
+      tasks: d.tasks || [],
     };
   });
 
@@ -182,6 +184,57 @@ export default function Objectives() {
                               {obj.details}
                             </p>
                           )}
+
+                          {/* Key Actionable Tasks & Milestones */}
+                          {obj.tasks && obj.tasks.length > 0 && (
+                            <div className="mt-3 pt-3 border-t border-slate-100">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-[#0c2461]/80 flex items-center gap-1.5">
+                                  <ListTodo className="w-3.5 h-3.5 text-blue-600" />
+                                  Key Tasks & Milestones
+                                </span>
+                                <span className="text-[10px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">
+                                  {obj.tasks.filter((t) => t.completed).length}/{obj.tasks.length} Completed
+                                </span>
+                              </div>
+                              <ul className="space-y-1.5">
+                                {obj.tasks.map((task) => (
+                                  <li
+                                    key={task.id}
+                                    className={`flex items-start gap-2 text-xs py-1.5 px-2.5 rounded-lg border transition-colors ${
+                                      task.completed
+                                        ? 'bg-emerald-50/50 border-emerald-200/60 text-emerald-950 font-medium'
+                                        : 'bg-slate-50/80 border-slate-200/70 text-slate-700'
+                                    }`}
+                                  >
+                                    <span className="mt-0.5 shrink-0">
+                                      {task.completed ? (
+                                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                                      ) : (
+                                        <Circle className="w-3.5 h-3.5 text-slate-400" />
+                                      )}
+                                    </span>
+                                    <span
+                                      className={`flex-1 leading-snug ${
+                                        task.completed ? 'line-through text-slate-400 decoration-slate-300' : 'text-slate-800'
+                                      }`}
+                                    >
+                                      {task.title}
+                                    </span>
+                                    <span
+                                      className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${
+                                        task.completed
+                                          ? 'bg-emerald-100 text-emerald-700'
+                                          : 'bg-amber-50 text-amber-700 border border-amber-200/60'
+                                      }`}
+                                    >
+                                      {task.completed ? 'Done' : 'Pending'}
+                                    </span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       </td>
 
@@ -227,6 +280,11 @@ export default function Objectives() {
                             )}
                             {obj.status || 'in-progress'}
                           </span>
+                          {obj.tasks && obj.tasks.length > 0 && (
+                            <span className="text-[9px] font-medium text-slate-400 mt-0.5">
+                              {obj.tasks.filter((t) => t.completed).length} of {obj.tasks.length} tasks
+                            </span>
+                          )}
                         </div>
                       </td>
                     </tr>
