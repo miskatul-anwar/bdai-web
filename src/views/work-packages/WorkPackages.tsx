@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Package, CheckSquare, Layers, Target, Image as ImageIcon, Maximize2, X, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Package, CheckSquare, Layers, Target, Image as ImageIcon, Maximize2, X, Calendar, ChevronLeft, ChevronRight, CheckCircle2, Circle, ListTodo } from 'lucide-react';
 import { fetchSiteSettings } from '@/lib/api';
 import { WorkPackagesLoading } from '@/components/ui/LoadingAnimation';
 
-interface Task {
+export interface Task {
   id: string;
   label: string;
+  completed?: boolean;
 }
 
 export interface WPStateImage {
@@ -54,13 +55,24 @@ function WPPage({ number, title, objective, tasks, highlights, initialImages = [
               ? rawImages.filter((img: any) => img && (img.url || img.src))
               : initialImages;
 
+            const parsedTasks: Task[] = Array.isArray(match.tasks) && match.tasks.length > 0
+              ? match.tasks.map((t: any, idx: number) => {
+                  if (typeof t === 'string') {
+                    return { id: `T${number}.${idx + 1}`, label: t, completed: false };
+                  }
+                  return {
+                    id: t.id || `T${number}.${idx + 1}`,
+                    label: t.label || t.title || '',
+                    completed: Boolean(t.completed),
+                  };
+                })
+              : tasks.map((t) => ({ ...t, completed: Boolean(t.completed) }));
+
             setData({
               title: match.title || title,
               objective: match.objective || objective,
               highlights: Array.isArray(match.highlights) && match.highlights.length > 0 ? match.highlights : highlights,
-              tasks: Array.isArray(match.tasks) && match.tasks.length > 0
-                ? match.tasks.map((t: any, idx: number) => typeof t === 'string' ? { id: `T${number}.${idx + 1}`, label: t } : t)
-                : tasks,
+              tasks: parsedTasks,
               images: validImages,
             });
           }
@@ -198,18 +210,55 @@ function WPPage({ number, title, objective, tasks, highlights, initialImages = [
         )}
 
         {/* Tasks Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 mb-4">
-            <CheckSquare className="w-4 h-4 text-[#0c2461]" />
-            <h2 className="font-bold text-[#0c2461]">Tasks</h2>
+        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+            <div className="flex items-center gap-2">
+              <ListTodo className="w-5 h-5 text-[#0c2461]" />
+              <h2 className="font-bold text-base text-[#0c2461]">Tasks &amp; Milestones</h2>
+            </div>
+            {data.tasks && data.tasks.length > 0 && (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-[#0c2461] font-semibold text-xs self-start sm:self-auto border border-blue-100/60">
+                {data.tasks.filter((t) => t.completed).length} of {data.tasks.length} Completed
+              </span>
+            )}
           </div>
-          <div className="space-y-3">
+
+          <div className="space-y-2.5">
             {data.tasks.map((task) => (
-              <div key={task.id} className="flex items-start gap-3">
-                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0c2461]/10 text-[#0c2461] font-bold text-xs flex-shrink-0 mt-0.5 whitespace-nowrap">
+              <div
+                key={task.id}
+                className={`flex items-start gap-3 p-3 rounded-xl border transition-all ${
+                  task.completed
+                    ? 'bg-emerald-50/50 border-emerald-200/70 text-emerald-950 font-medium'
+                    : 'bg-slate-50/70 border-slate-200/80 text-slate-700'
+                }`}
+              >
+                <span className="mt-0.5 shrink-0">
+                  {task.completed ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  ) : (
+                    <Circle className="w-4 h-4 text-slate-400" />
+                  )}
+                </span>
+                <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-md bg-[#0c2461]/10 text-[#0c2461] font-mono font-bold text-xs flex-shrink-0 whitespace-nowrap">
                   {task.id}
                 </span>
-                <p className="text-sm text-gray-600 leading-relaxed">{task.label}</p>
+                <p
+                  className={`text-sm leading-relaxed flex-1 ${
+                    task.completed ? 'line-through text-slate-400 decoration-slate-300' : 'text-slate-700'
+                  }`}
+                >
+                  {task.label}
+                </p>
+                <span
+                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0 ${
+                    task.completed
+                      ? 'bg-emerald-100 text-emerald-700'
+                      : 'bg-amber-50 text-amber-700 border border-amber-200/60'
+                  }`}
+                >
+                  {task.completed ? 'Done' : 'In Progress'}
+                </span>
               </div>
             ))}
           </div>
@@ -308,12 +357,12 @@ export function WP1() {
         'UPS power protection, backup systems, and IT maintenance procedures',
       ]}
       tasks={[
-        { id: 'T1.1', label: 'Design and fit out lab interior space (partitioning, lighting, electrical points).' },
-        { id: 'T1.2', label: 'Procure and install servers and storage hardware.' },
-        { id: 'T1.3', label: 'Set up local area network (LAN), internet connectivity, and firewall/security.' },
-        { id: 'T1.4', label: 'Procure and configure researcher workstations and peripherals.' },
-        { id: 'T1.5', label: 'Install furnishings and ergonomic workspace equipment.' },
-        { id: 'T1.6', label: 'Set up backup, power protection (UPS), and IT maintenance procedures.' },
+        { id: 'T1.1', label: 'Design and fit out lab interior space (partitioning, lighting, electrical points).', completed: true },
+        { id: 'T1.2', label: 'Procure and install servers and storage hardware.', completed: true },
+        { id: 'T1.3', label: 'Set up local area network (LAN), internet connectivity, and firewall/security.', completed: true },
+        { id: 'T1.4', label: 'Procure and configure researcher workstations and peripherals.', completed: false },
+        { id: 'T1.5', label: 'Install furnishings and ergonomic workspace equipment.', completed: false },
+        { id: 'T1.6', label: 'Set up backup, power protection (UPS), and IT maintenance procedures.', completed: false },
       ]}
       initialImages={[
         {
@@ -340,11 +389,11 @@ export function WP2() {
         'Data sharing agreements and access governance per sector',
       ]}
       tasks={[
-        { id: 'T2.1', label: 'Identify and inventory data sources per sector.' },
-        { id: 'T2.2', label: 'Establish data sharing agreements and access permissions.' },
-        { id: 'T2.3', label: 'Acquire and pre-process sectoral datasets.' },
-        { id: 'T2.4', label: 'Convert and serialise data to RDF and other target formats.' },
-        { id: 'T2.5', label: 'Validate and document datasets for completeness and accuracy.' },
+        { id: 'T2.1', label: 'Identify and inventory data sources per sector.', completed: true },
+        { id: 'T2.2', label: 'Establish data sharing agreements and access permissions.', completed: true },
+        { id: 'T2.3', label: 'Acquire and pre-process sectoral datasets.', completed: false },
+        { id: 'T2.4', label: 'Convert and serialise data to RDF and other target formats.', completed: false },
+        { id: 'T2.5', label: 'Validate and document datasets for completeness and accuracy.', completed: false },
       ]}
     />
   );
@@ -362,11 +411,11 @@ export function WP3() {
         'Digital Twin linkages via simulation and data models',
       ]}
       tasks={[
-        { id: 'T3.1', label: 'Develop or adopt domain ontologies per sector (SOCIO-ECO KG, EDU KG, ENV KG, TOUR KG, HEALTH KG, AGRI KG).' },
-        { id: 'T3.2', label: 'Populate individual domain KGs with data from WP2.' },
-        { id: 'T3.3', label: 'Design and implement the Federation Layer meta-model for cross-domain alignment.' },
-        { id: 'T3.4', label: 'Build federated SPARQL query engine across all domain KGs.' },
-        { id: 'T3.5', label: 'Develop simulation, system, and data models and Digital Twin linkages.' },
+        { id: 'T3.1', label: 'Develop or adopt domain ontologies per sector (SOCIO-ECO KG, EDU KG, ENV KG, TOUR KG, HEALTH KG, AGRI KG).', completed: true },
+        { id: 'T3.2', label: 'Populate individual domain KGs with data from WP2.', completed: true },
+        { id: 'T3.3', label: 'Design and implement the Federation Layer meta-model for cross-domain alignment.', completed: false },
+        { id: 'T3.4', label: 'Build federated SPARQL query engine across all domain KGs.', completed: false },
+        { id: 'T3.5', label: 'Develop simulation, system, and data models and Digital Twin linkages.', completed: false },
       ]}
     />
   );
@@ -384,11 +433,11 @@ export function WP4() {
         'Interactive dashboards with cross-domain KPIs, visualizations, and decision support',
       ]}
       tasks={[
-        { id: 'T4.1', label: 'Design cross-sectoral analytical query framework spanning all six domain KGs.' },
-        { id: 'T4.2', label: 'Implement federated SPARQL and graph-based analytical pipelines.' },
-        { id: 'T4.3', label: 'Integrate LLMs for natural language query interpretation and answer generation.' },
-        { id: 'T4.4', label: 'Build interactive analytical dashboards with cross-domain key performance indicators and visualizations.' },
-        { id: 'T4.5', label: 'Validate analytical outputs against ground truth data across sectors.' },
+        { id: 'T4.1', label: 'Design cross-sectoral analytical query framework spanning all six domain KGs.', completed: true },
+        { id: 'T4.2', label: 'Implement federated SPARQL and graph-based analytical pipelines.', completed: true },
+        { id: 'T4.3', label: 'Integrate LLMs for natural language query interpretation and answer generation.', completed: false },
+        { id: 'T4.4', label: 'Build interactive analytical dashboards with cross-domain key performance indicators and visualizations.', completed: false },
+        { id: 'T4.5', label: 'Validate analytical outputs against ground truth data across sectors.', completed: false },
       ]}
     />
   );
@@ -406,10 +455,10 @@ export function WP5() {
         'KG-grounded reasoning with feedback-driven refinement for improved response quality',
       ]}
       tasks={[
-        { id: 'T5.1', label: 'Design conversational NLI architecture integrating LLMs with the federated KG backend.' },
-        { id: 'T5.2', label: 'Develop natural language to SPARQL/graph query translation module.' },
-        { id: 'T5.3', label: 'Build context-aware answer generation using KG-grounded LLM reasoning.' },
-        { id: 'T5.4', label: 'Iteratively refine NLI based on user feedback and evaluation results.' },
+        { id: 'T5.1', label: 'Design conversational NLI architecture integrating LLMs with the federated KG backend.', completed: true },
+        { id: 'T5.2', label: 'Develop natural language to SPARQL/graph query translation module.', completed: false },
+        { id: 'T5.3', label: 'Build context-aware answer generation using KG-grounded LLM reasoning.', completed: false },
+        { id: 'T5.4', label: 'Iteratively refine NLI based on user feedback and evaluation results.', completed: false },
       ]}
     />
   );
