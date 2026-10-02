@@ -50,10 +50,15 @@ function WPPage({ number, title, objective, tasks, highlights, initialImages = [
               wp.title?.toLowerCase().includes(`wp${number}`.toLowerCase())
           );
           if (match) {
-            const rawImages = (match as any).current_state_images || (match as any).state_images || (match as any).images || [];
-            const validImages = Array.isArray(rawImages) && rawImages.length > 0
+            const hasExplicitImages = Array.isArray((match as any).current_state_images);
+            const rawImages = hasExplicitImages
+              ? (match as any).current_state_images
+              : (Array.isArray((match as any).state_images)
+                  ? (match as any).state_images
+                  : (Array.isArray((match as any).images) ? (match as any).images : initialImages));
+            const validImages = Array.isArray(rawImages)
               ? rawImages.filter((img: any) => img && (img.url || img.src))
-              : initialImages;
+              : [];
 
             const parsedTasks: Task[] = Array.isArray(match.tasks) && match.tasks.length > 0
               ? match.tasks.map((t: any, idx: number) => {
@@ -364,14 +369,7 @@ export function WP1() {
         { id: 'T1.5', label: 'Install furnishings and ergonomic workspace equipment.', completed: false },
         { id: 'T1.6', label: 'Set up backup, power protection (UPS), and IT maintenance procedures.', completed: false },
       ]}
-      initialImages={[
-        {
-          id: 'wp1-init-1',
-          url: '/bdai-lab-preview.png',
-          caption: 'High-Performance Research Computing & Lab Workstations deployed at BDAI Lab (CU CSE).',
-          date: 'September 2026',
-        },
-      ]}
+      initialImages={[]}
     />
   );
 }
