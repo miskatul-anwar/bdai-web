@@ -32,30 +32,31 @@ interface ObjectiveDisplayItem {
   images: string[];
 }
 
-const staticObjectives: ObjectiveDisplayItem[] = [
-  { id: 'OB1', title: 'Open Data Quality', researcher: 'Prof. Dr. M. Shahadat Hossain', sector: 'Data Engineering', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE] },
-  { id: 'OB2', title: 'SMART Data Ecosystem', researcher: 'Dr. Rudra Pratap Deb Nath', sector: 'Platform Architecture', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ARYAN_IMAGE, MISKAT_IMAGE] },
-  { id: 'OB3', title: 'KG Construction', researcher: 'Prof. Dr. Mohammad Shamsul Arefin', sector: 'Knowledge Graphs', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, KAUSIK_ISHIK_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, MINHAJ_IMAGE] },
-  { id: 'OB4', title: 'Cross-Sector Analytics', researcher: 'Prof. Dr. Kazi Tanvir Ahmed', sector: 'Analytics & Insights', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE] },
-  { id: 'OB5', title: 'KG RAG', researcher: 'Prof. Dr. M. Shahadat Hossain', sector: 'AI & Retrieval', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, TAQI_IMAGE, AONG_IMAGE] },
-  { id: 'OB6', title: 'Explainability & Fairness', researcher: 'Dr. Rudra Pratap Deb Nath', sector: 'Trustworthy AI', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, AONG_IMAGE, MINHAJ_IMAGE, KAIS_IMAGE, TAQI_IMAGE] },
-  { id: 'OB7', title: 'askBDAI', researcher: 'Prof. Dr. Mohammad Shamsul Arefin', sector: 'Conversational Agents', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE] },
-  { id: 'OB8', title: 'Capacity Building', researcher: 'Prof. Dr. M. Shahadat Hossain', sector: 'Workforce & Training', status: 'in-progress', progress: 50, images: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, NOOR_IMAGE, NESARUL_IMAGE, TAQI_IMAGE, AONG_IMAGE, MINHAJ_IMAGE] },
-];
+const OBJECTIVE_IMAGES_MAP: Record<string, string[]> = {
+  OB1: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, SC_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE],
+  OB2: [RPDN_IMAGE, ARYAN_IMAGE, MISKAT_IMAGE],
+  OB3: [RPDN_IMAGE, ANC_IMAGE, MMI_IMAGE, KAUSIK_ISHIK_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, MINHAJ_IMAGE],
+  OB4: [RPDN_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE],
+  OB5: [RPDN_IMAGE, ANC_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, TAQI_IMAGE, AONG_IMAGE],
+  OB6: [RPDN_IMAGE, ANC_IMAGE, AONG_IMAGE, MINHAJ_IMAGE, KAIS_IMAGE, TAQI_IMAGE],
+  OB7: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, NOOR_IMAGE, KAIS_IMAGE],
+  OB8: [RPDN_IMAGE, ANC_IMAGE, SC_IMAGE, NESARUL_IMAGE, ATIKISHRAK_IMAGE, RAIHAN_IMAGE, MISKAT_IMAGE, ARYAN_IMAGE, KAIS_IMAGE, NOOR_IMAGE, NESARUL_IMAGE, TAQI_IMAGE, AONG_IMAGE, MINHAJ_IMAGE],
+};
 
 function enrichObjectives(data: BackendObjective[]): ObjectiveDisplayItem[] {
   const enriched: ObjectiveDisplayItem[] = data.map((d: BackendObjective) => {
-    const match = staticObjectives.find((so) => so.id.toUpperCase() === d.id.toUpperCase());
+    const key = d.id.toUpperCase();
+    const imgs = OBJECTIVE_IMAGES_MAP[key] || [RPDN_IMAGE, MISKAT_IMAGE];
     return {
       id: d.id,
       title: d.title,
       details: d.details,
-      researcher: d.researcher || match?.researcher,
-      sector: d.sector || match?.sector,
-      status: d.status || match?.status || 'in-progress',
-      progress: d.progress ?? match?.progress ?? 50,
+      researcher: d.researcher,
+      sector: d.sector,
+      status: d.status || 'in-progress',
+      progress: d.progress ?? 50,
       deliverables: d.deliverables,
-      images: match ? match.images : [RPDN_IMAGE, MISKAT_IMAGE],
+      images: imgs,
     };
   });
 
@@ -79,17 +80,22 @@ export default function Objectives() {
   const [isLoading, setIsLoading] = useState(() => !getCachedObjectives());
 
   useEffect(() => {
+    let isMounted = true;
     fetchObjectives().then((data) => {
-      if (data && Array.isArray(data) && data.length > 0) {
-        setObjectivesList(enrichObjectives(data));
-      } else if (objectivesList.length === 0) {
-        setObjectivesList(staticObjectives);
+      if (isMounted) {
+        if (data && Array.isArray(data)) {
+          setObjectivesList(enrichObjectives(data));
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }).catch(() => {
-      if (objectivesList.length === 0) setObjectivesList(staticObjectives);
-      setIsLoading(false);
+      if (isMounted) {
+        setIsLoading(false);
+      }
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -121,26 +127,33 @@ export default function Objectives() {
               <tbody className="divide-y divide-gray-100">
                 {isLoading && objectivesList.length === 0 && (
                   <>
-                    {[1, 2, 3, 4].map((i) => (
-                      <tr key={i} className="animate-pulse">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <tr key={i} className="animate-shimmer">
                         <td className="py-4 px-6">
-                          <div className="w-10 h-10 rounded-xl bg-slate-200" />
+                          <div className="w-10 h-10 rounded-xl bg-slate-200 animate-pulse" />
                         </td>
                         <td className="py-4 px-6 space-y-2">
-                          <div className="h-4 w-48 bg-slate-200 rounded" />
-                          <div className="h-3 w-72 bg-slate-100 rounded" />
+                          <div className="h-4 w-48 bg-slate-200 rounded animate-pulse" />
+                          <div className="h-3 w-72 bg-slate-100 rounded animate-pulse" />
                         </td>
                         <td className="py-4 px-6 space-y-2">
-                          <div className="h-4 w-32 bg-slate-200 rounded" />
-                          <div className="h-5 w-24 bg-slate-100 rounded" />
+                          <div className="h-4 w-32 bg-slate-200 rounded animate-pulse" />
+                          <div className="h-5 w-24 bg-slate-100 rounded animate-pulse" />
                         </td>
                         <td className="py-4 px-6 text-right">
-                          <div className="h-4 w-12 bg-slate-200 rounded ml-auto mb-1" />
-                          <div className="h-2 w-20 bg-slate-100 rounded ml-auto" />
+                          <div className="h-4 w-12 bg-slate-200 rounded ml-auto mb-1 animate-pulse" />
+                          <div className="h-2 w-20 bg-slate-100 rounded ml-auto animate-pulse" />
                         </td>
                       </tr>
                     ))}
                   </>
+                )}
+                {!isLoading && objectivesList.length === 0 && (
+                  <tr>
+                    <td colSpan={4} className="py-16 text-center text-slate-500 font-medium">
+                      No research objectives currently published.
+                    </td>
+                  </tr>
                 )}
                 {objectivesList.map((obj) => {
                   const isCompleted = obj.status === 'completed';

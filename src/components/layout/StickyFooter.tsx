@@ -1,23 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { APP_DATA } from '../../constants';
-import { fetchSiteSettings } from '@/lib/api';
+import { fetchSiteSettings, getCachedPartners } from '@/lib/api';
 
 export function StickyFooter() {
   const { scrollY } = useScroll();
-  const [partnerLogos, setPartnerLogos] = useState(APP_DATA.partners);
+  const [partnerLogos, setPartnerLogos] = useState<Array<{ name: string; logo: string }>>(() => {
+    const cached = getCachedPartners();
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return cached.map((p) => ({ name: p.name, logo: p.logo }));
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => {
+    const cached = getCachedPartners();
+    return !(cached && Array.isArray(cached) && cached.length > 0);
+  });
 
   useEffect(() => {
+    let isMounted = true;
     fetchSiteSettings().then((s) => {
-      if (s?.partners && s.partners.length > 0) {
-        setPartnerLogos(
-          s.partners.map((p) => ({
-            name: p.name,
-            logo: p.logo,
-          }))
-        );
+      if (isMounted) {
+        if (s?.partners && s.partners.length > 0) {
+          setPartnerLogos(
+            s.partners.map((p) => ({
+              name: p.name,
+              logo: p.logo,
+            }))
+          );
+        }
+        setIsLoading(false);
       }
+    }).catch(() => {
+      if (isMounted) setIsLoading(false);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
   
   // Show the footer after scrolling past 300px
@@ -40,19 +58,27 @@ export function StickyFooter() {
         </div>
 
         <div className="flex flex-wrap items-center justify-end gap-6 md:gap-10 flex-grow">
-          {partnerLogos.map((partner, i) => (
-            <motion.img 
-              key={i} 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
-              whileHover={{ opacity: 1, scale: 1.1, filter: "grayscale(0)" }}
-              transition={{ delay: i * 0.1 }}
-              src={partner.logo} 
-              alt={partner.name}
-              className="h-6 md:h-8 w-auto grayscale transition-all duration-500 cursor-pointer object-contain"
-              referrerPolicy="no-referrer"
-            />
-          ))}
+          {isLoading && partnerLogos.length === 0 ? (
+            <div className="flex items-center gap-6 animate-shimmer">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-6 w-20 bg-slate-200/70 rounded-md animate-pulse" />
+              ))}
+            </div>
+          ) : (
+            partnerLogos.map((partner, i) => (
+              <motion.img 
+                key={i} 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                whileHover={{ opacity: 1, scale: 1.1, filter: "grayscale(0)" }}
+                transition={{ delay: i * 0.1 }}
+                src={partner.logo} 
+                alt={partner.name}
+                className="h-6 md:h-8 w-auto grayscale transition-all duration-500 cursor-pointer object-contain"
+                referrerPolicy="no-referrer"
+              />
+            ))
+          )}
         </div>
       </div>
     </motion.footer>

@@ -8,6 +8,11 @@ import {
   Sprout, Compass, Sparkles
 } from 'lucide-react';
 import { fetchSiteSettings, getCachedSiteSettings, SiteSettings } from '@/lib/api';
+import {
+  HeroStatsLoading,
+  TickerLoading,
+  OrgLogosLoading,
+} from '@/components/ui/LoadingAnimation';
 
 /* ─── Icon Map for Dynamic Sectors ──────────────────── */
 const ICON_MAP: Record<string, any> = {
@@ -20,7 +25,7 @@ const ICON_MAP: Record<string, any> = {
   Compass: Compass,
 };
 
-/* ─── Defaults (Initial fallback before API responds) ──────────────── */
+/* ─── Defaults (Offline fallback only) ──────────────── */
 
 const DEFAULT_SECTORS = [
   { icon: TrendingUpIcon, label: 'Socio-Economics' },
@@ -79,11 +84,16 @@ export default function Home() {
   const router = useRouter();
 
   const [settings, setSettings] = useState<SiteSettings | null>(() => getCachedSiteSettings());
+  const [isLoading, setIsLoading] = useState<boolean>(() => !getCachedSiteSettings());
 
   useEffect(() => {
-    fetchSiteSettings().then((data) => {
-      if (data) setSettings(data);
-    });
+    fetchSiteSettings()
+      .then((data) => {
+        if (data) setSettings(data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -178,41 +188,49 @@ export default function Home() {
           </div>
 
           {/* Stats (compact) */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 mt-8 border border-slate-800 rounded-lg overflow-hidden text-sm">
-            {stats.map((s, i) => (
-              <div
-                key={i}
-                className="py-3 px-3 text-center bg-slate-900/50 border-r border-slate-800 last:border-r-0"
-              >
-                <div className="text-[clamp(20px,3vw,32px)] font-bold text-blue-400 tracking-tight leading-none">
-                  {s.value}
+          {isLoading ? (
+            <HeroStatsLoading />
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-0 mt-8 border border-slate-800 rounded-lg overflow-hidden text-sm">
+              {stats.map((s, i) => (
+                <div
+                  key={i}
+                  className="py-3 px-3 text-center bg-slate-900/50 border-r border-slate-800 last:border-r-0"
+                >
+                  <div className="text-[clamp(20px,3vw,32px)] font-bold text-blue-400 tracking-tight leading-none">
+                    {s.value}
+                  </div>
+                  <div className="text-[10px] tracking-[0.12em] uppercase text-slate-500 mt-1">
+                    {s.label}
+                  </div>
                 </div>
-                <div className="text-[10px] tracking-[0.12em] uppercase text-slate-500 mt-1">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
       {/* ── Compact Sector Ticker ────────────────────── */}
-      <div className="bg-blue-500 overflow-hidden py-2">
-        <div
-          className="flex gap-8 whitespace-nowrap w-max"
-          style={{ animation: 'ticker 18s linear infinite' }}
-        >
-          {[...sectors, ...sectors, ...sectors].map(({ icon: Icon, label }, i) => (
-            <span
-              key={i}
-              className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] uppercase text-white/90"
-            >
-              <Icon size={12} /> {label}
-            </span>
-          ))}
+      {isLoading ? (
+        <TickerLoading />
+      ) : (
+        <div className="bg-blue-500 overflow-hidden py-2">
+          <div
+            className="flex gap-8 whitespace-nowrap w-max"
+            style={{ animation: 'ticker 18s linear infinite' }}
+          >
+            {[...sectors, ...sectors, ...sectors].map(({ icon: Icon, label }, i) => (
+              <span
+                key={i}
+                className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.12em] uppercase text-white/90"
+              >
+                <Icon size={12} /> {label}
+              </span>
+            ))}
+          </div>
+          <style>{`@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
         </div>
-        <style>{`@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
-      </div>
+      )}
 
       {/* ── Partner Organizations ──────────────────── */}
       <section className="w-full bg-gradient-to-b from-white to-slate-50 py-20">
@@ -224,31 +242,35 @@ export default function Home() {
             </h2>
           </div>
 
-          <div className="w-full overflow-hidden border-y border-slate-200 bg-white/70 py-7 px-6 md:px-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
-            <div
-              className="flex items-stretch gap-5 w-max"
-              style={{ animation: 'orgTicker 20.8s linear infinite reverse', transform: 'translateX(-50%)' }}
-            >
-              {[...organizations, ...organizations].map((org, i) => (
-                <div
-                  key={i}
-                  className="w-[190px] shrink-0 bg-white border border-slate-200 rounded-xl p-4 md:p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="w-[77px] h-[77px] mb-3 flex items-center justify-center">
-                    <img
-                      src={org.logo}
-                      alt={`${org.name} logo`}
-                      className="max-w-full max-h-full object-contain"
-                    />
+          {isLoading ? (
+            <OrgLogosLoading />
+          ) : (
+            <div className="w-full overflow-hidden border-y border-slate-200 bg-white/70 py-7 px-6 md:px-10 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+              <div
+                className="flex items-stretch gap-5 w-max"
+                style={{ animation: 'orgTicker 20.8s linear infinite reverse', transform: 'translateX(-50%)' }}
+              >
+                {[...organizations, ...organizations].map((org, i) => (
+                  <div
+                    key={i}
+                    className="w-[190px] shrink-0 bg-white border border-slate-200 rounded-xl p-4 md:p-5 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow"
+                  >
+                    <div className="w-[77px] h-[77px] mb-3 flex items-center justify-center">
+                      <img
+                        src={org.logo}
+                        alt={`${org.name} logo`}
+                        className="max-w-full max-h-full object-contain"
+                      />
+                    </div>
+                    <p className="text-[12px] font-semibold text-slate-700 leading-snug m-0">
+                      {org.name}
+                    </p>
                   </div>
-                  <p className="text-[12px] font-semibold text-slate-700 leading-snug m-0">
-                    {org.name}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
+              <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
             </div>
-          </div>
-          <style>{`@keyframes orgTicker{from{transform:translateX(0)}to{transform:translateX(-33.333%)}}`}</style>
+          )}
         </div>
       </section>
       {/* ── SDGs ─────────────────────────────────────── */}

@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { BookOpen, ExternalLink, FileText } from 'lucide-react';
-import { fetchSiteSettings } from '@/lib/api';
+import { fetchSiteSettings, getCachedData, SiteSettings } from '@/lib/api';
+import { PublicationsLoading } from '@/components/ui/LoadingAnimation';
 
 interface PublicationItem {
   id?: string;
@@ -16,27 +17,34 @@ interface PublicationItem {
   url?: string;
 }
 
-const DEFAULT_PUBLICATIONS: PublicationItem[] = [
-  {
-    id: 'pub-1',
-    title: 'Advancing Cyberbullying Detection in Low-resource Languages: A Transformer-stacking Framework for Bengali',
-    authors: 'Md Nesarul Hoque, Rudra Pratap Deb Nath, Abu Nowshed Chy, Debasish Ghose, Md Hanif Seddiqui',
-    venue: 'Frontiers in Artificial Intelligence — Frontiers',
-    year: '2024',
-    doi_url: 'https://scholar.google.com/citations?view_op=view_citation&hl=en&user=TkQGAWoAAAAJ&sortby=pubdate&citation_for_view=TkQGAWoAAAAJ:WbkHhVStYXYC',
-    pdf_url: '',
-  },
-];
-
 export default function Publications() {
-  const [publications, setPublications] = useState<PublicationItem[]>(DEFAULT_PUBLICATIONS);
+  const [publications, setPublications] = useState<PublicationItem[]>(() => {
+    const cached = getCachedData<SiteSettings>('/settings')?.publications;
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return cached as PublicationItem[];
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => {
+    const cached = getCachedData<SiteSettings>('/settings')?.publications;
+    return !(cached && Array.isArray(cached) && cached.length > 0);
+  });
 
   useEffect(() => {
+    let isMounted = true;
     fetchSiteSettings().then((data) => {
-      if (data?.publications && data.publications.length > 0) {
-        setPublications(data.publications as PublicationItem[]);
+      if (isMounted) {
+        if (data?.publications && Array.isArray(data.publications)) {
+          setPublications(data.publications as PublicationItem[]);
+        }
+        setIsLoading(false);
       }
+    }).catch(() => {
+      if (isMounted) setIsLoading(false);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -51,6 +59,16 @@ export default function Publications() {
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Publications</h1>
           </div>
         </div>
+
+        {/* Loading Skeleton */}
+        {isLoading && publications.length === 0 && <PublicationsLoading />}
+
+        {/* Empty State */}
+        {!isLoading && publications.length === 0 && (
+          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
+            <p className="text-slate-600 font-medium">No publications currently published.</p>
+          </div>
+        )}
 
         <div className="space-y-4">
           {publications.map((pub, idx) => {

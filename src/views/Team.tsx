@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Users } from 'lucide-react';
 import { fetchTeam, getCachedTeam, BackendTeamMember } from '@/lib/api';
+import { TeamGridLoading } from '@/components/ui/LoadingAnimation';
 
 export interface PublicTeamMember {
   id?: string;
@@ -15,222 +16,6 @@ export interface PublicTeamMember {
   email?: string;
   image: string;
 }
-
-const initialTeam: PublicTeamMember[] = [
-  // SPM Team
-  {
-    role: 'SPM',
-    designation: 'SPM & Professor',
-    category: 'SPM Team',
-    name: 'Prof. Dr. Rudra Pratap Deb Nath',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    email: 'rudra@cu.ac.bd',
-    image: '/team/rpdn.png',
-  },
-  {
-    role: 'ASPM',
-    designation: 'ASPM & Associate Professor',
-    category: 'SPM Team',
-    name: 'Dr. Abu Nowshed Chy',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    email: 'nowshed@cu.ac.bd',
-    image: '/team/anc.png',
-  },
-  {
-    role: 'Member',
-    designation: 'Associate Professor',
-    category: 'SPM Team',
-    name: 'Dr. Md. Mahbubul Islam',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    email: 'mahbubcse@cu.ac.bd',
-    image: '/team/mmi.png',
-  },
-  {
-    role: 'Member',
-    designation: 'Assistant Professor',
-    category: 'SPM Team',
-    name: 'Shima Chakraborty',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    email: 'shimacse@cu.ac.bd',
-    image: '/team/sc.png',
-  },
-
-  // Student Researchers
-  {
-    id: 'sayed',
-    role: 'PhD Fellow',
-    designation: 'PhD Fellow',
-    category: 'Student Researchers',
-    name: 'Sayed Hossain',
-    email: 'sayed.fellow@cu.ac.bd',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    image: '/team/sayed.jpg',
-  },
-  {
-    id: 'nesarul',
-    role: 'PhD Fellow',
-    designation: 'PhD Fellow',
-    category: 'Student Researchers',
-    name: 'Md. Nesarul Haque',
-    email: 'nesarul@std.cu.ac.bd',
-    institution: 'Student, CSE, CU',
-    image: '/team/nesarul.jpg',
-  },
-  {
-    id: 'noortaz',
-    role: 'PhD Fellow',
-    designation: 'PhD Fellow',
-    category: 'Student Researchers',
-    name: 'Noortaz Rezwana',
-    email: 'noortaz@std.cu.ac.bd',
-    institution: 'Student, CSE, CU',
-    image: '/team/noor.jpg',
-  },
-  {
-    id: 'atik',
-    role: 'Research Assistant',
-    designation: 'Research Assistant',
-    category: 'Student Researchers',
-    name: 'Atik Ishrak',
-    email: 'atikishrak66@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/atikishrak.jpg',
-  },
-  {
-    id: 'kais',
-    role: 'Research Assistant',
-    designation: 'Research Assistant',
-    category: 'Student Researchers',
-    name: 'Md. Kais',
-    email: 'mdkais3@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/kais.jpg',
-  },
-  {
-    id: 'raihan',
-    role: 'Masters Fellow',
-    designation: 'Masters Fellow',
-    category: 'Student Researchers',
-    name: 'Md Raihan Kabir Rifat',
-    email: 'raihankabir@std.cu.ac.bd',
-    institution: 'Student, CSE, CU',
-    image: '/team/raihan.jpg',
-  },
-
-  // Data Annotators
-  {
-    id: 'minhaj',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Minhajul Islam',
-    email: 'minhaj@std.cu.ac.bd',
-    institution: 'Student, CSE, CU',
-    image: '/team/minhaj.png',
-  },
-  {
-    id: 'arafat',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Arafat Sheikh',
-    email: 'arafat.csecu@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/arafat.png',
-  },
-  {
-    id: 'aong',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Aong Cho Thing Marma',
-    email: 'aongcho880@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/aong.jpg',
-  },
-  {
-    id: 'taqi',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Taqi Ismail',
-    email: 'taqiismail10@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/taqi.jpg',
-  },
-  {
-    id: 'tihan',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Md Sadman Sami Khan',
-    email: 'samisadman6@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/tihan.jpg',
-  },
-  {
-    id: 'aryan',
-    role: 'Data Annotator',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Aryan Bin Ashraf',
-    email: 'aryanashraf.csecu@gmail.com',
-    institution: 'Student, CSE, CU',
-    image: '/team/aryan.jpg',
-  },
-  {
-    id: 'miskatul',
-    role: 'Data Annotator & Developer',
-    designation: 'Data Annotator',
-    category: 'Data Annotators',
-    name: 'Miskatul Anwar',
-    email: 'miskat@std.cu.ac.bd',
-    institution: 'Student, CSE, CU',
-    image: '/team/miskat.jpg',
-  },
-  {
-    id: 'sadia',
-    role: 'Data Annotator & Analyst',
-    designation: 'Data Annotator & Analyst',
-    category: 'Data Annotators',
-    name: 'Sadia Afrin',
-    email: 'sadia.annotator@cu.ac.bd',
-    institution: 'Department of Computer Science and Engineering, University of Chittagong',
-    image: '/team/sadia.jpg',
-  },
-
-  // Administrative Staff
-  {
-    id: 'kausik',
-    role: 'Office Manager',
-    designation: 'Office Manager',
-    category: 'Administrative Staff',
-    name: 'Kausik Das',
-    email: 'cukaushikdas@gmail.com',
-    institution: 'Student, EEE, CU',
-    image: '/team/kausik.jpeg',
-  },
-  {
-    id: 'sykot',
-    role: 'Accountant',
-    designation: 'Accountant',
-    category: 'Administrative Staff',
-    name: 'Sykot Deb',
-    email: 'soikotjps1998@gmail.com',
-    institution: 'University of Chittagong',
-    image: '/team/sykot.png',
-  },
-  {
-    id: 'robiul',
-    role: 'Office Assistant',
-    designation: 'Office Assistant',
-    category: 'Administrative Staff',
-    name: 'Mohammad Robiul Hossen',
-    email: 'm.robiul1212@gmail.com',
-    institution: 'University of Chittagong',
-    image: '/team/robiul.png',
-  },
-];
 
 function mapBackendTeam(data: any[]): PublicTeamMember[] {
   return data.map((m) => {
@@ -310,17 +95,15 @@ export default function Team() {
   const [isLoading, setIsLoading] = useState(() => !getCachedTeam());
 
   useEffect(() => {
-    fetchTeam().then((data) => {
-      if (data && data.length > 0) {
-        setTeamMembers(mapBackendTeam(data));
-      } else if (teamMembers.length === 0) {
-        setTeamMembers(initialTeam);
-      }
-      setIsLoading(false);
-    }).catch(() => {
-      if (teamMembers.length === 0) setTeamMembers(initialTeam);
-      setIsLoading(false);
-    });
+    fetchTeam()
+      .then((data) => {
+        if (data && data.length > 0) {
+          setTeamMembers(mapBackendTeam(data));
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   // Standard category priority ordering
@@ -367,24 +150,17 @@ export default function Team() {
           </div>
         </div>
 
-        {/* Loading Skeleton */}
-        {isLoading && teamMembers.length === 0 && (
-          <div className="space-y-8 animate-pulse">
-            {[1, 2].map((s) => (
-              <div key={s} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                <div className="h-6 w-36 bg-slate-200 rounded mb-6" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="flex flex-col items-center gap-3">
-                      <div className="w-32 h-32 rounded-full bg-slate-200" />
-                      <div className="h-4 w-20 bg-slate-200 rounded" />
-                      <div className="h-4 w-32 bg-slate-200 rounded" />
-                      <div className="h-3 w-24 bg-slate-100 rounded" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+        {/* Loading Animation */}
+        {isLoading && teamMembers.length === 0 && <TeamGridLoading />}
+
+        {/* Empty State */}
+        {!isLoading && teamMembers.length === 0 && (
+          <div className="bg-white rounded-2xl p-12 text-center border border-gray-100 shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 mx-auto mb-3">
+              <Users className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-[#0c2461] text-base mb-1">No Team Members Listed</h3>
+            <p className="text-sm text-gray-500">Personnel listings are updated dynamically via the portal backend.</p>
           </div>
         )}
 

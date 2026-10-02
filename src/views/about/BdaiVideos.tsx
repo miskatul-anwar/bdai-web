@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { PlayCircle, Calendar } from 'lucide-react';
 import { fetchVideos, getCachedVideos } from '@/lib/api';
+import { VideosLoading } from '@/components/ui/LoadingAnimation';
 
 type VideoItem = {
   url: string;
@@ -14,34 +15,6 @@ type VideoItem = {
   thumbnail?: string;
   order?: number;
 };
-
-const initialVideosData: VideoItem[] = [
-  {
-    url: 'https://www.youtube.com/watch?v=9-a4MVHqZow',
-    videoId: '9-a4MVHqZow',
-    title: 'Sustainable Economic Transformation and Labor Market Information (SETLBI) Dashboard',
-    description: 'Overview of the SETLBI AI decision support platform developed under BDAI project.',
-    postedAt: 'March 2026',
-    order: 1,
-  },
-  {
-    url: 'https://www.youtube.com/watch?v=J2VZUgkArZY',
-    videoId: 'J2VZUgkArZY',
-    title: 'BDAI Research Demo & Interactive Showcase',
-    description: 'System walkthrough demonstrating machine learning models and knowledge graph integrations.',
-    postedAt: 'February 2026',
-    order: 2,
-  },
-  {
-    url: 'https://drive.google.com/drive/folders/1O7XGQ0k81bPCVmXFc-UZp8Bq7r7EajyL',
-    videoId: 'bdai-lab-preview',
-    title: 'BDAI Lab Video Preview',
-    description: 'Visual preview of the Big Data and Artificial Intelligence research laboratory facilities.',
-    thumbnail: '/bdai-lab-preview.png',
-    postedAt: 'January 2026',
-    order: 3,
-  },
-];
 
 const extractYoutubeId = (url: string) => {
   if (!url) return null;
@@ -85,44 +58,54 @@ export default function BdaiVideos() {
     let active = true;
 
     const loadVideos = async () => {
-      let currentList = videos.length > 0 ? videos : initialVideosData;
-
       try {
         const dbVideos = await fetchVideos();
-        if (dbVideos && Array.isArray(dbVideos) && dbVideos.length > 0) {
+        let currentList: VideoItem[] = [];
+        if (dbVideos && Array.isArray(dbVideos)) {
           currentList = mapBackendVideos(dbVideos);
         }
+
+        if (currentList.length === 0) {
+          if (active) {
+            setVideos([]);
+            setIsLoading(false);
+          }
+          return;
+        }
+
+        // Enrich missing titles from YouTube oEmbed if needed
+        const enriched = await Promise.all(
+          currentList.map(async (video) => {
+            if (video.title && video.thumbnail) return video;
+            if (!video.url.includes('youtube.com') && !video.url.includes('youtu.be')) {
+              return video;
+            }
+            try {
+              const res = await fetch(
+                `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`
+              );
+              if (!res.ok) return video;
+              const data = (await res.json()) as { title?: string; thumbnail_url?: string };
+              return {
+                ...video,
+                title: video.title || data.title,
+                thumbnail: video.thumbnail || data.thumbnail_url,
+              };
+            } catch {
+              return video;
+            }
+          })
+        );
+
+        if (active) {
+          setVideos(enriched.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
+          setIsLoading(false);
+        }
       } catch (err) {
-        console.warn('Could not fetch videos from database, using cached fallback', err);
-      }
-
-      // Enrich missing titles from YouTube oEmbed if needed
-      const enriched = await Promise.all(
-        currentList.map(async (video) => {
-          if (video.title && video.thumbnail) return video;
-          if (!video.url.includes('youtube.com') && !video.url.includes('youtu.be')) {
-            return video;
-          }
-          try {
-            const res = await fetch(
-              `https://www.youtube.com/oembed?url=${encodeURIComponent(video.url)}&format=json`
-            );
-            if (!res.ok) return video;
-            const data = (await res.json()) as { title?: string; thumbnail_url?: string };
-            return {
-              ...video,
-              title: video.title || data.title,
-              thumbnail: video.thumbnail || data.thumbnail_url,
-            };
-          } catch {
-            return video;
-          }
-        })
-      );
-
-      if (active) {
-        setVideos(enriched.sort((a, b) => (a.order ?? 0) - (b.order ?? 0)));
-        setIsLoading(false);
+        console.warn('Could not fetch videos from backend', err);
+        if (active) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -155,18 +138,12 @@ export default function BdaiVideos() {
         </div>
 
         {/* Loading Skeleton */}
-        {isLoading && videos.length === 0 && (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-6">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 animate-pulse">
-                <div className="aspect-video bg-slate-200" />
-                <div className="p-5 space-y-3">
-                  <div className="h-3 w-20 bg-slate-100 rounded" />
-                  <div className="h-5 w-48 bg-slate-200 rounded" />
-                  <div className="h-3 w-64 bg-slate-100 rounded" />
-                </div>
-              </div>
-            ))}
+        {isLoading && videos.length === 0 && <VideosLoading />}
+
+        {/* Empty State */}
+        {!isLoading && videos.length === 0 && (
+          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
+            <p className="text-slate-600 font-medium">No videos currently published.</p>
           </div>
         )}
 

@@ -206,13 +206,20 @@ export interface SiteSettings {
     url?: string;
   }>;
   work_packages?: Array<{
-    id: string;
+    id?: string;
+    number?: number;
     title: string;
     lead?: string;
     status?: string;
     objective: string;
     highlights?: string[];
-    tasks?: string[];
+    tasks?: Array<{ id: string; label: string } | string>;
+    current_state_images?: Array<{
+      id?: string;
+      url: string;
+      caption: string;
+      date?: string;
+    }>;
   }>;
   publications?: Array<{
     id: string;
@@ -267,7 +274,16 @@ export interface BackendTool {
 }
 
 export async function fetchTools(): Promise<BackendTool[] | null> {
-  return fetchFromBackend<BackendTool[]>('/tools');
+  const data = await fetchFromBackend<any[]>('/tools');
+  if (data && Array.isArray(data)) {
+    const mapped: BackendTool[] = data.map((t) => ({
+      ...t,
+      abstract: t.abstract || t.abstract_text || null,
+    }));
+    setCachedData('/tools', mapped);
+    return mapped;
+  }
+  return null;
 }
 
 export interface BackendVideo {

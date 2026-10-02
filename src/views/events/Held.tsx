@@ -5,71 +5,7 @@ import Image from 'next/image';
 import { Calendar, MapPin, X, ZoomIn, Image as ImageIcon } from 'lucide-react';
 import { fetchEvents, getCachedEvents, BackendEvent } from '@/lib/api';
 import { getEventTimestamp } from '@/lib/date-utils';
-
-const initialHeldEvents: BackendEvent[] = [
-  {
-    id: 'event_workshop_debasish',
-    date: '29th July 2026',
-    date_iso: '2026-07-29',
-    title: 'Professor Dr. Debasish Ghose from Kristiania University College, Norway visited our lab for collaboration purpose. He delivers an intensive quality paper writing workshop.',
-    status: 'held',
-    category: 'Workshop',
-    location: 'BDAI Lab & SPMT Office, Department of CSE, University of Chittagong',
-    description: 'Professor Dr. Debasish Ghose from Kristiania University College, Norway visited our lab for research collaboration and delivered an intensive quality paper writing workshop for researchers and faculty members.',
-    banner: '/events/workshop_banner.jpeg',
-    gallery: [
-      { src: '/events/workshop_1.jpeg', alt: 'Workshop participants gathered with Prof. Dr. Debasish Ghose' },
-      { src: '/events/workshop_2.jpeg', alt: 'Collaborators and researchers in the department hallway' },
-      { src: '/events/workshop_3.jpeg', alt: 'Prof. Dr. Debasish Ghose, Prof. Dr. Rudra Pratap Deb Nath, and Dr. Abu Nowshed Chy at SPMT office' },
-      { src: '/events/workshop_4.jpeg', alt: 'Faculty and visiting professor outside SPMT office' },
-      { src: '/events/workshop_5.jpeg', alt: 'Collaboration meeting at SPMT office' },
-      { src: '/events/workshop_6.jpeg', alt: 'Research discussion at SPMT office' },
-      { src: '/events/workshop_7.jpeg', alt: 'Faculty collaboration outside BIKE Lab SPMT office' },
-      { src: '/events/workshop_8.jpeg', alt: 'Group photo in the BDAI lab' },
-    ],
-    order: 1,
-  },
-  {
-    id: 'event_seminar_rag_bi',
-    date: '2.00PM · 19th May 2026',
-    date_iso: '2026-05-19T14:00',
-    title: 'RAG-Driven Business Intelligence Platform Integration: Enterprise Data for Real-Time Insight, Predictive, and Prescriptive Decision Analytics',
-    status: 'held',
-    category: 'Seminar',
-    location: 'Department of Computer Science and Engineering, University of Chittagong',
-    description: 'Seminar on enterprise integration of retrieval-augmented generation and semantic knowledge graphs for real-time analytics and predictive decision systems.',
-    banner: '/events/seminar2.jpg',
-    gallery: [
-      { src: '/events/seminar2_1.jpeg', alt: 'RAG-Driven BI seminar gallery image 1' },
-      { src: '/events/seminar2_2.jpeg', alt: 'RAG-Driven BI seminar gallery image 2' },
-      { src: '/events/seminar2_3.jpeg', alt: 'RAG-Driven BI seminar gallery image 3' },
-      { src: '/events/seminar2_4.jpeg', alt: 'RAG-Driven BI seminar gallery image 4' },
-      { src: '/events/seminar2_5.jpeg', alt: 'RAG-Driven BI seminar gallery image 5' },
-      { src: '/events/seminar2_6.jpeg', alt: 'RAG-Driven BI seminar gallery image 6' },
-    ],
-    order: 2,
-  },
-  {
-    id: 'event_phd_cyberbullying',
-    date: '2.00PM · 14th May 2026',
-    date_iso: '2026-05-14T14:00',
-    title: 'Identificatin of the Digital Footprints of Cyberbullying and the personality traits of the perpretators to protect the malicious activity',
-    status: 'held',
-    category: 'PhD Seminar',
-    location: 'Department of Computer Science and Engineering, University of Chittagong',
-    description: 'PhD Open Seminar on machine learning models and digital footprint analysis for cyberbullying detection and perpetrator personality classification in Bengali social text.',
-    banner: '/events/1.png',
-    gallery: [
-      { src: '/events/phd1.png', alt: 'Event gallery image 1' },
-      { src: '/events/phd2.png', alt: 'Event gallery image 2' },
-      { src: '/events/phd3.png', alt: 'Event gallery image 3' },
-      { src: '/events/phd4.png', alt: 'Event gallery image 4' },
-      { src: '/events/phd5.png', alt: 'Event gallery image 5' },
-      { src: '/events/phd6.png', alt: 'Event gallery image 6' },
-    ],
-    order: 3,
-  },
-];
+import { EventsGridLoading } from '@/components/ui/LoadingAnimation';
 
 export default function HeldEvents() {
   const [events, setEvents] = useState<BackendEvent[]>(() => {
@@ -89,18 +25,14 @@ export default function HeldEvents() {
             const visible = data.filter((e) => e.is_visible !== false);
             const sorted = [...visible].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
             setEvents(sorted);
-          } else if (events.length === 0) {
-            setEvents(initialHeldEvents);
           }
-          setIsLoading(false);
         }
       })
       .catch((err) => {
         console.warn('Failed to fetch held events:', err);
-        if (isMounted) {
-          if (events.length === 0) setEvents(initialHeldEvents);
-          setIsLoading(false);
-        }
+      })
+      .finally(() => {
+        if (isMounted) setIsLoading(false);
       });
 
     return () => {
@@ -124,25 +56,23 @@ export default function HeldEvents() {
         </p>
       </div>
 
-      {/* Loading Skeleton */}
+      {/* Loading Animation */}
       {isLoading && events.length === 0 && (
-        <div className="mx-auto max-w-4xl space-y-8 animate-pulse">
-          {[1, 2].map((i) => (
-            <div
-              key={i}
-              className="rounded-3xl border border-white/70 bg-white p-5 sm:p-8 shadow-[0_12px_40px_rgba(15,23,42,0.08)]"
-            >
-              <div className="h-4 w-36 bg-slate-200 rounded mb-4" />
-              <div className="h-7 w-3/4 bg-slate-200 rounded mb-6" />
-              <div className="h-72 w-full bg-slate-100 rounded-2xl mb-8" />
-              <div className="h-5 w-40 bg-slate-200 rounded mb-4" />
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {[1, 2, 3].map((g) => (
-                  <div key={g} className="aspect-[4/3] bg-slate-100 rounded-2xl" />
-                ))}
-              </div>
-            </div>
-          ))}
+        <div className="mx-auto max-w-4xl">
+          <EventsGridLoading />
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && events.length === 0 && (
+        <div className="mx-auto max-w-4xl rounded-3xl border border-white/70 bg-white p-12 text-center shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-[#0c2461] flex items-center justify-center mx-auto mb-4 border border-blue-100">
+            <Calendar className="w-6 h-6" />
+          </div>
+          <h2 className="text-xl font-bold text-[#0c2461] mb-2">No Events Found</h2>
+          <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+            There are currently no recorded events in the archive. New events will appear here once published.
+          </p>
         </div>
       )}
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Calendar, MapPin, Building2, Briefcase, ExternalLink, ShieldCheck } from 'lucide-react';
 import { fetchVacancies, getCachedVacancies, BackendVacancy } from '@/lib/api';
+import { VacanciesLoading } from '@/components/ui/LoadingAnimation';
 
 export default function Vacancies() {
   const [vacancies, setVacancies] = useState<BackendVacancy[]>(() => {
@@ -19,11 +20,12 @@ export default function Vacancies() {
           if (data && Array.isArray(data)) {
             setVacancies(data);
           }
-          setIsLoading(false);
         }
       })
       .catch((err) => {
         console.warn('Failed to fetch vacancies:', err);
+      })
+      .finally(() => {
         if (isMounted) setIsLoading(false);
       });
 
@@ -54,33 +56,8 @@ export default function Vacancies() {
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-12 lg:px-10">
-        {/* Loading Skeleton */}
-        {isLoading && vacancies.length === 0 && (
-          <div className="grid gap-6 animate-pulse">
-            {[1, 2].map((i) => (
-              <div
-                key={i}
-                className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4 mb-4">
-                  <div className="space-y-2">
-                    <div className="h-4 w-28 bg-slate-800 rounded" />
-                    <div className="h-6 w-80 bg-slate-700 rounded" />
-                  </div>
-                  <div className="h-4 w-32 bg-slate-800 rounded" />
-                </div>
-                <div className="grid md:grid-cols-2 gap-4 mb-4">
-                  <div className="h-4 w-52 bg-slate-800 rounded" />
-                  <div className="h-4 w-44 bg-slate-800 rounded" />
-                  <div className="h-4 w-40 bg-slate-800 rounded" />
-                  <div className="h-4 w-24 bg-slate-800 rounded" />
-                </div>
-                <div className="h-16 w-full bg-slate-800/60 rounded mb-4" />
-                <div className="h-8 w-36 bg-slate-800 rounded-full" />
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Loading Animation */}
+        {isLoading && vacancies.length === 0 && <VacanciesLoading />}
 
         {/* Dynamic Backend Vacancies */}
         {!isLoading && vacancies.length === 0 ? (

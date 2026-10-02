@@ -13,31 +13,7 @@ import {
   ImageIcon,
 } from 'lucide-react';
 import { fetchTools, getCachedTools, BackendTool } from '@/lib/api';
-
-const DEFAULT_TOOLS: BackendTool[] = [
-  {
-    id: 'setlbi',
-    title: 'SETLBI',
-    subtitle: 'An Integrated Platform for Semantic Business Intelligence',
-    description:
-      'A tool that combines Semantic Web and Business Intelligence technologies to define, process, integrate, and query semantic data.',
-    abstract:
-      'With the growing popularity of Semantic Web technologies, more and more organizations natively manage data using Semantic Web standards, in particular RDF. This development gives rise to new requirements for Business Intelligence tools to enable analyses in the style of On-Line Analytical Processing (OLAP) over RDF data. SETLBI brings together the Semantic Web and Business Intelligence technologies across target definition, source to target mappings, source extraction, data transformation, and target population.',
-    authors:
-      'Rudra Pratap Deb Nath, Katja Hose, Torben Bach Pedersen, Oscar Romero, and Amrit Bhattacharjee',
-    features: [
-      'Semantic integration',
-      'RDF + OLAP workflows',
-      'End-to-end data pipeline',
-    ],
-    paper_url: 'https://extbi.cs.aau.dk/SETLBI/SETLBI.pdf',
-    source_url: 'https://github.com/bi-setl/SETL',
-    platform_url: 'https://extbi.cs.aau.dk/SETLBI/index.php',
-    video_url: 'https://www.youtube.com/embed/9-a4MVHqZow',
-    badge: 'Tool Showcase',
-    display_order: 1,
-  },
-];
+import { ToolsLoading } from '@/components/ui/LoadingAnimation';
 
 function getEmbedUrl(url?: string | null): string | null {
   if (!url) return null;
@@ -65,16 +41,13 @@ export default function SparqlTool() {
     let isMounted = true;
     fetchTools().then((data) => {
       if (isMounted) {
-        if (data && Array.isArray(data) && data.length > 0) {
+        if (data && Array.isArray(data)) {
           setTools(data);
-        } else if (tools.length === 0) {
-          setTools(DEFAULT_TOOLS);
         }
         setIsLoading(false);
       }
     }).catch(() => {
       if (isMounted) {
-        if (tools.length === 0) setTools(DEFAULT_TOOLS);
         setIsLoading(false);
       }
     });
@@ -94,14 +67,13 @@ export default function SparqlTool() {
     <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#f8fbff_0%,_#ecf0f1_42%,_#e7ebf2_100%)] py-10 sm:py-14 px-4 sm:px-6">
       <div className="mx-auto w-full max-w-7xl space-y-12">
         {/* Loading Skeleton */}
-        {isLoading && tools.length === 0 && (
-          <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-white/75 p-8 sm:p-12 shadow-sm animate-pulse">
-            <div className="h-6 w-32 bg-slate-200 rounded-full mb-6" />
-            <div className="h-10 w-96 bg-slate-200 rounded mb-4" />
-            <div className="h-5 w-72 bg-slate-100 rounded mb-6" />
-            <div className="h-4 w-full bg-slate-100 rounded mb-2" />
-            <div className="h-4 w-2/3 bg-slate-100 rounded" />
-          </section>
+        {isLoading && tools.length === 0 && <ToolsLoading />}
+
+        {/* Empty State */}
+        {!isLoading && tools.length === 0 && (
+          <div className="text-center py-20 bg-white/70 rounded-3xl border border-slate-200/80 shadow-sm p-8">
+            <p className="text-slate-600 font-medium">No tools currently published.</p>
+          </div>
         )}
         {tools.map((tool) => {
           const embedVideo = getEmbedUrl(tool.video_url);

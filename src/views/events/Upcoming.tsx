@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Calendar, MapPin, Sparkles, Clock } from 'lucide-react';
 import { fetchEvents, getCachedEvents, BackendEvent } from '@/lib/api';
 import { getEventTimestamp } from '@/lib/date-utils';
+import { EventsGridLoading } from '@/components/ui/LoadingAnimation';
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<BackendEvent[]>(() => {
@@ -24,11 +25,12 @@ export default function UpcomingEvents() {
             const sorted = [...visible].sort((a, b) => getEventTimestamp(b) - getEventTimestamp(a));
             setEvents(sorted);
           }
-          setIsLoading(false);
         }
       })
       .catch((err) => {
         console.warn('Failed to fetch upcoming events:', err);
+      })
+      .finally(() => {
         if (isMounted) setIsLoading(false);
       });
 
@@ -53,20 +55,10 @@ export default function UpcomingEvents() {
         </p>
       </div>
 
-      {/* Loading Skeleton */}
+      {/* Loading Animation */}
       {isLoading && events.length === 0 && (
-        <div className="mx-auto max-w-4xl space-y-6 animate-pulse">
-          {[1, 2].map((i) => (
-            <div
-              key={i}
-              className="rounded-3xl border border-white/70 bg-white p-5 sm:p-8 shadow-[0_12px_40px_rgba(15,23,42,0.08)]"
-            >
-              <div className="h-4 w-32 bg-slate-200 rounded mb-4" />
-              <div className="h-6 w-3/4 bg-slate-200 rounded mb-4" />
-              <div className="h-4 w-1/2 bg-slate-100 rounded mb-4" />
-              <div className="h-48 w-full bg-slate-100 rounded-2xl" />
-            </div>
-          ))}
+        <div className="mx-auto max-w-4xl">
+          <EventsGridLoading />
         </div>
       )}
 

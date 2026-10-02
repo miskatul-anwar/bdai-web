@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { FileText, Download } from 'lucide-react';
-import { fetchSiteSettings } from '@/lib/api';
+import { fetchSiteSettings, getCachedData, SiteSettings } from '@/lib/api';
+import { ReportsLoading } from '@/components/ui/LoadingAnimation';
 
 interface ReportItem {
   id?: string;
@@ -14,22 +15,34 @@ interface ReportItem {
   download_url?: string;
 }
 
-const DEFAULT_REPORTS: ReportItem[] = [
-  { id: 'rep-1', title: 'Inception Report & Work Plan 2024-2025', wp: 'General', type: 'Annual Report', date: '2024', size: '2.8 MB', download_url: '#' },
-  { id: 'rep-2', title: 'Sectoral Data Collection Framework (WP2)', wp: 'WP2', type: 'Deliverable', date: '2024', size: '1.9 MB', download_url: '#' },
-  { id: 'rep-3', title: 'Federated Knowledge Graph Specification (WP3)', wp: 'WP3', type: 'Technical Deliverable', date: '2025', size: '3.4 MB', download_url: '#' },
-  { id: 'rep-4', title: 'Quarterly Progress Review Q1 2025', wp: 'General', type: 'Mid-term Review', date: '2025', size: '1.2 MB', download_url: '#' },
-];
-
 export default function Reports() {
-  const [reports, setReports] = useState<ReportItem[]>(DEFAULT_REPORTS);
+  const [reports, setReports] = useState<ReportItem[]>(() => {
+    const cached = getCachedData<SiteSettings>('/settings')?.reports;
+    if (cached && Array.isArray(cached) && cached.length > 0) {
+      return cached as ReportItem[];
+    }
+    return [];
+  });
+  const [isLoading, setIsLoading] = useState(() => {
+    const cached = getCachedData<SiteSettings>('/settings')?.reports;
+    return !(cached && Array.isArray(cached) && cached.length > 0);
+  });
 
   useEffect(() => {
+    let isMounted = true;
     fetchSiteSettings().then((data) => {
-      if (data?.reports && data.reports.length > 0) {
-        setReports(data.reports as ReportItem[]);
+      if (isMounted) {
+        if (data?.reports && Array.isArray(data.reports)) {
+          setReports(data.reports as ReportItem[]);
+        }
+        setIsLoading(false);
       }
+    }).catch(() => {
+      if (isMounted) setIsLoading(false);
     });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -44,6 +57,16 @@ export default function Reports() {
             <h1 className="text-2xl md:text-3xl font-bold text-[#0c2461]">Reports &amp; Deliverables</h1>
           </div>
         </div>
+
+        {/* Loading Skeleton */}
+        {isLoading && reports.length === 0 && <ReportsLoading />}
+
+        {/* Empty State */}
+        {!isLoading && reports.length === 0 && (
+          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100 p-8 shadow-sm">
+            <p className="text-slate-600 font-medium">No reports currently published.</p>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           {reports.map((report, i) => (
